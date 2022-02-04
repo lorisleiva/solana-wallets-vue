@@ -1,5 +1,7 @@
+import { ref, Ref } from 'vue-demi'
+
 type MagicNumber = number;
 
-const foo: MagicNumber = 3;
+export const foo: MagicNumber = 3;
 
-export default foo;
+export const bar: Ref<MagicNumber> = ref(42);
