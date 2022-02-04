@@ -10,7 +10,7 @@ export * from './useLocalStorage';
 export * from './useWallet';
 
 export default { 
-  install: (app: App, options: WalletStoreProps) => {
+  install: (app: App, options: WalletStoreProps = {}) => {
     initWallet(options);
     app.config.globalProperties.$wallet = useWallet();
   },

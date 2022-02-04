@@ -56,14 +56,14 @@ export interface WalletStore {
 }
 
 export interface WalletStoreProps {
-  wallets: Adapter[] | Ref<Adapter[]>;
+  wallets?: Adapter[] | Ref<Adapter[]>;
   autoConnect?: boolean | Ref<boolean>;
   onError?: (error: WalletError) => void;
   localStorageKey?: string;
 }
 
 export const createWalletStore = ({
-  wallets: initialWallets,
+  wallets: initialWallets = [],
   autoConnect: initialAutoConnect = false,
   onError = (error: WalletError) => console.error(error),
   localStorageKey = "walletName",
