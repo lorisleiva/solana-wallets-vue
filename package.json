@@ -23,6 +23,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@solana/wallet-adapter-base": "^0.9.3",
+    "@solana/web3.js": "^1.32.1",
     "vue-demi": "^0.12.1"
   },
   "devDependencies": {
