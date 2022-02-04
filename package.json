@@ -18,7 +18,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --emitDeclarationOnly && vite build",
+    "build": "vite build && vue-tsc --emitDeclarationOnly",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
