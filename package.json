@@ -5,7 +5,9 @@
   "author": "Loris Leiva",
   "license": "MIT",
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "styles.css"
   ],
   "main": "./dist/solana-wallets-vue.umd.js",
   "module": "./dist/solana-wallets-vue.es.js",
@@ -14,7 +16,8 @@
     ".": {
       "import": "./dist/solana-wallets-vue.es.js",
       "require": "./dist/solana-wallets-vue.umd.js"
-    }
+    },
+    "./styles.css": "./styles.css"
   },
   "scripts": {
     "dev": "vite",
