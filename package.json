@@ -31,6 +31,7 @@
     "vue-demi": "^0.12.1"
   },
   "devDependencies": {
+    "@project-serum/anchor": "^0.20.1",
     "@solana/wallet-adapter-wallets": "^0.15.2",
     "@types/node": "^17.0.14",
     "@vitejs/plugin-vue": "^2.0.0",
