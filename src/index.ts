@@ -9,9 +9,9 @@ export * from './useAnchorWallet';
 export * from './useLocalStorage';
 export * from './useWallet';
 
-function install(Vue: App, options: WalletStoreProps) {
-  initWallet(options);
-  Vue.config.globalProperties.$wallet = useWallet();
+export default { 
+  install: (app: App, options: WalletStoreProps) => {
+    initWallet(options);
+    app.config.globalProperties.$wallet = useWallet();
+  },
 }
-
-export default { install }

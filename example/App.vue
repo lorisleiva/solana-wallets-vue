@@ -7,17 +7,19 @@ import idl from './idl.json'
 
 const programID = new PublicKey(idl.metadata.address)
 const preflightCommitment = 'processed'
-const baseAccount = Keypair.generate()
-const wallet = useAnchorWallet()
-const connection = new Connection(clusterApiUrl('devnet'), preflightCommitment)
-const provider = computed(() => new Provider(connection, wallet.value, { preflightCommitment }))
-const program = computed(() => new Program(idl, programID, provider.value))
 
 export default {
   components: {
     WalletModalProvider,
     WalletMultiButton,
-  }
+  },
+  setup () {
+    const baseAccount = Keypair.generate()
+    const wallet = useAnchorWallet()
+    const connection = new Connection(clusterApiUrl('devnet'), preflightCommitment)
+    const provider = computed(() => new Provider(connection, wallet.value, { preflightCommitment }))
+    const program = computed(() => new Program(idl, programID, provider.value))
+  },
 }
 </script>
 
@@ -26,5 +28,9 @@ export default {
     <wallet-modal-provider>
       <wallet-multi-button></wallet-multi-button>
     </wallet-modal-provider>
+
+    <div>
+      {{ $wallet.publicKey.value?.toBase58() ?? 'Not connected' }}
+    </div>
   </div>
 </template>
