@@ -27,8 +27,8 @@ import { useLocalStorage } from "./useLocalStorage";
 
 export interface WalletStore {
   // Props.
-  wallets: Adapter[];
-  autoConnect: boolean;
+  wallets: Ref<Adapter[]>;
+  autoConnect: Ref<boolean>;
 
   // Data.
   wallet: Ref<Adapter | null>;
@@ -55,20 +55,22 @@ export interface WalletStore {
 }
 
 export interface WalletStoreProps {
-  wallets: Adapter[];
-  autoConnect?: boolean;
+  wallets: Adapter[] | Ref<Adapter[]>;
+  autoConnect?: boolean | Ref<boolean>;
   onError?: (error: WalletError) => void;
   localStorageKey?: string;
 }
 
 export const createWalletStore = ({
-  wallets,
-  autoConnect = false,
+  wallets: initialWallets,
+  autoConnect: initialAutoConnect = false,
   onError = (error: WalletError) => console.error(error),
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
 
   // Initial values.
+  const wallets: Ref<Adapter[]> = ref(initialWallets);
+  const autoConnect = ref(initialAutoConnect);
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey);
   const wallet = ref<Adapter | null>(null);
   const publicKey = ref<PublicKey | null>(null);
@@ -93,7 +95,7 @@ export const createWalletStore = ({
 
   // Create a dictionary of wallet adapters keyed by their name.
   const walletsByName = computed(() => {
-    return wallets.reduce<Record<WalletName, Adapter>>(
+    return wallets.value.reduce<Record<WalletName, Adapter>>(
       (walletsByName, adapter) => {
         walletsByName[adapter.name] = adapter;
         return walletsByName;
@@ -242,7 +244,7 @@ export const createWalletStore = ({
 
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
   watchEffect(async (): Promise<void> => {
-    if (!autoConnect || !wallet.value || !ready.value || connected.value || connecting.value) return;
+    if (!autoConnect.value || !wallet.value || !ready.value || connected.value || connecting.value) return;
     try {
       connecting.value = true;
       await wallet.value.connect();

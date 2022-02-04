@@ -22,8 +22,8 @@ export default defineComponent({
         const { visible, hideModal } = useWalletModal();
         const modal = ref<Element>();
         const expanded = ref(false);
-        const featuredWallets = computed(() => wallets.slice(0, featuredWalletsNumber));
-        const otherWallets = computed(() => wallets.slice(featuredWalletsNumber));
+        const featuredWallets = computed(() => wallets.value.slice(0, featuredWalletsNumber));
+        const otherWallets = computed(() => wallets.value.slice(featuredWalletsNumber));
 
         const selectWallet = (walletName: WalletName) => {
             select(walletName);

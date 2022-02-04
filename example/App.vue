@@ -1,5 +1,5 @@
 <script>
-import { computed } from 'vue-demi'
+import { computed, ref } from 'vue-demi'
 import { Connection, PublicKey, Keypair, clusterApiUrl } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'
 import { WalletModalProvider, WalletMultiButton, useAnchorWallet } from '../src'
