@@ -1,0 +1,11 @@
+{
+  "name": "solana-wallets-vue",
+  "version": "0.1.0",
+  "description": "Solana wallet integration for Vue 2 and 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
