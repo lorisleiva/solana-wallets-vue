@@ -9,6 +9,7 @@
   ],
   "main": "./dist/solana-wallets-vue.umd.js",
   "module": "./dist/solana-wallets-vue.es.js",
+  "typings": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/solana-wallets-vue.es.js",
@@ -17,7 +18,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --emitDeclarationOnly && vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
