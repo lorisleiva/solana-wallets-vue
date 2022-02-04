@@ -69,7 +69,7 @@ export const createWalletStore = ({
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
 
-  // Initial values.
+  // Mutable values.
   const wallets: Ref<Adapter[]> = ref(initialWallets);
   const autoConnect = ref(initialAutoConnect);
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey);
@@ -100,19 +100,15 @@ export const createWalletStore = ({
 
   // Create a dictionary of wallet adapters keyed by their name.
   const walletsByName = computed(() => {
-    return wallets.value.reduce<Record<WalletName, Adapter>>(
-      (walletsByName, adapter) => {
-        walletsByName[adapter.name] = adapter;
-        return walletsByName;
-      },
-      {}
-    );
+    return wallets.value.reduce<Record<WalletName, Adapter>>((walletsByName, adapter) => {
+      walletsByName[adapter.name] = adapter;
+      return walletsByName;
+    }, {});
   });
 
   // Update the wallet adapter based on the wallet provider.
   watch(name, (): void => {
-    const wallet = walletsByName.value?.[name.value as WalletName] ?? null;
-    setWallet(wallet);
+    setWallet(walletsByName.value?.[name.value as WalletName] ?? null);
   }, { immediate: true });
 
   // Select a wallet adapter by name.
@@ -122,15 +118,8 @@ export const createWalletStore = ({
   };
 
   // Handle the wallet adapter events.
-  const onReadyStateChange = () => {
-    if (!wallet?.value) return;
-    readyState.value = wallet.value.readyState;
-  };
-  const onConnect = () => {
-    if (!wallet?.value) return;
-    publicKey.value = wallet.value.publicKey;
-    connected.value = wallet.value.connected;
-  };
+  const onReadyStateChange = () => setWallet(wallet.value);
+  const onConnect = () => setWallet(wallet.value);
   const onDisconnect = () => (name.value = null);
   const invalidateListeners = watchEffect((onInvalidate) => {
     const _wallet = wallet.value;
