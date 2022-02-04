@@ -23,13 +23,23 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "vue": "^3.2.25"
+    "vue-demi": "^0.12.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.14",
     "@vitejs/plugin-vue": "^2.0.0",
     "typescript": "^4.5.4",
     "vite": "^2.7.2",
+    "vue": "^3.2.25",
     "vue-tsc": "^0.29.8"
+  },
+  "peerDependencies": {
+    "@vue/composition-api": "^1.0",
+    "vue": "^2.0 || ^3.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
   }
 }

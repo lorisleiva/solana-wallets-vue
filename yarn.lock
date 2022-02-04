@@ -888,6 +888,11 @@ vscode-vue-languageservice@0.29.8:
     vscode-pug-languageservice "0.29.8"
     vscode-typescript-languageservice "0.29.8"
 
+vue-demi@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
+  integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
+
 vue-tsc@^0.29.8:
   version "0.29.8"
   resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-0.29.8.tgz#f4d8de5dd8756107c878489ccf9178d2d72fff47"
