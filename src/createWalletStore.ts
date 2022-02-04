@@ -33,7 +33,8 @@ export interface WalletStore {
   // Data.
   wallet: Ref<Adapter | null>;
   publicKey: Ref<PublicKey | null>;
-  ready: Ref<WalletReadyState>;
+  readyState: Ref<WalletReadyState>;
+  ready: Ref<boolean>;
   connected: Ref<boolean>;
   connecting: Ref<boolean>;
   disconnecting: Ref<boolean>;
@@ -74,15 +75,19 @@ export const createWalletStore = ({
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey);
   const wallet = ref<Adapter | null>(null);
   const publicKey = ref<PublicKey | null>(null);
-  const ready = ref<WalletReadyState>(WalletReadyState.NotDetected);
+  const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
   const connected = ref<boolean>(false);
   const connecting = ref<boolean>(false);
   const disconnecting = ref<boolean>(false);
+  const ready = computed(() => 
+    readyState.value === WalletReadyState.Installed || 
+    readyState.value === WalletReadyState.Loadable
+  )
 
   // Helper methods to set and reset the main state variables.
   const setWallet = (newWallet: Adapter | null) => {
     wallet.value = newWallet;
-    ready.value = newWallet?.readyState ?? WalletReadyState.NotDetected;
+    readyState.value = newWallet?.readyState ?? WalletReadyState.NotDetected;
     publicKey.value = newWallet?.publicKey ?? null;
     connected.value = newWallet?.connected ?? false;
   };
@@ -105,14 +110,10 @@ export const createWalletStore = ({
   });
 
   // Update the wallet adapter based on the wallet provider.
-  watch(
-    name,
-    (): void => {
-      const wallet = walletsByName.value?.[name.value as WalletName] ?? null;
-      setWallet(wallet);
-    },
-    { immediate: true }
-  );
+  watch(name, (): void => {
+    const wallet = walletsByName.value?.[name.value as WalletName] ?? null;
+    setWallet(wallet);
+  }, { immediate: true });
 
   // Select a wallet adapter by name.
   const select = async (walletName: WalletName): Promise<void> => {
@@ -123,7 +124,7 @@ export const createWalletStore = ({
   // Handle the wallet adapter events.
   const onReadyStateChange = () => {
     if (!wallet?.value) return;
-    ready.value = wallet.value.readyState;
+    readyState.value = wallet.value.readyState;
   };
   const onConnect = () => {
     if (!wallet?.value) return;
@@ -266,6 +267,7 @@ export const createWalletStore = ({
     // Data.
     wallet,
     publicKey,
+    readyState,
     ready,
     connected,
     connecting,
