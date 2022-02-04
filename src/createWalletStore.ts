@@ -48,6 +48,7 @@ export interface WalletStore {
     options?: SendTransactionOptions
   ): Promise<TransactionSignature>;
 
+  // Optional methods.
   signTransaction: Ref<SignerWalletAdapter["signTransaction"] | undefined>;
   signAllTransactions: Ref<SignerWalletAdapter["signAllTransactions"] | undefined>;
   signMessage: Ref<MessageSignerWalletAdapter["signMessage"] | undefined>;
