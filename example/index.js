@@ -1,5 +1,12 @@
-import { createApp } from 'vue-demi'
-import App from './App.vue'
+import { createApp } from 'vue-demi';
+import App from './App.vue';
+import SolanaWallets from '../src/index';
 
-const app = createApp(App)
-app.mount('#app')
+const walletOptions = {
+  wallets: [],
+  autoConnect: true,
+}
+
+createApp(App)
+  .use(SolanaWallets, walletOptions)
+  .mount('#app');
