@@ -77,24 +77,11 @@ export const createWalletStore = ({
   const disconnecting = ref<boolean>(false);
 
   // Helper methods to set and reset the main state variables.
-  const setState = (state: {
-    wallet: Adapter | null;
-    publicKey: PublicKey | null;
-    ready: WalletReadyState;
-    connected: boolean;
-  }) => {
-    wallet.value = state.wallet;
-    ready.value = state.ready;
-    publicKey.value = state.publicKey;
-    connected.value = state.connected;
-  };
-  const resetState = () => {
-    setState({
-      wallet: null,
-      ready: WalletReadyState.NotDetected,
-      publicKey: null,
-      connected: false,
-    });
+  const setWallet = (newWallet: Adapter | null) => {
+    wallet.value = newWallet;
+    ready.value = newWallet?.readyState ?? WalletReadyState.NotDetected;
+    publicKey.value = newWallet?.publicKey ?? null;
+    connected.value = newWallet?.connected ?? false;
   };
 
   // Helper method to return an error whilst using the onError callback.
@@ -119,16 +106,7 @@ export const createWalletStore = ({
     name,
     (): void => {
       const wallet = walletsByName.value?.[name.value as WalletName] ?? null;
-      if (wallet) {
-        setState({
-          wallet: wallet,
-          ready: wallet.readyState,
-          publicKey: wallet.publicKey,
-          connected: wallet.connected,
-        });
-      } else {
-        resetState();
-      }
+      setWallet(wallet);
     },
     { immediate: true }
   );
