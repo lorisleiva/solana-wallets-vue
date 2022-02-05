@@ -17,11 +17,11 @@ export default defineComponent({
     :style="`justify-content: ${justifyContent};`"
     type="button"
   >
-    <i v-if="$slots['start-icon']" className="wallet-adapter-button-start-icon">
+    <i v-if="$slots['start-icon']" class="wallet-adapter-button-start-icon">
       <slot name="start-icon"></slot>
     </i>
     <slot></slot>
-    <i v-if="$slots['end-icon']" className="wallet-adapter-button-end-icon">
+    <i v-if="$slots['end-icon']" class="wallet-adapter-button-end-icon">
       <slot name="end-icon"></slot>
     </i>
   </button>
