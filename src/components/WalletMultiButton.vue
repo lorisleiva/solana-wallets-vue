@@ -1,5 +1,6 @@
 <script lang="ts">
-import { computed, defineComponent, ref, watchEffect } from "vue-demi";
+import { computed, defineComponent, ref } from "vue-demi";
+import { onClickOutside } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletButton from "./WalletButton.vue";
 import WalletConnectButton from "./WalletConnectButton.vue";
@@ -17,7 +18,7 @@ export default defineComponent({
     const { publicKey, wallet, disconnect } = useWallet();
     const copied = ref(false);
     const active = ref(false);
-    const dropdown = ref<Element>();
+    const dropdown = ref<HTMLElement>();
 
     const base58 = computed(() => publicKey.value?.toBase58());
     const content = computed(() => {
@@ -34,22 +35,7 @@ export default defineComponent({
 
     const openDropdown = () => (active.value = true);
     const closeDropdown = () => (active.value = false);
-
-    // Close the dropdown when clicking outside of it.
-    watchEffect((onInvalidate) => {
-      const listener = (event: MouseEvent | TouchEvent) => {
-        const node = dropdown.value;
-        // Do nothing if clicking dropdown or its descendants
-        if (!node || node.contains(event.target as Node)) return;
-        closeDropdown();
-      };
-      document.addEventListener("mousedown", listener);
-      document.addEventListener("touchstart", listener);
-      onInvalidate(() => {
-        document.removeEventListener("mousedown", listener);
-        document.removeEventListener("touchstart", listener);
-      });
-    });
+    onClickOutside(dropdown, closeDropdown);
 
     return {
       wallet,
@@ -80,6 +66,7 @@ export default defineComponent({
         class="wallet-adapter-button-trigger"
         :style="{ pointerEvents: active ? 'none' : 'auto' }"
         :aria-expanded="active"
+        :title="base58"
         @click="openDropdown"
       >
         <template #start-icon>
