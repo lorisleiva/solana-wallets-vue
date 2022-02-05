@@ -2,7 +2,7 @@
 import { ref, computed, watchEffect } from 'vue-demi'
 import { Connection, PublicKey, Keypair, clusterApiUrl, SystemProgram } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'
-import { WalletModalProvider, WalletMultiButton, useAnchorWallet, useLocalStorage } from '../src'
+import { WalletModalNew, WalletModalProvider, WalletMultiButton, useAnchorWallet, useLocalStorage } from '../src'
 import idl from './idl.json'
 
 const programID = new PublicKey(idl.metadata.address)
@@ -12,6 +12,7 @@ export default {
   components: {
     WalletModalProvider,
     WalletMultiButton,
+    WalletModalNew,
   },
   setup () {
     const wallet = useAnchorWallet()
@@ -74,6 +75,11 @@ export default {
       <div>{{ counter }}</div>
       <button @click="createCounter">New Counter</button>
       <button @click="incrementCounter">Increment Counter</button>
+    </div>
+
+    <div style="margin-top: 200px; background: #f8fafa; padding: 20px;">
+      <wallet-modal-new></wallet-modal-new>
+      Hello
     </div>
   </div>
 </template>
