@@ -61,20 +61,10 @@ export default {
 <template>
   <div>
     <wallet-multi-button></wallet-multi-button>
-
-    <div>
-      {{ $wallet.publicKey.value?.toBase58() ?? 'Not connected' }}
-    </div>
-
-    <div>
-      <div>{{ counterPublicKey }}</div>
-      <div>{{ counter }}</div>
-      <button @click="createCounter">New Counter</button>
-      <button @click="incrementCounter">Increment Counter</button>
-    </div>
-
-    <div style="margin-top: 200px; background: #f8fafa; padding: 20px;">
-      Hello
-    </div>
+    <div>{{ $wallet.publicKey.value?.toBase58() ?? 'Not connected' }}</div>
+    <div>{{ counterPublicKey }}</div>
+    <div>{{ counter }}</div>
+    <button @click="createCounter">New Counter</button>
+    <button @click="incrementCounter">Increment Counter</button>
   </div>
 </template>
