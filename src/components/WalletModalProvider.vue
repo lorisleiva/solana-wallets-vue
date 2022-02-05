@@ -1,6 +1,6 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue-demi";
-import { onClickOutside, onKeyStroke } from "@vueuse/core";
+import { computed, defineComponent, nextTick, ref, watch } from "vue-demi";
+import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletButton from './WalletButton.vue';
 import WalletListItem from './WalletListItem.vue';
@@ -27,8 +27,34 @@ export default defineComponent({
     const otherWallets = computed(() => wallets.value.slice(featured));
     const expanded = ref(false);
 
+    // Close the modal when clicking outside of it or when pressing Escape.
     onClickOutside(panel, close);
     onKeyStroke("Escape", close);
+
+    // Ensures pressing Tab backwards and forwards stays within the modal.
+    onKeyStroke("Tab", (event: KeyboardEvent) => {
+      const focusableElements = panel.value?.querySelectorAll("button") ?? [];
+      const firstElement = focusableElements?.[0];
+      const lastElement = focusableElements?.[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement && lastElement) {
+        lastElement.focus();
+        event.preventDefault();
+      } else if (! event.shiftKey && document.activeElement === lastElement && firstElement) {
+        firstElement.focus();
+        event.preventDefault();
+      }
+    });
+
+    // Bring focus inside the modal when it opens.
+    watch(opened, isOpened => {
+      if (! isOpened) return;
+      nextTick(() => panel.value?.querySelectorAll("button")?.[0]?.focus())
+    });
+
+    // Lock the body scroll when the modal opens.
+    const scrollLock = useScrollLock(document.body);
+    watch(opened, isOpened => scrollLock.value = isOpened);
 
     return {
       container,
