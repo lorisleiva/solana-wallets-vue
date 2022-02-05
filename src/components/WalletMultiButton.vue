@@ -94,25 +94,13 @@ export default defineComponent({
         ref="dropdown"
         role="menu"
       >
-        <li
-          @click="copyAddress"
-          class="wallet-adapter-dropdown-list-item"
-          role="menuitem"
-        >
+        <li @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
           {{ copied ? "Copied" : "Copy address" }}
         </li>
-        <li
-          @click="open(); closeDropdown();"
-          class="wallet-adapter-dropdown-list-item"
-          role="menuitem"
-        >
+        <li @click="open(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
           Change wallet
         </li>
-        <li
-          @click="disconnect"
-          class="wallet-adapter-dropdown-list-item"
-          role="menuitem"
-        >
+        <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
           Disconnect
         </li>
       </ul>

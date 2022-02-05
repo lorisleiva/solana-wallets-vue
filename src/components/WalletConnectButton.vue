@@ -1,12 +1,10 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue-demi";
 import { useWallet } from "@/useWallet";
-import WalletButton from "./WalletButton.vue";
 import WalletIcon from "./WalletIcon.vue";
 
 export default defineComponent({
   components: {
-    WalletButton,
     WalletIcon,
   },
   props: {
@@ -22,7 +20,7 @@ export default defineComponent({
       return "Connect Wallet";
     });
 
-    const handleClick = (event: MouseEvent) => {
+    const onClick = (event: MouseEvent) => {
       emit("click", event);
       if (event.defaultPrevented) return;
       connect().catch(() => {});
@@ -34,23 +32,24 @@ export default defineComponent({
       connecting,
       connected,
       content,
-      handleClick,
+      onClick,
     };
   },
 });
 </script>
 
 <template>
-  <wallet-button
-    class="wallet-adapter-button-trigger"
+  <button
+    type="button"
+    class="wallet-adapter-button wallet-adapter-button-trigger"
     :disabled="disabled || !wallet || connecting || connected"
-    @click="handleClick"
+    @click="onClick"
   >
-    <template #start-icon v-if="wallet">
+    <i class="wallet-adapter-button-start-icon" v-if="wallet">
       <wallet-icon :wallet="wallet"></wallet-icon>
-    </template>
+    </i>
     <slot>
       {{ content }}
     </slot>
-  </wallet-button>
+  </button>
 </template>
