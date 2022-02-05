@@ -56,7 +56,7 @@ export default defineComponent({
 <template>
   <wallet-modal-provider #default="{ open }">
     <wallet-button v-if="!wallet" class="wallet-adapter-button-trigger" @click="open">
-        <slot>Select Wallet</slot>
+      <slot>Select Wallet</slot>
     </wallet-button>
     <wallet-connect-button v-else-if="!base58">
       <slot></slot>
