@@ -13,17 +13,17 @@ export default defineComponent({
         WalletListItem,
     },
     props: {
-        featuredWallets: { type: Number, default: 3 },
+        featured: { type: Number, default: 3 },
         container: { type: String, default: 'body' },
         logo: String,
     },
-    setup({ featuredWallets: featuredWalletsNumber, container, logo }) {
+    setup({ featured, container, logo }) {
         const { wallets, select } = useWallet();
         const { visible, hideModal } = useWalletModal();
         const modal = ref<Element>();
         const expanded = ref(false);
-        const featuredWallets = computed(() => wallets.value.slice(0, featuredWalletsNumber));
-        const otherWallets = computed(() => wallets.value.slice(featuredWalletsNumber));
+        const featuredWallets = computed(() => wallets.value.slice(0, featured));
+        const otherWallets = computed(() => wallets.value.slice(featured));
 
         const selectWallet = (walletName: WalletName) => {
             select(walletName);
