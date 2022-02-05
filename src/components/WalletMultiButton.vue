@@ -16,9 +16,12 @@ export default defineComponent({
   },
   setup() {
     const { publicKey, wallet, disconnect } = useWallet();
-    const copied = ref(false);
-    const active = ref(false);
+
     const dropdown = ref<HTMLElement>();
+    const dropdownOpened = ref(false);
+    const openDropdown = () => (dropdownOpened.value = true);
+    const closeDropdown = () => (dropdownOpened.value = false);
+    onClickOutside(dropdown, closeDropdown);
 
     const base58 = computed(() => publicKey.value?.toBase58());
     const content = computed(() => {
@@ -26,6 +29,7 @@ export default defineComponent({
       return base58.value.slice(0, 4) + ".." + base58.value.slice(-4);
     });
 
+    const copied = ref(false);
     const copyAddress = async () => {
       if (!base58.value) return;
       await navigator.clipboard.writeText(base58.value);
@@ -33,17 +37,13 @@ export default defineComponent({
       setTimeout(() => (copied.value = false), 400);
     };
 
-    const openDropdown = () => (active.value = true);
-    const closeDropdown = () => (active.value = false);
-    onClickOutside(dropdown, closeDropdown);
-
     return {
       wallet,
       content,
       base58,
-      active,
       copied,
       dropdown,
+      dropdownOpened,
       openDropdown,
       closeDropdown,
       copyAddress,
@@ -64,8 +64,8 @@ export default defineComponent({
     <div v-else class="wallet-adapter-dropdown">
       <wallet-button
         class="wallet-adapter-button-trigger"
-        :style="{ pointerEvents: active ? 'none' : 'auto' }"
-        :aria-expanded="active"
+        :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
+        :aria-expanded="dropdownOpened"
         :title="base58"
         @click="openDropdown"
       >
@@ -77,7 +77,7 @@ export default defineComponent({
       <ul
         aria-label="dropdown-list"
         class="wallet-adapter-dropdown-list"
-        :class="{ 'wallet-adapter-dropdown-list-active': active }"
+        :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
         ref="dropdown"
         role="menu"
       >
