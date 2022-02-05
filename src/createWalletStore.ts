@@ -23,7 +23,7 @@ import {
   watchEffect,
 } from "vue-demi";
 import { WalletNotSelectedError } from "./errors";
-import { useLocalStorage } from "./useLocalStorage";
+import { useLocalStorage } from "@vueuse/core";
 
 export interface WalletStore {
   // Props.
@@ -72,7 +72,7 @@ export const createWalletStore = ({
   // Mutable values.
   const wallets: Ref<Adapter[]> = ref(initialWallets);
   const autoConnect = ref(initialAutoConnect);
-  const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey);
+  const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey, null);
   const wallet = ref<Adapter | null>(null);
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);

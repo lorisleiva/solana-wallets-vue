@@ -1,8 +1,9 @@
 <script>
 import { ref, computed, watchEffect } from 'vue-demi'
+import { useLocalStorage } from '@vueuse/core'
 import { Connection, PublicKey, Keypair, clusterApiUrl, SystemProgram } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'
-import { WalletMultiButton, useAnchorWallet, useLocalStorage } from '../src'
+import { WalletMultiButton, useAnchorWallet } from '../src'
 import idl from './idl.json'
 
 const programID = new PublicKey(idl.metadata.address)
