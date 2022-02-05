@@ -23,9 +23,10 @@ export default defineComponent({
     const scope = { opened, open, close }
 
     const { wallets, select } = useWallet();
-    const featuredWallets = computed(() => wallets.value.slice(0, featured));
-    const otherWallets = computed(() => wallets.value.slice(featured));
     const expanded = ref(false);
+    const featuredWallets = computed(() => wallets.value.slice(0, featured));
+    const hiddenWallets = computed(() => wallets.value.slice(featured));
+    const walletsToDisplay = computed(() => expanded.value ? wallets.value : featuredWallets.value)
 
     // Close the modal when clicking outside of it or when pressing Escape.
     onClickOutside(panel, close);
@@ -63,8 +64,9 @@ export default defineComponent({
       expanded,
       open,
       close,
+      walletsToDisplay,
       featuredWallets,
-      otherWallets,
+      hiddenWallets,
       select,
       logo,
       scope,
@@ -103,36 +105,27 @@ export default defineComponent({
           </button>
           <ul class="wallet-adapter-modal-list">
             <wallet-list-item
-              v-for="wallet in featuredWallets"
+              v-for="wallet in walletsToDisplay"
               :key="wallet.name"
               :wallet="wallet"
               @click="select(wallet.name); close();"
             ></wallet-list-item>
           </ul>
-          <template v-if="otherWallets.length > 0">
-            <ul class="wallet-adapter-modal-list" v-if="expanded">
-              <wallet-list-item
-                v-for="wallet in otherWallets"
-                :key="wallet.name"
-                :wallet="wallet"
-                @click="select(wallet.name); close();"
-              ></wallet-list-item>
-            </ul>
-            <wallet-button
-              aria-controls="wallet-adapter-modal-collapse"
-              :aria-expanded="expanded"
-              class="wallet-adapter-modal-collapse-button"
-              :class="{ 'wallet-adapter-modal-collapse-button-active': expanded }"
-              @click="expanded = !expanded"
-            >
-              {{ expanded ? "Less" : "More" }} options
-              <template #end-icon>
-                <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
-                  <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />
-                </svg>
-              </template>
-            </wallet-button>
-          </template>
+          <wallet-button
+            v-if="hiddenWallets.length > 0"
+            aria-controls="wallet-adapter-modal-collapse"
+            :aria-expanded="expanded"
+            class="wallet-adapter-modal-collapse-button"
+            :class="{ 'wallet-adapter-modal-collapse-button-active': expanded }"
+            @click="expanded = !expanded"
+          >
+            {{ expanded ? "Less" : "More" }} options
+            <template #end-icon>
+              <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
+                <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />
+              </svg>
+            </template>
+          </wallet-button>
         </div>
       </div>
     </div>
