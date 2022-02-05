@@ -2,7 +2,7 @@
 import { ref, computed, watchEffect } from 'vue-demi'
 import { Connection, PublicKey, Keypair, clusterApiUrl, SystemProgram } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'
-import { WalletModalNew, WalletModalProvider, WalletMultiButton, useAnchorWallet, useLocalStorage } from '../src'
+import { WalletMultiButton, useAnchorWallet, useLocalStorage } from '../src'
 import idl from './idl.json'
 
 const programID = new PublicKey(idl.metadata.address)
@@ -10,9 +10,7 @@ const preflightCommitment = 'processed'
 
 export default {
   components: {
-    WalletModalProvider,
     WalletMultiButton,
-    WalletModalNew,
   },
   setup () {
     const wallet = useAnchorWallet()
@@ -62,9 +60,7 @@ export default {
 
 <template>
   <div>
-    <wallet-modal-provider>
-      <wallet-multi-button></wallet-multi-button>
-    </wallet-modal-provider>
+    <wallet-multi-button></wallet-multi-button>
 
     <div>
       {{ $wallet.publicKey.value?.toBase58() ?? 'Not connected' }}
@@ -78,7 +74,6 @@ export default {
     </div>
 
     <div style="margin-top: 200px; background: #f8fafa; padding: 20px;">
-      <wallet-modal-new></wallet-modal-new>
       Hello
     </div>
   </div>
