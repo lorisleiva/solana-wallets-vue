@@ -45,11 +45,11 @@ export default defineComponent({
 <template>
   <slot v-bind="scope">
     <button
-      class="wallet-adapter-button wallet-adapter-button-trigger"
+      class="swv-button swv-button-trigger"
       :disabled="disabled || disconnecting || !wallet"
       @click="handleClick"
     >
-      <i class="wallet-adapter-button-start-icon" v-if="wallet">
+      <i class="swv-button-start-icon" v-if="wallet">
         <wallet-icon :wallet="wallet"></wallet-icon>
       </i>
       {{ content }}

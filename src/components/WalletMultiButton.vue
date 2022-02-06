@@ -58,20 +58,20 @@ export default defineComponent({
   <wallet-modal-provider>
     <template #default="modalScope">
       <slot v-bind="{ ...modalScope, ...scope }">
-        <button v-if="!wallet" class="wallet-adapter-button wallet-adapter-button-trigger" @click="modalScope.openModal">
+        <button v-if="!wallet" class="swv-button swv-button-trigger" @click="modalScope.openModal">
           Select Wallet
         </button>
         <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
-        <div v-else class="wallet-adapter-dropdown">
+        <div v-else class="swv-dropdown">
           <slot name="dropdown-button" v-bind="{ ...modalScope, ...scope }">
             <button
-              class="wallet-adapter-button wallet-adapter-button-trigger"
+              class="swv-button swv-button-trigger"
               :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
               :aria-expanded="dropdownOpened"
               :title="publicKeyBase58"
               @click="openDropdown"
             >
-              <i class="wallet-adapter-button-start-icon">
+              <i class="swv-button-start-icon">
                 <wallet-icon :wallet="wallet"></wallet-icon>
               </i>
               {{ publicKeyTrimmed }}
@@ -80,19 +80,19 @@ export default defineComponent({
           <slot name="dropdown" v-bind="{ ...modalScope, ...scope }">
             <ul
               aria-label="dropdown-list"
-              class="wallet-adapter-dropdown-list"
-              :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
+              class="swv-dropdown-list"
+              :class="{ 'swv-dropdown-list-active': dropdownOpened }"
               ref="dropdownPanel"
               role="menu"
             >
               <slot name="dropdown-list" v-bind="{ ...modalScope, ...scope }">
-                <li v-if="canCopy" @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
+                <li v-if="canCopy" @click="copyAddress" class="swv-dropdown-list-item" role="menuitem">
                   {{ addressCopied ? "Copied" : "Copy address" }}
                 </li>
-                <li @click="modalScope.openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
+                <li @click="modalScope.openModal(); closeDropdown();" class="swv-dropdown-list-item" role="menuitem">
                   Change wallet
                 </li>
-                <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
+                <li @click="disconnect" class="swv-dropdown-list-item" role="menuitem">
                   Disconnect
                 </li>
               </slot>

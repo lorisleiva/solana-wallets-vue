@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
-.wallet-adapter-button {
+.swv-button {
     background-color: transparent;
     border: none;
     color: #fff;
@@ -16,28 +16,28 @@
     border-radius: 4px;
 }
 
-.wallet-adapter-button-trigger {
+.swv-button-trigger {
     background-color: #512da8;
 }
 
-.wallet-adapter-button:not([disabled]):focus-visible {
+.swv-button:not([disabled]):focus-visible {
     outline-color: white;
 }
 
-.wallet-adapter-button:not([disabled]):hover {
+.swv-button:not([disabled]):hover {
     background-color: #1a1f2e;
 }
 
-.wallet-adapter-button[disabled] {
+.swv-button[disabled] {
     background: #404144;
     color: #999;
     cursor: not-allowed;
 }
 
-.wallet-adapter-button-end-icon,
-.wallet-adapter-button-start-icon,
-.wallet-adapter-button-end-icon img,
-.wallet-adapter-button-start-icon img {
+.swv-button-end-icon,
+.swv-button-start-icon,
+.swv-button-end-icon img,
+.swv-button-start-icon img {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,24 +45,24 @@
     height: 24px;
 }
 
-.wallet-adapter-button-end-icon {
+.swv-button-end-icon {
     margin-left: 12px;
 }
 
-.wallet-adapter-button-start-icon {
+.swv-button-start-icon {
     margin-right: 12px;
 }
 
-.wallet-adapter-collapse {
+.swv-collapse {
     width: 100%;
 }
 
-.wallet-adapter-dropdown {
+.swv-dropdown {
     position: relative;
     display: inline-block;
 }
 
-.wallet-adapter-dropdown-list {
+.swv-dropdown-list {
     position: absolute;
     z-index: 99;
     display: grid;
@@ -82,13 +82,13 @@
     font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.wallet-adapter-dropdown-list-active {
+.swv-dropdown-list-active {
     opacity: 1;
     visibility: visible;
     transform: translateY(10px);
 }
 
-.wallet-adapter-dropdown-list-item {
+.swv-dropdown-list-item {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -107,21 +107,21 @@
     color: #fff;
 }
 
-.wallet-adapter-dropdown-list-item:not([disabled]):hover {
+.swv-dropdown-list-item:not([disabled]):hover {
     background-color: #1a1f2e;
 }
 
-.wallet-adapter-modal-collapse-button svg {
+.swv-modal-collapse-button svg {
     align-self: center;
     fill: #999;
 }
 
-.wallet-adapter-modal-collapse-button.wallet-adapter-modal-collapse-button-active svg {
+.swv-modal-collapse-button.swv-modal-collapse-button-active svg {
     transform: rotate(180deg);
     transition: transform ease-in 150ms;
 }
 
-.wallet-adapter-modal {
+.swv-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -134,11 +134,11 @@
     overflow-y: auto;
 }
 
-.wallet-adapter-modal.wallet-adapter-modal-fade-in {
+.swv-modal.swv-modal-fade-in {
     opacity: 1;
 }
 
-.wallet-adapter-modal-button-close {
+.swv-modal-button-close {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -152,20 +152,20 @@
     border-radius: 50%;
 }
 
-.wallet-adapter-modal-button-close:focus-visible {
+.swv-modal-button-close:focus-visible {
     outline-color: white;
 }
 
-.wallet-adapter-modal-button-close svg {
+.swv-modal-button-close svg {
     fill: #777;
     transition: fill 200ms ease 0s;
 }
 
-.wallet-adapter-modal-button-close:hover svg {
+.swv-modal-button-close:hover svg {
     fill: #fff;
 }
 
-.wallet-adapter-modal-overlay {
+.swv-modal-overlay {
     background: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -174,7 +174,7 @@
     right: 0;
 }
 
-.wallet-adapter-modal-container {
+.swv-modal-container {
     display: flex;
     margin: 3rem;
     min-height: calc(100vh - 6rem); /* 100vh - 2 * margin */
@@ -183,13 +183,13 @@
 }
 
 @media (max-width: 480px) {
-    .wallet-adapter-modal-container {
+    .swv-modal-container {
         margin: 1rem;
         min-height: calc(100vh - 2rem); /* 100vh - 2 * margin */
     }
 }
 
-.wallet-adapter-modal-wrapper {
+.swv-modal-wrapper {
     box-sizing: border-box;
     position: relative;
     display: flex;
@@ -204,11 +204,11 @@
     flex: 1;
 }
 
-.wallet-adapter-modal-wrapper .wallet-adapter-button {
+.swv-modal-wrapper .swv-button {
     width: 100%;
 }
 
-.wallet-adapter-modal-title {
+.swv-modal-title {
     font-weight: 500;
     font-size: 24px;
     line-height: 36px;
@@ -219,39 +219,39 @@
 }
 
 @media (max-width: 374px) {
-    .wallet-adapter-modal-title {
+    .swv-modal-title {
         font-size: 18px;
     }
 }
 
-.wallet-adapter-modal-list {
+.swv-modal-list {
     margin: 0 0 12px 0;
     padding: 0;
     width: 100%;
     list-style: none;
 }
 
-.wallet-adapter-modal-list .wallet-adapter-button {
+.swv-modal-list .swv-button {
     font-weight: 400;
     border-radius: 0;
     font-size: 18px;
 }
 
-.wallet-adapter-modal-list .wallet-adapter-button-end-icon,
-.wallet-adapter-modal-list .wallet-adapter-button-start-icon,
-.wallet-adapter-modal-list .wallet-adapter-button-end-icon img,
-.wallet-adapter-modal-list .wallet-adapter-button-start-icon img {
+.swv-modal-list .swv-button-end-icon,
+.swv-modal-list .swv-button-start-icon,
+.swv-modal-list .swv-button-end-icon img,
+.swv-modal-list .swv-button-start-icon img {
     width: 28px;
     height: 28px;
 }
 
-.wallet-adapter-modal-list .wallet-adapter-button span {
+.swv-modal-list .swv-button span {
     margin-left: auto;
     font-size: 14px;
     opacity: .6;
 }
 
-.wallet-adapter-modal-list-more {
+.swv-modal-list-more {
     cursor: pointer;
     border: none;
     padding: 12px 24px 24px 12px;
@@ -262,17 +262,17 @@
     color: #fff;
 }
 
-.wallet-adapter-modal-list-more svg {
+.swv-modal-list-more svg {
     transition: all 0.1s ease;
     fill: rgba(255, 255, 255, 1);
     margin-left: 0.5rem;
 }
 
-.wallet-adapter-modal-list-more-icon-rotate {
+.swv-modal-list-more-icon-rotate {
     transform: rotate(180deg);
 }
 
-.wallet-adapter-modal-middle {
+.swv-modal-middle {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -281,7 +281,7 @@
     box-sizing: border-box;
 }
 
-.wallet-adapter-modal-middle-button {
+.swv-modal-middle-button {
     display: block;
     cursor: pointer;
     margin-top: 48px;

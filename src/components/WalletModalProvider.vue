@@ -85,43 +85,43 @@ export default defineComponent({
   <slot v-bind="scope"></slot>
   <teleport :to="container" v-if="modalOpened">
     <div
-      aria-labelledby="wallet-adapter-modal-title"
+      aria-labelledby="swv-modal-title"
       aria-modal="true"
-      class="wallet-adapter-modal wallet-adapter-modal-fade-in"
+      class="swv-modal swv-modal-fade-in"
       role="dialog"
     >
       <slot name="overlay" v-bind="scope">
-        <div class="wallet-adapter-modal-overlay" />
+        <div class="swv-modal-overlay" />
       </slot>
-      <div class="wallet-adapter-modal-container" ref="modalPanel">
+      <div class="swv-modal-container" ref="modalPanel">
         <slot name="modal" v-bind="scope">
           <div
-            class="wallet-adapter-modal-wrapper"
-            :class="{ 'wallet-adapter-modal-wrapper-no-logo': !hasLogo }"
+            class="swv-modal-wrapper"
+            :class="{ 'swv-modal-wrapper-no-logo': !hasLogo }"
           >
-            <div class="wallet-adapter-modal-logo-wrapper" v-if="hasLogo">
+            <div class="swv-modal-logo-wrapper" v-if="hasLogo">
               <slot name="logo" v-bind="scope">
-                <img alt="logo" class="wallet-adapter-modal-logo" :src="logo" />
+                <img alt="logo" class="swv-modal-logo" :src="logo" />
               </slot>
             </div>
-            <h1 class="wallet-adapter-modal-title" id="wallet-adapter-modal-title">
+            <h1 class="swv-modal-title" id="swv-modal-title">
               Connect Wallet
             </h1>
-            <button @click.prevent="closeModal" class="wallet-adapter-modal-button-close">
+            <button @click.prevent="closeModal" class="swv-modal-button-close">
               <svg width="14" height="14">
                 <path d="M14 12.461 8.3 6.772l5.234-5.233L12.006 0 6.772 5.234 1.54 0 0 1.539l5.234 5.233L0 12.006l1.539 1.528L6.772 8.3l5.69 5.7L14 12.461z" />
               </svg>
             </button>
-            <ul class="wallet-adapter-modal-list">
+            <ul class="swv-modal-list">
               <li
                 v-for="wallet in walletsToDisplay"
                 :key="wallet.name"
                 :wallet="wallet"
                 @click="selectWallet(wallet.name); closeModal();"
               >
-                <button class="wallet-adapter-button">
+                <button class="swv-button">
                   {{ wallet.name }}
-                  <i class="wallet-adapter-button-end-icon">
+                  <i class="swv-button-end-icon">
                     <wallet-icon :wallet="wallet"></wallet-icon>
                   </i>
                 </button>
@@ -129,14 +129,14 @@ export default defineComponent({
             </ul>
             <button
               v-if="hiddenWallets.length > 0"
-              aria-controls="wallet-adapter-modal-collapse"
+              aria-controls="swv-modal-collapse"
               :aria-expanded="expandedWallets"
-              class="wallet-adapter-button wallet-adapter-modal-collapse-button"
-              :class="{ 'wallet-adapter-modal-collapse-button-active': expandedWallets }"
+              class="swv-button swv-modal-collapse-button"
+              :class="{ 'swv-modal-collapse-button-active': expandedWallets }"
               @click="expandedWallets = !expandedWallets"
             >
               {{ expandedWallets ? "Less" : "More" }} options
-              <i class="wallet-adapter-button-end-icon">
+              <i class="swv-button-end-icon">
                 <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
                   <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />
                 </svg>
