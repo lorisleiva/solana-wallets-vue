@@ -39,7 +39,6 @@ export default defineComponent({
 
 <template>
   <button
-    type="button"
     class="wallet-adapter-button wallet-adapter-button-trigger"
     :disabled="disabled || disconnecting || !wallet"
     @click="handleClick"

@@ -55,25 +55,23 @@ export default defineComponent({
 
 <template>
   <wallet-modal-provider #default="{ openModal }">
-    <wallet-button v-if="!wallet" class="wallet-adapter-button-trigger" @click="openModal">
-      <slot>Select Wallet</slot>
-    </wallet-button>
-    <wallet-connect-button v-else-if="!publicKeyBase58">
-      <slot></slot>
-    </wallet-connect-button>
+    <button v-if="!wallet" class="wallet-adapter-button wallet-adapter-button-trigger" @click="openModal">
+      Select Wallet
+    </button>
+    <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
     <div v-else class="wallet-adapter-dropdown">
-      <wallet-button
-        class="wallet-adapter-button-trigger"
+      <button
+        class="wallet-adapter-button wallet-adapter-button-trigger"
         :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
         :aria-expanded="dropdownOpened"
         :title="publicKeyBase58"
         @click="openDropdown"
       >
-        <template #start-icon>
+        <i class="wallet-adapter-button-start-icon">
           <wallet-icon :wallet="wallet"></wallet-icon>
-        </template>
+        </i>
         {{ publicKeyTrimmed }}
-      </wallet-button>
+      </button>
       <ul
         aria-label="dropdown-list"
         class="wallet-adapter-dropdown-list"
