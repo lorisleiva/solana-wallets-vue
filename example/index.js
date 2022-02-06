@@ -4,7 +4,6 @@ import SolanaWallets from '../src/index';
 import '../styles.css';
 
 import {
-  LedgerWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
@@ -19,7 +18,6 @@ const walletOptions = {
     new SlopeWalletAdapter(),
     new SolflareWalletAdapter({ network: 'devnet' }),
     new TorusWalletAdapter(),
-    new LedgerWalletAdapter(),
     new SolletWalletAdapter({ network: 'devnet' }),
     new SolletExtensionWalletAdapter({ network: 'devnet' }),
   ],
