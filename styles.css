@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
+:root {
+    --swv-button-color: #512da8;
+    --swv-button-radius: 4px;
+    --swv-modal-radius: 10px;
+    --swv-dropdown-radius: 10px;
+    --swv-dropdown-item-radius: 6px;
+}
+
 .swv-button {
     background-color: transparent;
     border: none;
@@ -13,7 +21,7 @@
     height: 48px;
     line-height: 48px;
     padding: 0 24px;
-    border-radius: 4px;
+    border-radius: var(--swv-button-radius);
 }
 
 .swv-button > * + * {
@@ -68,7 +76,7 @@
     margin: 0;
     list-style: none;
     background: #2c2d30;
-    border-radius: 10px;
+    border-radius: var(--swv-dropdown-radius);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
     opacity: 0;
     visibility: hidden;
@@ -94,7 +102,7 @@
     box-sizing: border-box;
     padding: 0 20px;
     width: 100%;
-    border-radius: 6px;
+    border-radius: var(--swv-dropdown-item-radius);
     font-size: 14px;
     font-weight: 600;
     height: 37px;
@@ -191,7 +199,7 @@
     flex-direction: column;
     z-index: 1050;
     max-width: 400px;
-    border-radius: 10px;
+    border-radius: var(--swv-modal-radius);
     background: #10141f;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
     font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -229,6 +237,7 @@
     font-weight: 400;
     border-radius: 0;
     font-size: 18px;
+    justify-content: space-between;
 }
 
 .swv-modal-list .swv-button-icon,
@@ -262,26 +271,4 @@
 
 .swv-modal-list-more-icon-rotate {
     transform: rotate(180deg);
-}
-
-.swv-modal-middle {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 24px 24px 24px;
-    box-sizing: border-box;
-}
-
-.swv-modal-middle-button {
-    display: block;
-    cursor: pointer;
-    margin-top: 48px;
-    width: 100%;
-    background-color: #512da8;
-    padding: 12px;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
 }

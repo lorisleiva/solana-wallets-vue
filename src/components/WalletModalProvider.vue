@@ -116,7 +116,6 @@ export default defineComponent({
               <li
                 v-for="wallet in walletsToDisplay"
                 :key="wallet.name"
-                :wallet="wallet"
                 @click="selectWallet(wallet.name); closeModal();"
               >
                 <button class="swv-button">
