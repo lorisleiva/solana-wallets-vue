@@ -27,7 +27,7 @@ export default defineComponent({
       connect().catch(() => {});
     };
 
-    return {
+    const scope = {
       wallet,
       disabled,
       connecting,
@@ -35,21 +35,26 @@ export default defineComponent({
       content,
       onClick,
     };
+
+    return {
+      scope,
+      ...scope,
+    }
   },
 });
 </script>
 
 <template>
-  <button
-    class="wallet-adapter-button wallet-adapter-button-trigger"
-    :disabled="disabled || !wallet || connecting || connected"
-    @click="onClick"
-  >
-    <i class="wallet-adapter-button-start-icon" v-if="wallet">
-      <wallet-icon :wallet="wallet"></wallet-icon>
-    </i>
-    <slot>
+  <slot v-bind="scope">
+    <button
+      class="wallet-adapter-button wallet-adapter-button-trigger"
+      :disabled="disabled || !wallet || connecting || connected"
+      @click="onClick"
+    >
+      <i class="wallet-adapter-button-start-icon" v-if="wallet">
+        <wallet-icon :wallet="wallet"></wallet-icon>
+      </i>
       {{ content }}
-    </slot>
-  </button>
+    </button>
+  </slot>
 </template>
