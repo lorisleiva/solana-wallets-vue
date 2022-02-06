@@ -117,7 +117,7 @@ export default defineComponent({
             :aria-expanded="expandedWallets"
             class="wallet-adapter-modal-collapse-button"
             :class="{ 'wallet-adapter-modal-collapse-button-active': expandedWallets }"
-            @click="expanded = !expandedWallets"
+            @click="expandedWallets = !expandedWallets"
           >
             {{ expandedWallets ? "Less" : "More" }} options
             <template #end-icon>
