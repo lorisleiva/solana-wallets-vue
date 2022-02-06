@@ -37,29 +37,21 @@
 }
 
 .swv-dark {
-    /* Buttons. */
-    --swv-button-background-color: #6366f1;
-    --swv-button-text-color: white;
-    --swv-button-outline-color: white;
-    --swv-button-hover-background-color: #1f2937;
-    --swv-button-disabled-background-color: #404144;
-    --swv-button-disabled-text-color: #999;
-
     /* Modal. */
     --swv-overlay-background-color: rgba(0, 0, 0, 0.7);
-    --swv-modal-background-color: #10141f;
+    --swv-modal-background-color: #1e293b;
     --swv-modal-text-color: white;
-    --swv-modal-close-button-background-color: #1f2937;
-    --swv-modal-close-button-text-color: #777;
+    --swv-modal-close-button-background-color: #0f172a;
+    --swv-modal-close-button-text-color: #64748b;
     --swv-modal-close-button-hover-text-color: white;
-    --swv-modal-button-text-color: var(--swv-button-text-color);
-    --swv-modal-button-hover-background-color: var(--swv-button-hover-background-color);
-    --swv-modal-button-outline-color: var(--swv-button-outline-color);
+    --swv-modal-button-text-color: white;
+    --swv-modal-button-hover-background-color: #0f172a;
+    --swv-modal-button-outline-color: white;
 
     /* Dropdown. */
-    --swv-dropdown-background-color: white;
-    --swv-dropdown-item-hover-background-color: #f3f4f6;
-    --swv-dropdown-text-color: #1f2937;
+    --swv-dropdown-background-color: #1e293b;
+    --swv-dropdown-item-hover-background-color: #334155;
+    --swv-dropdown-text-color: white;
 
     /* Shadows. */
     --swm-modal-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
@@ -223,7 +215,7 @@
 }
 
 .swv-modal-button-close:focus-visible {
-    outline-color: var(--swv-button-outline-color);
+    outline-color: var(--swv-modal-button-outline-color);
 }
 
 .swv-modal-button-close svg {
@@ -278,6 +270,10 @@
 
 .swv-modal-wrapper .swv-button:not([disabled]):hover {
     background: var(--swv-modal-button-hover-background-color);
+}
+
+.swv-modal-wrapper .swv-button:not([disabled]):focus-visible {
+    outline-color: var(--swv-modal-button-outline-color);
 }
 
 .swv-modal-title {
