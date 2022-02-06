@@ -25,13 +25,15 @@ import {
 import { WalletNotSelectedError } from "./errors";
 import { useLocalStorage } from "@vueuse/core";
 
+export type Wallet = Adapter;
+
 export interface WalletStore {
   // Props.
-  wallets: Ref<Adapter[]>;
+  wallets: Ref<Wallet[]>;
   autoConnect: Ref<boolean>;
 
   // Data.
-  wallet: Ref<Adapter | null>;
+  wallet: Ref<Wallet | null>;
   publicKey: Ref<PublicKey | null>;
   readyState: Ref<WalletReadyState>;
   ready: Ref<boolean>;
@@ -56,7 +58,7 @@ export interface WalletStore {
 }
 
 export interface WalletStoreProps {
-  wallets?: Adapter[] | Ref<Adapter[]>;
+  wallets?: Wallet[] | Ref<Wallet[]>;
   autoConnect?: boolean | Ref<boolean>;
   onError?: (error: WalletError) => void;
   localStorageKey?: string;
@@ -70,10 +72,10 @@ export const createWalletStore = ({
 }: WalletStoreProps): WalletStore => {
 
   // Mutable values.
-  const wallets: Ref<Adapter[]> = ref(initialWallets);
+  const wallets: Ref<Wallet[]> = ref(initialWallets);
   const autoConnect = ref(initialAutoConnect);
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey, null);
-  const wallet = ref<Adapter | null>(null);
+  const wallet = ref<Wallet | null>(null);
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
   const connected = ref<boolean>(false);
@@ -85,7 +87,7 @@ export const createWalletStore = ({
   )
 
   // Helper methods to set and reset the main state variables.
-  const setWallet = (newWallet: Adapter | null) => {
+  const setWallet = (newWallet: Wallet | null) => {
     wallet.value = newWallet;
     readyState.value = newWallet?.readyState ?? WalletReadyState.NotDetected;
     publicKey.value = newWallet?.publicKey ?? null;
@@ -100,8 +102,8 @@ export const createWalletStore = ({
 
   // Create a dictionary of wallet adapters keyed by their name.
   const walletsByName = computed(() => {
-    return wallets.value.reduce<Record<WalletName, Adapter>>((walletsByName, adapter) => {
-      walletsByName[adapter.name] = adapter;
+    return wallets.value.reduce<Record<WalletName, Wallet>>((walletsByName, wallet) => {
+      walletsByName[wallet.name] = wallet;
       return walletsByName;
     }, {});
   });
