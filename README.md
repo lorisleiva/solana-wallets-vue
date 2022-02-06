@@ -47,6 +47,31 @@ createApp(App)
 
 This will initialise the wallet store and create a new `$wallet` global property that you can access inside any component.
 
+Note that you can also initialise the wallet store manually using the `initWallet` method like so.
+
+```js
+import { initWallet } from 'solana-wallets-vue';
+initWallet(walletOptions);
+```
+
+Finally, import and render the `WalletMultiButton` component to allow users to select a wallet et connect to it.
+
+```vue
+<script setup>
+import { WalletMultiButton } from 'solana-wallets-vue'
+</script>
+
+<template>
+  <wallet-multi-button></wallet-multi-button>
+</template>
+```
+
+If you prefer the dark mode, simply provide the `dark` boolean props to the component above.
+
+```html
+<wallet-multi-button dark></wallet-multi-button>
+```
+
 ## Usage
 
 You can then call `useWallet()` at any time to access the wallet store — or access the `$wallet` global propery instead.
