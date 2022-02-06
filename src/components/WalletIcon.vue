@@ -1,13 +1,13 @@
 <script lang="ts">
-import { defineComponent, PropType } from "vue-demi";
+import { defineComponent, PropType, toRefs } from "vue-demi";
 import { Adapter } from "@solana/wallet-adapter-base";
 
 export default defineComponent({
   props: {
     wallet: Object as PropType<Adapter>,
   },
-  setup({ wallet }) {
-    return { wallet };
+  setup(props) {
+    return toRefs(props);
   },
 });
 </script>

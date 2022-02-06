@@ -17,11 +17,11 @@ export default defineComponent({
   setup() {
     const { publicKey, wallet, disconnect } = useWallet();
 
-    const dropdown = ref<HTMLElement>();
+    const dropdownPanel = ref<HTMLElement>();
     const dropdownOpened = ref(false);
     const openDropdown = () => (dropdownOpened.value = true);
     const closeDropdown = () => (dropdownOpened.value = false);
-    onClickOutside(dropdown, closeDropdown);
+    onClickOutside(dropdownPanel, closeDropdown);
 
     const base58 = computed(() => publicKey.value?.toBase58());
     const content = computed(() => {
@@ -42,7 +42,7 @@ export default defineComponent({
       content,
       base58,
       copied,
-      dropdown,
+      dropdownPanel,
       dropdownOpened,
       openDropdown,
       closeDropdown,
@@ -78,7 +78,7 @@ export default defineComponent({
         aria-label="dropdown-list"
         class="wallet-adapter-dropdown-list"
         :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
-        ref="dropdown"
+        ref="dropdownPanel"
         role="menu"
       >
         <li @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">

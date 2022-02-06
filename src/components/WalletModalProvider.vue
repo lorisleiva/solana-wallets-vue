@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, watch } from "vue-demi";
+import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue-demi";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletButton from './WalletButton.vue';
@@ -15,17 +15,18 @@ export default defineComponent({
     container: { type: String, default: 'body' },
     logo: String,
   },
-  setup({ featured, container, logo }, { slots }) {
+  setup(props, { slots }) {
+    const { featured, container, logo } = toRefs(props);
     const modalPanel = ref<HTMLElement | null>(null);
     const modalOpened = ref(false);
     const openModal = () => modalOpened.value = true;
     const closeModal = () => modalOpened.value = false;
-    const hasLogo = computed(() => slots.logo || logo)
+    const hasLogo = computed(() => !!slots.logo || !!logo.value)
 
     const { wallets, select: selectWallet } = useWallet();
     const expandedWallets = ref(false);
-    const featuredWallets = computed(() => wallets.value.slice(0, featured));
-    const hiddenWallets = computed(() => wallets.value.slice(featured));
+    const featuredWallets = computed(() => wallets.value.slice(0, featured.value));
+    const hiddenWallets = computed(() => wallets.value.slice(featured.value));
     const walletsToDisplay = computed(() => expandedWallets.value ? wallets.value : featuredWallets.value)
 
     // Close the modal when clicking outside of it or when pressing Escape.

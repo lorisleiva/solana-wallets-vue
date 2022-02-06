@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent } from "vue-demi";
+import { computed, defineComponent, toRefs } from "vue-demi";
 import { useWallet } from "@/useWallet";
 import WalletIcon from "./WalletIcon.vue";
 
@@ -10,7 +10,8 @@ export default defineComponent({
   props: {
     disabled: Boolean,
   },
-  setup({ disabled }, { emit }) {
+  setup(props, { emit }) {
+    const { disabled } = toRefs(props);
     const { wallet, connect, connecting, connected } = useWallet();
 
     const content = computed(() => {
