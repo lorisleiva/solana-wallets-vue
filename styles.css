@@ -113,14 +113,19 @@
     background-color: #1a1f2e;
 }
 
+.swv-modal-collapse-button {
+    justify-content: space-between;
+    border-radius: 0px 0px var(--swv-modal-radius) var(--swv-modal-radius);
+}
+
 .swv-modal-collapse-button svg {
+    transition: transform ease-in 150ms;
     align-self: center;
     fill: #999;
 }
 
 .swv-modal-collapse-button.swv-modal-collapse-button-active svg {
     transform: rotate(180deg);
-    transition: transform ease-in 150ms;
 }
 
 .swv-modal {
@@ -250,25 +255,4 @@
     margin-left: auto;
     font-size: 14px;
     opacity: .6;
-}
-
-.swv-modal-list-more {
-    cursor: pointer;
-    border: none;
-    padding: 12px 24px 24px 12px;
-    align-self: flex-end;
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    color: #fff;
-}
-
-.swv-modal-list-more svg {
-    transition: all 0.1s ease;
-    fill: rgba(255, 255, 255, 1);
-    margin-left: 0.5rem;
-}
-
-.swv-modal-list-more-icon-rotate {
-    transform: rotate(180deg);
 }
