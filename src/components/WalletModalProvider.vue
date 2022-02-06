@@ -120,10 +120,8 @@ export default defineComponent({
                 @click="selectWallet(wallet.name); closeModal();"
               >
                 <button class="swv-button">
-                  {{ wallet.name }}
-                  <i class="swv-button-end-icon">
-                    <wallet-icon :wallet="wallet"></wallet-icon>
-                  </i>
+                  <p v-text="wallet.name"></p>
+                  <wallet-icon :wallet="wallet"></wallet-icon>
                 </button>
               </li>
             </ul>
@@ -136,7 +134,7 @@ export default defineComponent({
               @click="expandedWallets = !expandedWallets"
             >
               {{ expandedWallets ? "Less" : "More" }} options
-              <i class="swv-button-end-icon">
+              <i class="swv-button-icon">
                 <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
                   <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />
                 </svg>

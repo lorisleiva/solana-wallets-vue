@@ -71,10 +71,8 @@ export default defineComponent({
               :title="publicKeyBase58"
               @click="openDropdown"
             >
-              <i class="swv-button-start-icon">
-                <wallet-icon :wallet="wallet"></wallet-icon>
-              </i>
-              {{ publicKeyTrimmed }}
+              <wallet-icon :wallet="wallet"></wallet-icon>
+              <p v-text="publicKeyTrimmed"></p>
             </button>
           </slot>
           <slot name="dropdown" v-bind="{ ...modalScope, ...scope }">

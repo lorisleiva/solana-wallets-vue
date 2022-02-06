@@ -16,6 +16,10 @@
     border-radius: 4px;
 }
 
+.swv-button > * + * {
+    margin-left: 12px;
+}
+
 .swv-button-trigger {
     background-color: #512da8;
 }
@@ -34,23 +38,13 @@
     cursor: not-allowed;
 }
 
-.swv-button-end-icon,
-.swv-button-start-icon,
-.swv-button-end-icon img,
-.swv-button-start-icon img {
+.swv-button-icon,
+.swv-button-icon img {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 24px;
     height: 24px;
-}
-
-.swv-button-end-icon {
-    margin-left: 12px;
-}
-
-.swv-button-start-icon {
-    margin-right: 12px;
 }
 
 .swv-collapse {
@@ -237,10 +231,8 @@
     font-size: 18px;
 }
 
-.swv-modal-list .swv-button-end-icon,
-.swv-modal-list .swv-button-start-icon,
-.swv-modal-list .swv-button-end-icon img,
-.swv-modal-list .swv-button-start-icon img {
+.swv-modal-list .swv-button-icon,
+.swv-modal-list .swv-button-icon img {
     width: 28px;
     height: 28px;
 }

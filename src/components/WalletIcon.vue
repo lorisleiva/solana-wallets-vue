@@ -13,5 +13,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <img v-if="wallet" :src="wallet.icon" :alt="`${wallet.name} icon`" />
+  <i class="swv-button-icon">
+    <img v-if="wallet" :src="wallet.icon" :alt="`${wallet.name} icon`" />
+  </i>
 </template>

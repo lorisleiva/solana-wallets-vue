@@ -51,10 +51,8 @@ export default defineComponent({
       :disabled="disabled || !wallet || connecting || connected"
       @click="onClick"
     >
-      <i class="swv-button-start-icon" v-if="wallet">
-        <wallet-icon :wallet="wallet"></wallet-icon>
-      </i>
-      {{ content }}
+      <wallet-icon v-if="wallet" :wallet="wallet"></wallet-icon>
+      <p v-text="content"></p>
     </button>
   </slot>
 </template>
