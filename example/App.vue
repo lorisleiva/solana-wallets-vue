@@ -14,6 +14,7 @@ export default {
     WalletMultiButton,
   },
   setup () {
+    const dark = ref(false)
     const wallet = useAnchorWallet()
     const connection = new Connection(clusterApiUrl('devnet'), preflightCommitment)
     const provider = computed(() => new Provider(connection, wallet.value, { preflightCommitment }))
@@ -50,6 +51,7 @@ export default {
     }
 
     return { 
+      dark,
       counterPublicKey,
       counter,
       createCounter,
@@ -61,11 +63,12 @@ export default {
 
 <template>
   <div>
-    <wallet-multi-button></wallet-multi-button>
+    <wallet-multi-button :dark="dark"></wallet-multi-button>
     <div>{{ $wallet.publicKey.value?.toBase58() ?? 'Not connected' }}</div>
     <div>{{ counterPublicKey }}</div>
     <div>{{ counter }}</div>
     <button @click="createCounter">New Counter</button>
     <button @click="incrementCounter">Increment Counter</button>
+    <button @click="dark = !dark">Dark Mode</button>
   </div>
 </template>
