@@ -22,6 +22,7 @@
 
     /* Dropdown. */
     --swv-dropdown-background-color: white;
+    --swv-dropdown-item-hover-background-color: #f3f4f6;
     --swv-dropdown-text-color: #1f2937;
 
     /* Shadows. */
@@ -54,6 +55,11 @@
     --swv-modal-button-text-color: var(--swv-button-text-color);
     --swv-modal-button-hover-background-color: var(--swv-button-hover-background-color);
     --swv-modal-button-outline-color: var(--swv-button-outline-color);
+
+    /* Dropdown. */
+    --swv-dropdown-background-color: white;
+    --swv-dropdown-item-hover-background-color: #f3f4f6;
+    --swv-dropdown-text-color: #1f2937;
 
     /* Shadows. */
     --swm-modal-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
@@ -122,7 +128,8 @@
     right: 0;
     margin: 0;
     list-style: none;
-    background: #2c2d30;
+    background: var(--swv-dropdown-background-color);
+    color: var(--swv-dropdown-text-color);
     border-radius: var(--swv-dropdown-radius);
     box-shadow: var(--swm-dropdown-shadow);
     opacity: 0;
@@ -151,13 +158,12 @@
     width: 100%;
     border-radius: var(--swv-dropdown-item-radius);
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     height: 37px;
-    color: #fff;
 }
 
 .swv-dropdown-list-item:not([disabled]):hover {
-    background-color: #1f2937;
+    background-color: var(--swv-dropdown-item-hover-background-color);
 }
 
 .swv-modal-collapse-button {
@@ -185,6 +191,16 @@
     transition: opacity linear 150ms;
     z-index: 1040;
     overflow-y: auto;
+}
+
+.swv-modal-logo-wrapper {
+    padding: 60px;
+    padding-bottom: 0px;
+}
+
+.swv-modal-logo {
+    max-width: 100%;
+    max-height: 100px;
 }
 
 .swv-modal-button-close {
@@ -269,7 +285,7 @@
     font-size: 24px;
     line-height: 36px;
     margin: 0;
-    padding: 64px 48px 48px 48px;
+    padding: 30px 60px;
     text-align: center;
 }
 

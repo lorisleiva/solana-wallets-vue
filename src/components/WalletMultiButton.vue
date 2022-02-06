@@ -13,10 +13,13 @@ export default defineComponent({
     WalletModalProvider,
   },
   props: {
+    featured: { type: Number, default: 3 },
+    container: { type: String, default: 'body' },
+    logo: String,
     dark: Boolean,
   },
   setup(props) {
-    const { dark } = toRefs(props);
+    const { featured, container, logo, dark } = toRefs(props);
     const { publicKey, wallet, disconnect } = useWallet();
 
     const dropdownPanel = ref<HTMLElement>();
@@ -36,6 +39,9 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
+      featured,
+      container,
+      logo,
       dark,
       wallet,
       publicKey,
@@ -60,7 +66,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <wallet-modal-provider :dark="dark">
+  <wallet-modal-provider :featured="featured" :container="container" :logo="logo" :dark="dark">
     <template #default="modalScope">
       <slot v-bind="{ ...modalScope, ...scope }">
         <button v-if="!wallet" class="swv-button swv-button-trigger" @click="modalScope.openModal">
