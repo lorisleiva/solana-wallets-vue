@@ -48,47 +48,52 @@ export default defineComponent({
       disconnect,
     }
 
-    return scope;
+    return {
+      scope,
+      ...scope,
+    };
   },
 });
 </script>
 
 <template>
-  <wallet-modal-provider #default="{ openModal }">
-    <button v-if="!wallet" class="wallet-adapter-button wallet-adapter-button-trigger" @click="openModal">
-      Select Wallet
-    </button>
-    <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
-    <div v-else class="wallet-adapter-dropdown">
-      <button
-        class="wallet-adapter-button wallet-adapter-button-trigger"
-        :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
-        :aria-expanded="dropdownOpened"
-        :title="publicKeyBase58"
-        @click="openDropdown"
-      >
-        <i class="wallet-adapter-button-start-icon">
-          <wallet-icon :wallet="wallet"></wallet-icon>
-        </i>
-        {{ publicKeyTrimmed }}
+  <wallet-modal-provider #default="modalScope">
+    <slot v-bind="{ ...modalScope, ...scope }">
+      <button v-if="!wallet" class="wallet-adapter-button wallet-adapter-button-trigger" @click="modalScope.openModal">
+        Select Wallet
       </button>
-      <ul
-        aria-label="dropdown-list"
-        class="wallet-adapter-dropdown-list"
-        :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
-        ref="dropdownPanel"
-        role="menu"
-      >
-        <li v-if="canCopy" @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
-          {{ addressCopied ? "Copied" : "Copy address" }}
-        </li>
-        <li @click="openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
-          Change wallet
-        </li>
-        <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
-          Disconnect
-        </li>
-      </ul>
-    </div>
+      <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
+      <div v-else class="wallet-adapter-dropdown">
+        <button
+          class="wallet-adapter-button wallet-adapter-button-trigger"
+          :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
+          :aria-expanded="dropdownOpened"
+          :title="publicKeyBase58"
+          @click="openDropdown"
+        >
+          <i class="wallet-adapter-button-start-icon">
+            <wallet-icon :wallet="wallet"></wallet-icon>
+          </i>
+          {{ publicKeyTrimmed }}
+        </button>
+        <ul
+          aria-label="dropdown-list"
+          class="wallet-adapter-dropdown-list"
+          :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
+          ref="dropdownPanel"
+          role="menu"
+        >
+          <li v-if="canCopy" @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
+            {{ addressCopied ? "Copied" : "Copy address" }}
+          </li>
+          <li @click="openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
+            Change wallet
+          </li>
+          <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
+            Disconnect
+          </li>
+        </ul>
+      </div>
+    </slot>
   </wallet-modal-provider>
 </template>
