@@ -17,20 +17,20 @@ export default defineComponent({
   },
   setup({ featured, container, logo }) {
     const panel = ref<HTMLElement | null>(null);
-    const opened = ref(false);
-    const open = () => opened.value = true;
-    const close = () => opened.value = false;
-    const scope = { opened, open, close }
+    const modalOpened = ref(false);
+    const openModal = () => modalOpened.value = true;
+    const closeModal = () => modalOpened.value = false;
+    const scope = { modalOpened, openModal, closeModal }
 
-    const { wallets, select } = useWallet();
-    const expanded = ref(false);
+    const { wallets, select: selectWallet } = useWallet();
+    const expandedWallets = ref(false);
     const featuredWallets = computed(() => wallets.value.slice(0, featured));
     const hiddenWallets = computed(() => wallets.value.slice(featured));
-    const walletsToDisplay = computed(() => expanded.value ? wallets.value : featuredWallets.value)
+    const walletsToDisplay = computed(() => expandedWallets.value ? wallets.value : featuredWallets.value)
 
     // Close the modal when clicking outside of it or when pressing Escape.
-    onClickOutside(panel, close);
-    onKeyStroke("Escape", close);
+    onClickOutside(panel, closeModal);
+    onKeyStroke("Escape", closeModal);
 
     // Ensures pressing Tab backwards and forwards stays within the modal.
     onKeyStroke("Tab", (event: KeyboardEvent) => {
@@ -48,26 +48,26 @@ export default defineComponent({
     });
 
     // Bring focus inside the modal when it opens.
-    watch(opened, isOpened => {
+    watch(modalOpened, isOpened => {
       if (! isOpened) return;
       nextTick(() => panel.value?.querySelectorAll("button")?.[0]?.focus())
     });
 
     // Lock the body scroll when the modal opens.
     const scrollLock = useScrollLock(document.body);
-    watch(opened, isOpened => scrollLock.value = isOpened);
+    watch(modalOpened, isOpened => scrollLock.value = isOpened);
 
     return {
       container,
       panel,
-      opened,
-      expanded,
-      open,
-      close,
+      modalOpened,
+      openModal,
+      closeModal,
+      expandedWallets,
       walletsToDisplay,
       featuredWallets,
       hiddenWallets,
-      select,
+      selectWallet,
       logo,
       scope,
     }
@@ -77,7 +77,7 @@ export default defineComponent({
 
 <template>
   <slot v-bind="scope"></slot>
-  <teleport :to="container" v-if="opened">
+  <teleport :to="container" v-if="modalOpened">
     <div
       aria-labelledby="wallet-adapter-modal-title"
       aria-modal="true"
@@ -98,7 +98,7 @@ export default defineComponent({
           <h1 class="wallet-adapter-modal-title" id="wallet-adapter-modal-title">
             Connect Wallet
           </h1>
-          <button @click.prevent="close" class="wallet-adapter-modal-button-close">
+          <button @click.prevent="closeModal" class="wallet-adapter-modal-button-close">
             <svg width="14" height="14">
               <path d="M14 12.461 8.3 6.772l5.234-5.233L12.006 0 6.772 5.234 1.54 0 0 1.539l5.234 5.233L0 12.006l1.539 1.528L6.772 8.3l5.69 5.7L14 12.461z" />
             </svg>
@@ -108,18 +108,18 @@ export default defineComponent({
               v-for="wallet in walletsToDisplay"
               :key="wallet.name"
               :wallet="wallet"
-              @click="select(wallet.name); close();"
+              @click="selectWallet(wallet.name); closeModal();"
             ></wallet-list-item>
           </ul>
           <wallet-button
             v-if="hiddenWallets.length > 0"
             aria-controls="wallet-adapter-modal-collapse"
-            :aria-expanded="expanded"
+            :aria-expanded="expandedWallets"
             class="wallet-adapter-modal-collapse-button"
-            :class="{ 'wallet-adapter-modal-collapse-button-active': expanded }"
-            @click="expanded = !expanded"
+            :class="{ 'wallet-adapter-modal-collapse-button-active': expandedWallets }"
+            @click="expanded = !expandedWallets"
           >
-            {{ expanded ? "Less" : "More" }} options
+            {{ expandedWallets ? "Less" : "More" }} options
             <template #end-icon>
               <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
                 <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />

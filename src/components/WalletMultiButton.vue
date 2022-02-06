@@ -54,8 +54,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <wallet-modal-provider #default="{ open }">
-    <wallet-button v-if="!wallet" class="wallet-adapter-button-trigger" @click="open">
+  <wallet-modal-provider #default="{ openModal }">
+    <wallet-button v-if="!wallet" class="wallet-adapter-button-trigger" @click="openModal">
       <slot>Select Wallet</slot>
     </wallet-button>
     <wallet-connect-button v-else-if="!base58">
@@ -84,7 +84,7 @@ export default defineComponent({
         <li @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
           {{ copied ? "Copied" : "Copy address" }}
         </li>
-        <li @click="open(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
+        <li @click="openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
           Change wallet
         </li>
         <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
