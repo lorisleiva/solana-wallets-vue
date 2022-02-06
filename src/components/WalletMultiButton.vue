@@ -23,32 +23,36 @@ export default defineComponent({
     const closeDropdown = () => (dropdownOpened.value = false);
     onClickOutside(dropdownPanel, closeDropdown);
 
-    const base58 = computed(() => publicKey.value?.toBase58());
-    const content = computed(() => {
-      if (!wallet.value || !base58.value) return null;
-      return base58.value.slice(0, 4) + ".." + base58.value.slice(-4);
+    const publicKeyBase58 = computed(() => publicKey.value?.toBase58());
+    const publicKeyTrimmed = computed(() => {
+      if (!wallet.value || !publicKeyBase58.value) return null;
+      return publicKeyBase58.value.slice(0, 4) + ".." + publicKeyBase58.value.slice(-4);
     });
 
-    const copied = ref(false);
+    const addressCopied = ref(false);
     const copyAddress = async () => {
-      if (!base58.value) return;
-      await navigator.clipboard.writeText(base58.value);
-      copied.value = true;
-      setTimeout(() => (copied.value = false), 400);
+      if (!publicKeyBase58.value) return;
+      await navigator.clipboard.writeText(publicKeyBase58.value);
+      addressCopied.value = true;
+      setTimeout(() => (addressCopied.value = false), 400);
     };
 
-    return {
+    // Define the bindings given to scoped slots.
+    const scope = {
       wallet,
-      content,
-      base58,
-      copied,
+      publicKey,
+      publicKeyTrimmed,
+      publicKeyBase58,
+      addressCopied,
       dropdownPanel,
       dropdownOpened,
       openDropdown,
       closeDropdown,
       copyAddress,
       disconnect,
-    };
+    }
+
+    return scope;
   },
 });
 </script>
@@ -58,7 +62,7 @@ export default defineComponent({
     <wallet-button v-if="!wallet" class="wallet-adapter-button-trigger" @click="openModal">
       <slot>Select Wallet</slot>
     </wallet-button>
-    <wallet-connect-button v-else-if="!base58">
+    <wallet-connect-button v-else-if="!publicKeyBase58">
       <slot></slot>
     </wallet-connect-button>
     <div v-else class="wallet-adapter-dropdown">
@@ -66,13 +70,13 @@ export default defineComponent({
         class="wallet-adapter-button-trigger"
         :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
         :aria-expanded="dropdownOpened"
-        :title="base58"
+        :title="publicKeyBase58"
         @click="openDropdown"
       >
         <template #start-icon>
           <wallet-icon :wallet="wallet"></wallet-icon>
         </template>
-        <slot>{{ content }}</slot>
+        {{ publicKeyTrimmed }}
       </wallet-button>
       <ul
         aria-label="dropdown-list"
@@ -82,7 +86,7 @@ export default defineComponent({
         role="menu"
       >
         <li @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
-          {{ copied ? "Copied" : "Copy address" }}
+          {{ addressCopied ? "Copied" : "Copy address" }}
         </li>
         <li @click="openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
           Change wallet
