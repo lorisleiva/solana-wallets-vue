@@ -123,8 +123,8 @@ The table below shows all options you can provide when initialising the wallet s
 
 | Option | Type | Description |
 | - | - | - |
-| `wallets` | `Wallet[] | Ref<Wallet[]>` | The wallets available the use. Defaults to `[]`. |
-| `autoConnect` | `Wallet[] | Ref<Wallet[]>` | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`. |
+| `wallets` | `Wallet[] \| Ref<Wallet[]>` | The wallets available the use. Defaults to `[]`. |
+| `autoConnect` | `Wallet[] \| Ref<Wallet[]>` | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`. |
 | `onError(error: WalletError)` | `void` | Will be called whenever an error occurs on the wallet selection/connection workflow. Defaults to `error => console.error(error)`. |
 | `localStorageKey` | `string` | The key to use when storing the selected wallet type (e.g. `Phantom`) in the local storage. Defaults to `walletName`. |
 
