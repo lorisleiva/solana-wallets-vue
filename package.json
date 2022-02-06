@@ -1,13 +1,14 @@
 {
   "name": "solana-wallets-vue",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Solana wallet integration for Vue 2 and 3",
   "author": "Loris Leiva",
   "license": "MIT",
   "files": [
     "dist",
     "src",
-    "styles.css"
+    "styles.css",
+    "postcss.config.js"
   ],
   "main": "./dist/solana-wallets-vue.umd.js",
   "module": "./dist/solana-wallets-vue.es.js",
@@ -17,7 +18,8 @@
       "import": "./dist/solana-wallets-vue.es.js",
       "require": "./dist/solana-wallets-vue.umd.js"
     },
-    "./styles.css": "./styles.css"
+    "./styles.css": "./styles.css",
+    "./postcss.config.js": "./postcss.config.js"
   },
   "scripts": {
     "dev": "vite",
