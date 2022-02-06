@@ -2,13 +2,11 @@
 import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue-demi";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
-import WalletButton from './WalletButton.vue';
-import WalletListItem from './WalletListItem.vue';
+import WalletIcon from './WalletIcon.vue';
 
 export default defineComponent({
   components: {
-    WalletButton,
-    WalletListItem,
+    WalletIcon,
   },
   props: {
     featured: { type: Number, default: 3 },
@@ -115,28 +113,35 @@ export default defineComponent({
               </svg>
             </button>
             <ul class="wallet-adapter-modal-list">
-              <wallet-list-item
+              <li
                 v-for="wallet in walletsToDisplay"
                 :key="wallet.name"
                 :wallet="wallet"
                 @click="selectWallet(wallet.name); closeModal();"
-              ></wallet-list-item>
+              >
+                <button class="wallet-adapter-button">
+                  {{ wallet.name }}
+                  <i class="wallet-adapter-button-end-icon">
+                    <wallet-icon :wallet="wallet"></wallet-icon>
+                  </i>
+                </button>
+              </li>
             </ul>
-            <wallet-button
+            <button
               v-if="hiddenWallets.length > 0"
               aria-controls="wallet-adapter-modal-collapse"
               :aria-expanded="expandedWallets"
-              class="wallet-adapter-modal-collapse-button"
+              class="wallet-adapter-button wallet-adapter-modal-collapse-button"
               :class="{ 'wallet-adapter-modal-collapse-button-active': expandedWallets }"
               @click="expandedWallets = !expandedWallets"
             >
               {{ expandedWallets ? "Less" : "More" }} options
-              <template #end-icon>
+              <i class="wallet-adapter-button-end-icon">
                 <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
                   <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />
                 </svg>
-              </template>
-            </wallet-button>
+              </i>
+            </button>
           </div>
         </slot>
       </div>

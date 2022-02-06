@@ -2,7 +2,6 @@
 import { computed, defineComponent, ref } from "vue-demi";
 import { onClickOutside, useClipboard } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
-import WalletButton from "./WalletButton.vue";
 import WalletConnectButton from "./WalletConnectButton.vue";
 import WalletIcon from "./WalletIcon.vue";
 import WalletModalProvider from "./WalletModalProvider.vue";
@@ -10,7 +9,6 @@ import WalletModalProvider from "./WalletModalProvider.vue";
 export default defineComponent({
   components: {
     WalletConnectButton,
-    WalletButton,
     WalletIcon,
     WalletModalProvider,
   },
