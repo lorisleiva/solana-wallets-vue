@@ -1,7 +1,7 @@
 # Solana Wallets Vue
 Integrates Solana wallets in your Vue 2 and Vue 3 applications.
 
-[View demo](https://solana-wallets-vue-demo.netlify.app/)
+⚡️ [View demo](https://solana-wallets-vue-demo.netlify.app/)
 
 <img width="1230" alt="solana-wallets-vue" src="https://user-images.githubusercontent.com/3642397/152684955-079b4505-a7bb-4be7-976b-a0a5a59acf92.png">
 
@@ -117,7 +117,18 @@ const { program } = useWorkspace()
 await program.value.rpc.myInstruction(/* ... */)
 ```
 
-## References
+## Configurations
+
+The table below shows all options you can provide when initialising the wallet store. Note that some options accepts `Ref` types so you can update them at runtime and keep their reactivity.
+
+| Option | Type | Description |
+| - | - | - |
+| `wallets` | `Wallet[] | Ref<Wallet[]>` | The wallets available the use. Defaults to `[]`. |
+| `autoConnect` | `Wallet[] | Ref<Wallet[]>` | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`. |
+| `onError(error: WalletError)` | `void` | Will be called whenever an error occurs on the wallet selection/connection workflow. Defaults to `error => console.error(error)`. |
+| `localStorageKey` | `string` | The key to use when storing the selected wallet type (e.g. `Phantom`) in the local storage. Defaults to `walletName`. |
+
+## `useWallet()` references
 
 The table below shows all the properties and methods you can get from `useWallet()`.
 
