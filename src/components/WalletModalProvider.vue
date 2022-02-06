@@ -12,9 +12,10 @@ export default defineComponent({
     featured: { type: Number, default: 3 },
     container: { type: String, default: 'body' },
     logo: String,
+    dark: Boolean,
   },
   setup(props, { slots }) {
-    const { featured, container, logo } = toRefs(props);
+    const { featured, container, logo, dark } = toRefs(props);
     const modalPanel = ref<HTMLElement | null>(null);
     const modalOpened = ref(false);
     const openModal = () => modalOpened.value = true;
@@ -58,6 +59,7 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
+      dark,
       logo,
       hasLogo,
       featured,
@@ -82,12 +84,15 @@ export default defineComponent({
 </script>
 
 <template>
-  <slot v-bind="scope"></slot>
+  <div :class="dark ? 'swv-dark' : ''">
+    <slot v-bind="scope"></slot>
+  </div>
   <teleport :to="container" v-if="modalOpened">
     <div
       aria-labelledby="swv-modal-title"
       aria-modal="true"
       class="swv-modal"
+      :class="dark ? 'swv-dark' : ''"
       role="dialog"
     >
       <slot name="overlay" v-bind="scope">

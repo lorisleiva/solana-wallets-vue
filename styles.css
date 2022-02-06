@@ -2,22 +2,34 @@
 
 :root {
     /* Buttons. */
-    --swv-button-background-color: #512da8;
+    --swv-button-background-color: #4f46e5;
     --swv-button-text-color: white;
-    --swv-button-outline-color: white;
-    --swv-button-hover-background-color: #1a1f2e;
-    --swv-button-disabled-background-color: #404144;
-    --swv-button-disabled-text-color: #999;
+    --swv-button-outline-color: #3730a3;
+    --swv-button-hover-background-color: #4338ca;
+    --swv-button-disabled-background-color: #475569;
+    --swv-button-disabled-text-color: #94a3b8;
 
     /* Modal. */
-    --swv-overlay-background-color: rgba(255, 255, 255, 0.8);
+    --swv-overlay-background-color: rgba(200, 200, 200, 0.8);
     --swv-modal-background-color: white;
-    --swv-modal-close-button-background-color: #1a1f2e;
-    --swv-modal-close-button-text-color: #777;
-    --swv-modal-close-button-hover-text-color: white;
+    --swv-modal-text-color: #1f2937;
+    --swv-modal-close-button-background-color: #f3f4f6;
+    --swv-modal-close-button-text-color: #9ca3af;
+    --swv-modal-close-button-hover-text-color: #374151;
+    --swv-modal-button-text-color: #1f2937;
+    --swv-modal-button-hover-background-color: #f3f4f6;
+    --swv-modal-button-outline-color: var(--swv-button-outline-color);
+
+    /* Dropdown. */
+    --swv-dropdown-background-color: white;
+    --swv-dropdown-text-color: #1f2937;
+
+    /* Shadows. */
+    --swm-modal-shadow: 0 25px 25px rgb(0 0 0 / 0.15);
+    --swm-dropdown-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
 
     /* Radius. */
-    --swv-button-radius: 4px;
+    --swv-button-radius: 6px;
     --swv-modal-radius: 10px;
     --swv-dropdown-radius: 10px;
     --swv-dropdown-item-radius: 6px;
@@ -25,19 +37,26 @@
 
 .swv-dark {
     /* Buttons. */
-    --swv-button-background-color: #512da8;
+    --swv-button-background-color: #6366f1;
     --swv-button-text-color: white;
     --swv-button-outline-color: white;
-    --swv-button-hover-background-color: #1a1f2e;
+    --swv-button-hover-background-color: #1f2937;
     --swv-button-disabled-background-color: #404144;
     --swv-button-disabled-text-color: #999;
 
     /* Modal. */
-    --swv-overlay-background-color: rgba(0, 0, 0, 0.5);
+    --swv-overlay-background-color: rgba(0, 0, 0, 0.7);
     --swv-modal-background-color: #10141f;
-    --swv-modal-close-button-background-color: #1a1f2e;
+    --swv-modal-text-color: white;
+    --swv-modal-close-button-background-color: #1f2937;
     --swv-modal-close-button-text-color: #777;
     --swv-modal-close-button-hover-text-color: white;
+    --swv-modal-button-text-color: var(--swv-button-text-color);
+    --swv-modal-button-hover-background-color: var(--swv-button-hover-background-color);
+    --swv-modal-button-outline-color: var(--swv-button-outline-color);
+
+    /* Shadows. */
+    --swm-modal-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
 }
 
 .swv-button {
@@ -105,7 +124,7 @@
     list-style: none;
     background: #2c2d30;
     border-radius: var(--swv-dropdown-radius);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--swm-dropdown-shadow);
     opacity: 0;
     visibility: hidden;
     transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
@@ -138,7 +157,7 @@
 }
 
 .swv-dropdown-list-item:not([disabled]):hover {
-    background-color: #1a1f2e;
+    background-color: #1f2937;
 }
 
 .swv-modal-collapse-button {
@@ -230,13 +249,19 @@
     max-width: 400px;
     border-radius: var(--swv-modal-radius);
     background: var(--swv-modal-background-color);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
+    color: var(--swv-modal-text-color);
+    box-shadow: var(--swm-modal-shadow);
     font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     flex: 1;
 }
 
 .swv-modal-wrapper .swv-button {
     width: 100%;
+    color: var(--swv-modal-button-text-color);
+}
+
+.swv-modal-wrapper .swv-button:not([disabled]):hover {
+    background: var(--swv-modal-button-hover-background-color);
 }
 
 .swv-modal-title {
@@ -246,7 +271,6 @@
     margin: 0;
     padding: 64px 48px 48px 48px;
     text-align: center;
-    color: #fff;
 }
 
 @media (max-width: 374px) {
@@ -273,10 +297,4 @@
 .swv-modal-list .swv-button-icon img {
     width: 28px;
     height: 28px;
-}
-
-.swv-modal-list .swv-button span {
-    margin-left: auto;
-    font-size: 14px;
-    opacity: .6;
 }
