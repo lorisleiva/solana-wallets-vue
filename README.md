@@ -1,7 +1,7 @@
 # Solana Wallets Vue
 Integrates Solana wallets in your Vue 2 and Vue 3 applications.
 
-[View demo (TODO)](TODO)
+[View demo](https://solana-wallets-vue-demo.netlify.app/)
 
 <img width="1230" alt="solana-wallets-vue" src="https://user-images.githubusercontent.com/3642397/152684955-079b4505-a7bb-4be7-976b-a0a5a59acf92.png">
 
