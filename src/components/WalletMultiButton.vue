@@ -57,43 +57,59 @@ export default defineComponent({
 </script>
 
 <template>
-  <wallet-modal-provider #default="modalScope">
-    <slot v-bind="{ ...modalScope, ...scope }">
-      <button v-if="!wallet" class="wallet-adapter-button wallet-adapter-button-trigger" @click="modalScope.openModal">
-        Select Wallet
-      </button>
-      <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
-      <div v-else class="wallet-adapter-dropdown">
-        <button
-          class="wallet-adapter-button wallet-adapter-button-trigger"
-          :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
-          :aria-expanded="dropdownOpened"
-          :title="publicKeyBase58"
-          @click="openDropdown"
-        >
-          <i class="wallet-adapter-button-start-icon">
-            <wallet-icon :wallet="wallet"></wallet-icon>
-          </i>
-          {{ publicKeyTrimmed }}
+  <wallet-modal-provider>
+    <template #default="modalScope">
+      <slot v-bind="{ ...modalScope, ...scope }">
+        <button v-if="!wallet" class="wallet-adapter-button wallet-adapter-button-trigger" @click="modalScope.openModal">
+          Select Wallet
         </button>
-        <ul
-          aria-label="dropdown-list"
-          class="wallet-adapter-dropdown-list"
-          :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
-          ref="dropdownPanel"
-          role="menu"
-        >
-          <li v-if="canCopy" @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
-            {{ addressCopied ? "Copied" : "Copy address" }}
-          </li>
-          <li @click="openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
-            Change wallet
-          </li>
-          <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
-            Disconnect
-          </li>
-        </ul>
-      </div>
-    </slot>
+        <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
+        <div v-else class="wallet-adapter-dropdown">
+          <slot name="dropdown-button" v-bind="{ ...modalScope, ...scope }">
+            <button
+              class="wallet-adapter-button wallet-adapter-button-trigger"
+              :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
+              :aria-expanded="dropdownOpened"
+              :title="publicKeyBase58"
+              @click="openDropdown"
+            >
+              <i class="wallet-adapter-button-start-icon">
+                <wallet-icon :wallet="wallet"></wallet-icon>
+              </i>
+              {{ publicKeyTrimmed }}
+            </button>
+          </slot>
+          <slot name="dropdown" v-bind="{ ...modalScope, ...scope }">
+            <ul
+              aria-label="dropdown-list"
+              class="wallet-adapter-dropdown-list"
+              :class="{ 'wallet-adapter-dropdown-list-active': dropdownOpened }"
+              ref="dropdownPanel"
+              role="menu"
+            >
+              <slot name="dropdown-list" v-bind="{ ...modalScope, ...scope }">
+                <li v-if="canCopy" @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
+                  {{ addressCopied ? "Copied" : "Copy address" }}
+                </li>
+                <li @click="modalScope.openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
+                  Change wallet
+                </li>
+                <li @click="disconnect" class="wallet-adapter-dropdown-list-item" role="menuitem">
+                  Disconnect
+                </li>
+              </slot>
+            </ul>
+          </slot>
+        </div>
+      </slot>
+    </template>
+
+    <!-- Enable modal overrides. -->
+    <template #overlay="modalScope">
+      <slot name="modal-overlay" v-bind="{ ...modalScope, ...scope }"></slot>
+    </template>
+    <template #modal="modalScope">
+      <slot name="modal" v-bind="{ ...modalScope, ...scope }"></slot>
+    </template>
   </wallet-modal-provider>
 </template>

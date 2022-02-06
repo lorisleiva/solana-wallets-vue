@@ -60,6 +60,11 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
+      logo,
+      hasLogo,
+      featured,
+      container,
+      modalPanel,
       modalOpened,
       openModal,
       closeModal,
@@ -71,10 +76,6 @@ export default defineComponent({
     }
 
     return {
-      container,
-      modalPanel,
-      logo,
-      hasLogo,
       scope,
       ...scope,
     }
