@@ -87,7 +87,7 @@ export default defineComponent({
     <div
       aria-labelledby="swv-modal-title"
       aria-modal="true"
-      class="swv-modal swv-modal-fade-in"
+      class="swv-modal"
       role="dialog"
     >
       <slot name="overlay" v-bind="scope">

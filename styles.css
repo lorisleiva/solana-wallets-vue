@@ -1,17 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
 :root {
-    --swv-button-color: #512da8;
+    /* Buttons. */
+    --swv-button-background-color: #512da8;
+    --swv-button-text-color: white;
+    --swv-button-outline-color: white;
+    --swv-button-hover-background-color: #1a1f2e;
+    --swv-button-disabled-background-color: #404144;
+    --swv-button-disabled-text-color: #999;
+
+    /* Modal. */
+    --swv-overlay-background-color: rgba(255, 255, 255, 0.8);
+    --swv-modal-background-color: white;
+    --swv-modal-close-button-background-color: #1a1f2e;
+    --swv-modal-close-button-text-color: #777;
+    --swv-modal-close-button-hover-text-color: white;
+
+    /* Radius. */
     --swv-button-radius: 4px;
     --swv-modal-radius: 10px;
     --swv-dropdown-radius: 10px;
     --swv-dropdown-item-radius: 6px;
 }
 
+.swv-dark {
+    /* Buttons. */
+    --swv-button-background-color: #512da8;
+    --swv-button-text-color: white;
+    --swv-button-outline-color: white;
+    --swv-button-hover-background-color: #1a1f2e;
+    --swv-button-disabled-background-color: #404144;
+    --swv-button-disabled-text-color: #999;
+
+    /* Modal. */
+    --swv-overlay-background-color: rgba(0, 0, 0, 0.5);
+    --swv-modal-background-color: #10141f;
+    --swv-modal-close-button-background-color: #1a1f2e;
+    --swv-modal-close-button-text-color: #777;
+    --swv-modal-close-button-hover-text-color: white;
+}
+
 .swv-button {
     background-color: transparent;
     border: none;
-    color: #fff;
+    color: var(--swv-button-text-color);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -29,20 +61,20 @@
 }
 
 .swv-button-trigger {
-    background-color: #512da8;
+    background-color: var(--swv-button-background-color);
 }
 
 .swv-button:not([disabled]):focus-visible {
-    outline-color: white;
+    outline-color: var(--swv-button-outline-color);
 }
 
 .swv-button:not([disabled]):hover {
-    background-color: #1a1f2e;
+    background-color: var(--swv-button-hover-background-color);
 }
 
 .swv-button[disabled] {
-    background: #404144;
-    color: #999;
+    background: var(--swv-button-disabled-background-color);
+    color: var(--swv-button-disabled-text-color);
     cursor: not-allowed;
 }
 
@@ -130,15 +162,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0;
+    opacity: 1;
     transition: opacity linear 150ms;
-    background: rgba(0, 0, 0, 0.5);
     z-index: 1040;
     overflow-y: auto;
-}
-
-.swv-modal.swv-modal-fade-in {
-    opacity: 1;
 }
 
 .swv-modal-button-close {
@@ -150,26 +177,27 @@
     right: 18px;
     padding: 12px;
     cursor: pointer;
-    background: #1a1f2e;
+    background: var(--swv-modal-close-button-background-color);
+    color: var(--swv-modal-close-button-text-color);
     border: none;
     border-radius: 50%;
 }
 
+.swv-modal-button-close:hover {
+    color: var(--swv-modal-close-button-hover-text-color);
+}
+
 .swv-modal-button-close:focus-visible {
-    outline-color: white;
+    outline-color: var(--swv-button-outline-color);
 }
 
 .swv-modal-button-close svg {
-    fill: #777;
+    fill: currentColor;
     transition: fill 200ms ease 0s;
 }
 
-.swv-modal-button-close:hover svg {
-    fill: #fff;
-}
-
 .swv-modal-overlay {
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--swv-overlay-background-color);
     position: fixed;
     top: 0;
     left: 0;
@@ -201,7 +229,7 @@
     z-index: 1050;
     max-width: 400px;
     border-radius: var(--swv-modal-radius);
-    background: #10141f;
+    background: var(--swv-modal-background-color);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
     font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     flex: 1;
