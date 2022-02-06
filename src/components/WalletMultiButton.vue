@@ -1,6 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue-demi";
-import { onClickOutside } from "@vueuse/core";
+import { onClickOutside, useClipboard } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletButton from "./WalletButton.vue";
 import WalletConnectButton from "./WalletConnectButton.vue";
@@ -29,13 +29,8 @@ export default defineComponent({
       return publicKeyBase58.value.slice(0, 4) + ".." + publicKeyBase58.value.slice(-4);
     });
 
-    const addressCopied = ref(false);
-    const copyAddress = async () => {
-      if (!publicKeyBase58.value) return;
-      await navigator.clipboard.writeText(publicKeyBase58.value);
-      addressCopied.value = true;
-      setTimeout(() => (addressCopied.value = false), 400);
-    };
+    const { copy, copied: addressCopied, isSupported: canCopy } = useClipboard()
+    const copyAddress = () => publicKeyBase58.value && copy(publicKeyBase58.value);
 
     // Define the bindings given to scoped slots.
     const scope = {
@@ -43,6 +38,7 @@ export default defineComponent({
       publicKey,
       publicKeyTrimmed,
       publicKeyBase58,
+      canCopy,
       addressCopied,
       dropdownPanel,
       dropdownOpened,
@@ -85,7 +81,7 @@ export default defineComponent({
         ref="dropdownPanel"
         role="menu"
       >
-        <li @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
+        <li v-if="canCopy" @click="copyAddress" class="wallet-adapter-dropdown-list-item" role="menuitem">
           {{ addressCopied ? "Copied" : "Copy address" }}
         </li>
         <li @click="openModal(); closeDropdown();" class="wallet-adapter-dropdown-list-item" role="menuitem">
