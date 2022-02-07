@@ -15,10 +15,8 @@ export default {
     const walletStore = useWallet();
 
     if (isVue3) {
-      console.log('Using globalProperties')
       app.config.globalProperties.$wallet = walletStore;
     } else {
-      console.log('Using defineProperties')
       Object.defineProperties((app as any).prototype, {
         $wallet: {
           get: function() {
