@@ -7,6 +7,7 @@ import WalletIcon from "./WalletIcon";
 import WalletModalProvider from "./WalletModalProvider";
 
 export default defineComponent({
+  name: 'wallet-multi-button',
   props: {
     featured: { type: Number, default: 3 },
     logo: String,

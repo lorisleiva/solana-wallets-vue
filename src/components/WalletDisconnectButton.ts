@@ -4,6 +4,7 @@ import WalletIcon from "./WalletIcon";
 import { h, slotWithDefault } from "@/utils/render";
 
 export default defineComponent({
+  name: 'wallet-disconnect-button',
   props: {
     disabled: Boolean,
   },

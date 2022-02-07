@@ -3,6 +3,7 @@ import { Wallet } from "@/createWalletStore";
 import { h } from "@/utils/render";
 
 export default defineComponent({
+  name: 'wallet-icon',
   props: {
     wallet: Object as PropType<Wallet>,
   },
