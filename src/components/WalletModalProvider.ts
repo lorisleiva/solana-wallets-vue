@@ -10,12 +10,11 @@ export default defineComponent({
   },
   props: {
     featured: { type: Number, default: 3 },
-    container: { type: String, default: 'body' },
     logo: String,
     dark: Boolean,
   },
   setup(props, { slots }) {
-    const { featured, container, logo, dark } = toRefs(props);
+    const { featured, logo, dark } = toRefs(props);
     const modalPanel = ref<HTMLElement | null>(null);
     const modalOpened = ref(false);
     const openModal = () => modalOpened.value = true;
@@ -59,11 +58,10 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
-      dark,
-      logo,
+      // dark,
+      // logo,
       hasLogo,
-      featured,
-      container,
+      // featured,
       modalPanel,
       modalOpened,
       openModal,

@@ -29,7 +29,7 @@ export default defineComponent({
 
     const scope = {
       wallet,
-      disabled,
+      // disabled,
       connecting,
       connected,
       content,

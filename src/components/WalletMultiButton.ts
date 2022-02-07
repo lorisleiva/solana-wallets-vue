@@ -14,12 +14,11 @@ export default defineComponent({
   },
   props: {
     featured: { type: Number, default: 3 },
-    container: { type: String, default: 'body' },
     logo: String,
     dark: Boolean,
   },
   setup(props) {
-    const { featured, container, logo, dark } = toRefs(props);
+    const { featured, logo, dark } = toRefs(props);
     const { publicKey, wallet, disconnect } = useWallet();
 
     const dropdownPanel = ref<HTMLElement>();
@@ -39,10 +38,9 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
-      featured,
-      container,
-      logo,
-      dark,
+      // featured,
+      // logo,
+      // dark,
       wallet,
       publicKey,
       publicKeyTrimmed,
