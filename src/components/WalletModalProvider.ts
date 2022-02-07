@@ -5,9 +5,6 @@ import WalletIcon from './WalletIcon';
 import { h, slotWithDefault } from "@/utils/render";
 
 export default defineComponent({
-  components: {
-    WalletIcon,
-  },
   props: {
     featured: { type: Number, default: 3 },
     logo: String,

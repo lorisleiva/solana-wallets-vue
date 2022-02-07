@@ -7,11 +7,6 @@ import WalletIcon from "./WalletIcon";
 import WalletModalProvider from "./WalletModalProvider";
 
 export default defineComponent({
-  components: {
-    WalletConnectButton,
-    WalletIcon,
-    WalletModalProvider,
-  },
   props: {
     featured: { type: Number, default: 3 },
     logo: String,

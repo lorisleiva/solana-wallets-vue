@@ -4,9 +4,6 @@ import WalletIcon from "./WalletIcon";
 import { h, slotWithDefault } from "@/utils/render";
 
 export default defineComponent({
-  components: {
-    WalletIcon,
-  },
   props: {
     disabled: Boolean,
   },
