@@ -1,4 +1,3 @@
-<script lang="ts">
 import { computed, defineComponent, Teleport, nextTick, ref, toRefs, watch } from "vue-demi";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
@@ -97,6 +96,23 @@ export default defineComponent({
       ])
     }
 
+    const renderExpandButton = () => {
+      if (this.hiddenWallets.length <= 0) return;
+      return h('button', {
+        'aria-controls': 'swv-modal-collapse',
+        'aria-expanded': this.expandedWallets,
+        class: ['swv-button swv-modal-collapse-button', { 'swv-modal-collapse-button-active': this.expandedWallets }],
+        on: { click: () => { this.expandedWallets = !this.expandedWallets } }
+      }, [
+        h('p', {}, (this.expandedWallets ? "Less" : "More") + ' options'),
+        h('i', { class: 'swv-button-icon' }, [
+          h('svg', { width: '11', height: '6' }, [
+            h('path', { d: 'm5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z' })
+          ])
+        ])
+      ])
+    }
+
     const renderModal = () => {
       if (!this.modalOpened) return null;
       return h(Teleport, { to: this.container, }, [
@@ -124,7 +140,8 @@ export default defineComponent({
                       ])
                     ])
                   ))
-                ])
+                ]),
+                renderExpandButton(),
               ])
             ),
           ])
@@ -138,4 +155,3 @@ export default defineComponent({
     ])
   },
 });
-</script>

@@ -4,7 +4,7 @@ import { onClickOutside, useClipboard } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletConnectButton from "./WalletConnectButton.vue";
 import WalletIcon from "./WalletIcon";
-import WalletModalProvider from "./WalletModalProvider.vue";
+import WalletModalProvider from "./WalletModalProvider";
 
 export default defineComponent({
   components: {
