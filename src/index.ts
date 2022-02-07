@@ -12,6 +12,18 @@ export default {
   install: (app: App, options: WalletStoreProps = {}) => {
     console.log({ isVue2, isVue3 })
     initWallet(options);
-    app.config.globalProperties.$wallet = useWallet();
+    const walletStore = useWallet();
+
+    if (isVue3) {
+      app.config.globalProperties.$wallet = walletStore;
+    } else {
+      Object.defineProperties((app as any).prototype, {
+        $wallet: {
+          get: function() {
+            return walletStore;
+          },
+        },
+      });
+    }
   },
 }
