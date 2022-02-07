@@ -2,7 +2,7 @@ import { computed, defineComponent, Teleport, nextTick, ref, toRefs, watch } fro
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletIcon from './WalletIcon';
-import h from '@/utils/render';
+import { h, slotWithDefault } from "@/utils/render";
 
 export default defineComponent({
   components: {
@@ -119,14 +119,12 @@ export default defineComponent({
         h('div', {
           'aria-labelledby': 'swv-modal-title',
           'aria-modal': true,
-          class: 'swv-modal',
+          class: ['swv-modal', this.dark ? 'swv-dark' : ''],
           role: 'dialog',
         }, [
-          this.$slots.overlay?.(this.scope) ?? (
-            h('div', { class: 'swv-modal-overlay' })
-          ),
+          slotWithDefault(this.$slots.overlay, this.scope, () => h('div', { class: 'swv-modal-overlay' })),
           h('div', { class: 'swv-modal-container', ref: 'modalPanel' }, [
-            this.$slots.modal?.(this.scope) ?? (
+            slotWithDefault(this.$slots.modal, this.scope, () => (
               h('div', { class: ['swv-modal-wrapper', { 'swv-modal-wrapper-no-logo': ! this.hasLogo }] }, [
                 this.$slots.logo?.(this.scope) ?? renderLogo(),
                 h('h1', { class: 'swv-modal-title', id: 'swv-modal-title' }, 'Connect Wallet'),
@@ -143,7 +141,7 @@ export default defineComponent({
                 ]),
                 renderExpandButton(),
               ])
-            ),
+            )),
           ])
         ])
       ])

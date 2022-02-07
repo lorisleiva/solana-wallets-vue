@@ -1,5 +1,6 @@
-import { defineComponent, PropType, h } from "vue-demi";
+import { defineComponent, PropType } from "vue-demi";
 import { Wallet } from "@/createWalletStore";
+import { h } from "@/utils/render";
 
 export default defineComponent({
   props: {

@@ -1,12 +1,12 @@
 import { h as hDemi, isVue2 } from 'vue-demi'
 
 interface Options {
-  props?: Object,
-  domProps?: Object
-  on?: Object
+  props?: object,
+  domProps?: object
+  on?: object
 }
 
-const adaptOnsV3 = (ons: Object) => {
+const adaptOnsV3 = (ons: object) => {
   if (!ons) return null
   return Object.entries(ons).reduce((ret, [key, handler]) => {
     key = key.charAt(0).toUpperCase() + key.slice(1)
@@ -15,7 +15,7 @@ const adaptOnsV3 = (ons: Object) => {
   }, {})
 }
 
-const h: typeof hDemi = (type: String | Object, options: Options & any = {}, chidren?: any) => {
+export const h = (type: string | object, options: Options & any = {}, chidren?: any) => {
   if (isVue2)
     return hDemi(type, options, chidren)
 
@@ -26,4 +26,12 @@ const h: typeof hDemi = (type: String | Object, options: Options & any = {}, chi
   return hDemi(type, params, chidren)
 }
 
-export default h
+export const slotWithDefault = (slot: any, scope: object, defaultCb?: any) => {
+  const renderedSlot = slot?.(scope)
+
+  if (! renderedSlot || (renderedSlot?.length === 1 && !renderedSlot[0].el)) {
+    return defaultCb?.(scope)
+  }
+
+  return renderedSlot
+}
