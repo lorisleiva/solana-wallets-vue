@@ -19,11 +19,11 @@ export default defineConfig({
       name: 'solana-wallets-vue',
     },
     rollupOptions: {
-      external: ['vue', 'vue-demi', '@solana/web3.js', '@solana/wallet-adapter-base'],
+      external: ['vue-demi', '@solana/web3.js', '@solana/wallet-adapter-base'],
       output: {
         exports: 'named',
         globals: {
-          vue: 'Vue',
+          // vue: 'Vue',
           'vue-demi': 'VueDemi',
           '@solana/web3.js': 'SolanaWeb3',
           '@solana/wallet-adapter-base': 'SolanaWalletAdapterBase',
