@@ -14,6 +14,7 @@ export default defineComponent({
     dark: Boolean,
   },
   setup(props, { slots }) {
+    console.log({ props, slots })
     const { featured, logo, dark } = toRefs(props);
     const { publicKey, wallet, disconnect } = useWallet();
 

@@ -40,7 +40,7 @@ export default defineComponent({
         disabled: disabled.value || !wallet.value || connecting.value || connected.value,
         on: { click: onClick },
       }, [
-        wallet.value ? h(WalletIcon, { props: { wallet: wallet.value }}) : null,
+        wallet.value ? h(WalletIcon, { props: { wallet: wallet.value }}, []) : null,
         h('p', {}, content.value),
       ])
     ))
