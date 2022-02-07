@@ -30,6 +30,8 @@ export default defineConfig({
         },
       },
     },
+    sourcemap: true,
+    minify: false,
   },
   optimizeDeps: {
     exclude: ['vue-demi'],
