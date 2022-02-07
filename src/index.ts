@@ -1,4 +1,4 @@
-import { App } from 'vue-demi';
+import { App, isVue2, isVue3 } from 'vue-demi';
 import { WalletStoreProps } from './createWalletStore';
 import { initWallet, useWallet } from './useWallet';
 
@@ -10,6 +10,7 @@ export * from './useWallet';
 
 export default { 
   install: (app: App, options: WalletStoreProps = {}) => {
+    console.log({ isVue2, isVue3 })
     initWallet(options);
     app.config.globalProperties.$wallet = useWallet();
   },
