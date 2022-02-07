@@ -80,7 +80,7 @@ export default defineComponent({
       ...scope,
     }
   },
-  render () {
+  render() {
     const renderLogo = () => {
       if (!this.hasLogo) return;
       return h('div', { class: 'swv-modal-logo-wrapper' }, [

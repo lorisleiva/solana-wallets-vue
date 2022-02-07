@@ -6,7 +6,7 @@ export default defineComponent({
   props: {
     wallet: Object as PropType<Wallet>,
   },
-  render () {
+  render() {
     const image = this.wallet
       ? h('img', { src: this.wallet.icon, alt: `${this.wallet.name} icon` })
       : undefined
