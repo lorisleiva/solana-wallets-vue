@@ -17,7 +17,7 @@ export default defineComponent({
     logo: String,
     dark: Boolean,
   },
-  setup(props) {
+  setup(props, { slots }) {
     const { featured, logo, dark } = toRefs(props);
     const { publicKey, wallet, disconnect } = useWallet();
 
@@ -38,9 +38,9 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
-      // featured,
-      // logo,
-      // dark,
+      featured,
+      logo,
+      dark,
       wallet,
       publicKey,
       publicKeyTrimmed,
@@ -55,45 +55,36 @@ export default defineComponent({
       disconnect,
     }
 
-    return {
-      scope,
-      ...scope,
-    };
-  },
-  render() {
-    const slots = this.$slots
-    const scope = this.scope
-
     const renderButton = (scope: any) => {
-      if (!this.wallet) {
+      if (!wallet.value) {
         return h('button', { class: 'swv-button swv-button-trigger', on: { click: scope.openModal } }, 'Select Wallet')
-      } else if (!this.publicKeyBase58) {
+      } else if (!publicKeyBase58.value) {
         return h(WalletConnectButton)
       } else {
         return h('div', { class: 'swv-dropdown' }, [
           slotWithDefault(slots.dropdownButton, scope, () => [
             h('button', {
               class: 'swv-button swv-button-trigger',
-              style: { pointerEvents: this.dropdownOpened ? 'none' : 'auto' },
-              'aria-expanded': this.dropdownOpened,
-              title: this.publicKeyBase58,
-              on: { click: this.openDropdown },
+              style: { pointerEvents: dropdownOpened.value ? 'none' : 'auto' },
+              'aria-expanded': dropdownOpened.value,
+              title: publicKeyBase58.value,
+              on: { click: openDropdown },
             }, [
-              h(WalletIcon, { props: { wallet: this.wallet } }),
-              h('p', {}, this.publicKeyTrimmed)
+              h(WalletIcon, { props: { wallet: wallet.value } }),
+              h('p', {}, publicKeyTrimmed.value)
             ])
           ]),
           slotWithDefault(slots.dropdown, scope, () => [
             h('ul', {
               'aria-label': 'dropdown-list',
-              class: ['swv-dropdown-list', { 'swv-dropdown-list-active': this.dropdownOpened }],
+              class: ['swv-dropdown-list', { 'swv-dropdown-list-active': dropdownOpened.value }],
               ref: 'dropdownPanel',
               role: 'menu',
             }, [
               slotWithDefault(slots.dropdownList, scope, () => [
-                this.canCopy ? h('li', { on: { click: this.copyAddress }, class: 'swv-dropdown-list-item', role: 'menuitem' }, this.addressCopied ? 'Copied' : 'Copy address') : null,
-                h('li', { on: { click: () => { scope.openModal(); this.closeDropdown(); } }, class: 'swv-dropdown-list-item', role: 'menuitem' }, 'Change wallet'),
-                h('li', { on: { click: this.disconnect }, class: 'swv-dropdown-list-item', role: 'menuitem' }, 'Disconnect'),
+                canCopy ? h('li', { on: { click: copyAddress }, class: 'swv-dropdown-list-item', role: 'menuitem' }, addressCopied.value ? 'Copied' : 'Copy address') : null,
+                h('li', { on: { click: () => { scope.openModal(); closeDropdown(); } }, class: 'swv-dropdown-list-item', role: 'menuitem' }, 'Change wallet'),
+                h('li', { on: { click: disconnect }, class: 'swv-dropdown-list-item', role: 'menuitem' }, 'Disconnect'),
               ])
             ])
           ]),
@@ -101,7 +92,7 @@ export default defineComponent({
       }
     }
 
-    return h(WalletModalProvider, { props: this.$props }, {
+    return () => h(WalletModalProvider, { props }, {
       default (modalScope: any) {
         return slots.default?.({ ...modalScope, ...scope }) ?? renderButton({ ...modalScope, ...scope })
       },
@@ -112,5 +103,5 @@ export default defineComponent({
         return slots.modal?.({ ...modalScope, ...scope }) ?? null
       },
     })
-  }
+  },
 });

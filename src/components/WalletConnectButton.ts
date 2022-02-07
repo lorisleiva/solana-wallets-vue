@@ -10,7 +10,7 @@ export default defineComponent({
   props: {
     disabled: Boolean,
   },
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     const { disabled } = toRefs(props);
     const { wallet, connect, connecting, connected } = useWallet();
 
@@ -29,27 +29,21 @@ export default defineComponent({
 
     const scope = {
       wallet,
-      // disabled,
+      disabled,
       connecting,
       connected,
       content,
       onClick,
     };
 
-    return {
-      scope,
-      ...scope,
-    }
-  },
-  render() {
-    return slotWithDefault(this.$slots.default, this.scope, () => (
+    return () => slotWithDefault(slots.default, scope, () => (
       h('button', {
         class: 'swv-button swv-button-trigger',
-        disabled: this.disabled || !this.wallet || this.connecting || this.connected,
-        on: { click: this.onClick },
+        disabled: disabled.value || !wallet.value || connecting.value || connected.value,
+        on: { click: onClick },
       }, [
-        this.wallet ? h(WalletIcon, { props: { wallet: this.wallet }}) : null,
-        h('p', {}, this.content),
+        wallet.value ? h(WalletIcon, { props: { wallet: wallet.value }}) : null,
+        h('p', {}, content.value),
       ])
     ))
   },

@@ -58,10 +58,10 @@ export default defineComponent({
 
     // Define the bindings given to scoped slots.
     const scope = {
-      // dark,
-      // logo,
+      dark,
+      logo,
       hasLogo,
-      // featured,
+      featured,
       modalPanel,
       modalOpened,
       openModal,
@@ -73,21 +73,15 @@ export default defineComponent({
       selectWallet,
     }
 
-    return {
-      scope,
-      ...scope,
-    }
-  },
-  render() {
     const renderLogo = () => {
-      if (!this.hasLogo) return;
+      if (!hasLogo.value) return;
       return h('div', { class: 'swv-modal-logo-wrapper' }, [
-        h('img', { claass: 'swv-modal-logo', src: this.logo, alt: 'logo' }),
+        h('img', { claass: 'swv-modal-logo', src: logo.value, alt: 'logo' }),
       ])
     }
 
     const renderCloseButton = () => {
-      return h('button', { class: 'swv-modal-button-close', on: { click: this.closeModal } }, [
+      return h('button', { class: 'swv-modal-button-close', on: { click: closeModal } }, [
         h('svg', { width: '14', height: '14' }, [
           h('path', { d: 'M14 12.461 8.3 6.772l5.234-5.233L12.006 0 6.772 5.234 1.54 0 0 1.539l5.234 5.233L0 12.006l1.539 1.528L6.772 8.3l5.69 5.7L14 12.461z' })
         ])
@@ -95,14 +89,14 @@ export default defineComponent({
     }
 
     const renderExpandButton = () => {
-      if (this.hiddenWallets.length <= 0) return;
+      if (hiddenWallets.value.length <= 0) return;
       return h('button', {
         'aria-controls': 'swv-modal-collapse',
-        'aria-expanded': this.expandedWallets,
-        class: ['swv-button swv-modal-collapse-button', { 'swv-modal-collapse-button-active': this.expandedWallets }],
-        on: { click: () => { this.expandedWallets = !this.expandedWallets } }
+        'aria-expanded': expandedWallets.value,
+        class: ['swv-button swv-modal-collapse-button', { 'swv-modal-collapse-button-active': expandedWallets.value }],
+        on: { click: () => { expandedWallets.value = !expandedWallets.value } }
       }, [
-        h('p', {}, (this.expandedWallets ? "Less" : "More") + ' options'),
+        h('p', {}, (expandedWallets.value ? "Less" : "More") + ' options'),
         h('i', { class: 'swv-button-icon' }, [
           h('svg', { width: '11', height: '6' }, [
             h('path', { d: 'm5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z' })
@@ -112,23 +106,23 @@ export default defineComponent({
     }
 
     const renderModal = () => {
-      if (!this.modalOpened) return null;
+      if (!modalOpened.value) return null;
       return h('div', {
         'aria-labelledby': 'swv-modal-title',
         'aria-modal': true,
-        class: ['swv-modal', this.dark ? 'swv-dark' : ''],
+        class: ['swv-modal', dark.value ? 'swv-dark' : ''],
         role: 'dialog',
       }, [
-        slotWithDefault(this.$slots.overlay, this.scope, () => h('div', { class: 'swv-modal-overlay' })),
+        slotWithDefault(slots.overlay, scope, () => h('div', { class: 'swv-modal-overlay' })),
         h('div', { class: 'swv-modal-container', ref: 'modalPanel' }, [
-          slotWithDefault(this.$slots.modal, this.scope, () => (
-            h('div', { class: ['swv-modal-wrapper', { 'swv-modal-wrapper-no-logo': ! this.hasLogo }] }, [
-              this.$slots.logo?.(this.scope) ?? renderLogo(),
+          slotWithDefault(slots.modal, scope, () => (
+            h('div', { class: ['swv-modal-wrapper', { 'swv-modal-wrapper-no-logo': !hasLogo.value }] }, [
+              slots.logo?.(scope) ?? renderLogo(),
               h('h1', { class: 'swv-modal-title', id: 'swv-modal-title' }, 'Connect Wallet'),
               renderCloseButton(),
               h('ul', { class: 'swv-modal-list' }, [
-                this.walletsToDisplay.map(wallet => (
-                  h('li', { key: wallet.name, on: { click: () => { this.selectWallet(wallet.name); this.closeModal(); } } }, [
+                walletsToDisplay.value.map(wallet => (
+                  h('li', { key: wallet.name, on: { click: () => { selectWallet(wallet.name); closeModal(); } } }, [
                     h('button', { class: 'swv-button' }, [
                       h('p', {}, wallet.name),
                       h(WalletIcon, { props: { wallet } }),
@@ -143,8 +137,8 @@ export default defineComponent({
       ])
     }
 
-    return h('div', { class: this.dark ? 'swv-dark' : '' }, [
-      this.$slots.default?.(this.scope),
+    return () => h('div', { class: dark.value ? 'swv-dark' : '' }, [
+      slots.default?.(scope),
       renderModal(),
     ])
   },
