@@ -1,7 +1,7 @@
-<script lang="ts">
 import { computed, defineComponent, toRefs } from "vue-demi";
 import { useWallet } from "@/useWallet";
-import WalletIcon from "./WalletIcon.vue";
+import WalletIcon from "./WalletIcon";
+import { h, slotWithDefault } from "@/utils/render";
 
 export default defineComponent({
   components: {
@@ -41,18 +41,16 @@ export default defineComponent({
       ...scope,
     }
   },
+  render() {
+    return slotWithDefault(this.$slots.default, this.scope, () => (
+      h('button', {
+        class: 'swv-button swv-button-trigger',
+        disabled: this.disabled || !this.wallet || this.connecting || this.connected,
+        on: { click: this.onClick },
+      }, [
+        this.wallet ? h(WalletIcon, { props: { wallet: this.wallet }}) : null,
+        h('p', {}, this.content),
+      ])
+    ))
+  },
 });
-</script>
-
-<template>
-  <slot v-bind="scope">
-    <button
-      class="swv-button swv-button-trigger"
-      :disabled="disabled || !wallet || connecting || connected"
-      @click="onClick"
-    >
-      <wallet-icon v-if="wallet" :wallet="wallet"></wallet-icon>
-      <p v-text="content"></p>
-    </button>
-  </slot>
-</template>
