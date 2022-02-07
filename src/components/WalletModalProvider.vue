@@ -1,8 +1,9 @@
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue-demi";
+import { computed, defineComponent, Teleport, nextTick, ref, toRefs, watch } from "vue-demi";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
-import WalletIcon from './WalletIcon.vue';
+import WalletIcon from './WalletIcon';
+import h from '@/utils/render';
 
 export default defineComponent({
   components: {
@@ -80,73 +81,61 @@ export default defineComponent({
       ...scope,
     }
   },
+  render () {
+    const renderLogo = () => {
+      if (!this.hasLogo) return;
+      return h('div', { class: 'swv-modal-logo-wrapper' }, [
+        h('img', { claass: 'swv-modal-logo', src: this.logo, alt: 'logo' }),
+      ])
+    }
+
+    const renderCloseButton = () => {
+      return h('button', { class: 'swv-modal-button-close', on: { click: this.closeModal } }, [
+        h('svg', { width: '14', height: '14' }, [
+          h('path', { d: 'M14 12.461 8.3 6.772l5.234-5.233L12.006 0 6.772 5.234 1.54 0 0 1.539l5.234 5.233L0 12.006l1.539 1.528L6.772 8.3l5.69 5.7L14 12.461z' })
+        ])
+      ])
+    }
+
+    const renderModal = () => {
+      if (!this.modalOpened) return null;
+      return h(Teleport, { to: this.container, }, [
+        h('div', {
+          'aria-labelledby': 'swv-modal-title',
+          'aria-modal': true,
+          class: 'swv-modal',
+          role: 'dialog',
+        }, [
+          this.$slots.overlay?.(this.scope) ?? (
+            h('div', { class: 'swv-modal-overlay' })
+          ),
+          h('div', { class: 'swv-modal-container', ref: 'modalPanel' }, [
+            this.$slots.modal?.(this.scope) ?? (
+              h('div', { class: ['swv-modal-wrapper', { 'swv-modal-wrapper-no-logo': ! this.hasLogo }] }, [
+                this.$slots.logo?.(this.scope) ?? renderLogo(),
+                h('h1', { class: 'swv-modal-title', id: 'swv-modal-title' }, 'Connect Wallet'),
+                renderCloseButton(),
+                h('ul', { class: 'swv-modal-list' }, [
+                  this.walletsToDisplay.map(wallet => (
+                    h('li', { key: wallet.name, on: { click: () => { this.selectWallet(wallet.name); this.closeModal(); } } }, [
+                      h('button', { class: 'swv-button' }, [
+                        h('p', {}, wallet.name),
+                        h(WalletIcon, { props: { wallet } }),
+                      ])
+                    ])
+                  ))
+                ])
+              ])
+            ),
+          ])
+        ])
+      ])
+    }
+
+    return h('div', { class: this.dark ? 'swv-dark' : '' }, [
+      this.$slots.default?.(this.scope),
+      renderModal(),
+    ])
+  },
 });
 </script>
-
-<template>
-  <div :class="dark ? 'swv-dark' : ''">
-    <slot v-bind="scope"></slot>
-  </div>
-  <teleport :to="container" v-if="modalOpened">
-    <div
-      aria-labelledby="swv-modal-title"
-      aria-modal="true"
-      class="swv-modal"
-      :class="dark ? 'swv-dark' : ''"
-      role="dialog"
-    >
-      <slot name="overlay" v-bind="scope">
-        <div class="swv-modal-overlay" />
-      </slot>
-      <div class="swv-modal-container" ref="modalPanel">
-        <slot name="modal" v-bind="scope">
-          <div
-            class="swv-modal-wrapper"
-            :class="{ 'swv-modal-wrapper-no-logo': !hasLogo }"
-          >
-            <div class="swv-modal-logo-wrapper" v-if="hasLogo">
-              <slot name="logo" v-bind="scope">
-                <img alt="logo" class="swv-modal-logo" :src="logo" />
-              </slot>
-            </div>
-            <h1 class="swv-modal-title" id="swv-modal-title">
-              Connect Wallet
-            </h1>
-            <button @click.prevent="closeModal" class="swv-modal-button-close">
-              <svg width="14" height="14">
-                <path d="M14 12.461 8.3 6.772l5.234-5.233L12.006 0 6.772 5.234 1.54 0 0 1.539l5.234 5.233L0 12.006l1.539 1.528L6.772 8.3l5.69 5.7L14 12.461z" />
-              </svg>
-            </button>
-            <ul class="swv-modal-list">
-              <li
-                v-for="wallet in walletsToDisplay"
-                :key="wallet.name"
-                @click="selectWallet(wallet.name); closeModal();"
-              >
-                <button class="swv-button">
-                  <p v-text="wallet.name"></p>
-                  <wallet-icon :wallet="wallet"></wallet-icon>
-                </button>
-              </li>
-            </ul>
-            <button
-              v-if="hiddenWallets.length > 0"
-              aria-controls="swv-modal-collapse"
-              :aria-expanded="expandedWallets"
-              class="swv-button swv-modal-collapse-button"
-              :class="{ 'swv-modal-collapse-button-active': expandedWallets }"
-              @click="expandedWallets = !expandedWallets"
-            >
-              {{ expandedWallets ? "Less" : "More" }} options
-              <i class="swv-button-icon">
-                <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg">
-                  <path d="m5.938 5.73 4.28-4.126a.915.915 0 0 0 0-1.322 1 1 0 0 0-1.371 0L5.253 3.736 1.659.272a1 1 0 0 0-1.371 0A.93.93 0 0 0 0 .932c0 .246.1.48.288.662l4.28 4.125a.99.99 0 0 0 1.37.01z" />
-                </svg>
-              </i>
-            </button>
-          </div>
-        </slot>
-      </div>
-    </div>
-  </teleport>
-</template>

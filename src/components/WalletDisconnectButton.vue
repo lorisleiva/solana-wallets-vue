@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs } from "vue-demi";
 import { useWallet } from "@/useWallet";
-import WalletIcon from "./WalletIcon.vue";
+import WalletIcon from "./WalletIcon";
 
 export default defineComponent({
   components: {

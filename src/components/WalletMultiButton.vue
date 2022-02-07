@@ -3,7 +3,7 @@ import { computed, defineComponent, ref, toRefs } from "vue-demi";
 import { onClickOutside, useClipboard } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletConnectButton from "./WalletConnectButton.vue";
-import WalletIcon from "./WalletIcon.vue";
+import WalletIcon from "./WalletIcon";
 import WalletModalProvider from "./WalletModalProvider.vue";
 
 export default defineComponent({
@@ -112,11 +112,11 @@ export default defineComponent({
     </template>
 
     <!-- Enable modal overrides. -->
-    <template #overlay="modalScope">
+    <!-- <template #overlay="modalScope">
       <slot name="modal-overlay" v-bind="{ ...modalScope, ...scope }"></slot>
     </template>
     <template #modal="modalScope">
       <slot name="modal" v-bind="{ ...modalScope, ...scope }"></slot>
-    </template>
+    </template> -->
   </wallet-modal-provider>
 </template>
