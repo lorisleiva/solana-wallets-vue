@@ -1,4 +1,4 @@
-import { computed, defineComponent, Teleport, nextTick, ref, toRefs, watch } from "vue-demi";
+import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue-demi";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletIcon from './WalletIcon';
@@ -115,34 +115,32 @@ export default defineComponent({
 
     const renderModal = () => {
       if (!this.modalOpened) return null;
-      return h(Teleport, { to: this.container, }, [
-        h('div', {
-          'aria-labelledby': 'swv-modal-title',
-          'aria-modal': true,
-          class: ['swv-modal', this.dark ? 'swv-dark' : ''],
-          role: 'dialog',
-        }, [
-          slotWithDefault(this.$slots.overlay, this.scope, () => h('div', { class: 'swv-modal-overlay' })),
-          h('div', { class: 'swv-modal-container', ref: 'modalPanel' }, [
-            slotWithDefault(this.$slots.modal, this.scope, () => (
-              h('div', { class: ['swv-modal-wrapper', { 'swv-modal-wrapper-no-logo': ! this.hasLogo }] }, [
-                this.$slots.logo?.(this.scope) ?? renderLogo(),
-                h('h1', { class: 'swv-modal-title', id: 'swv-modal-title' }, 'Connect Wallet'),
-                renderCloseButton(),
-                h('ul', { class: 'swv-modal-list' }, [
-                  this.walletsToDisplay.map(wallet => (
-                    h('li', { key: wallet.name, on: { click: () => { this.selectWallet(wallet.name); this.closeModal(); } } }, [
-                      h('button', { class: 'swv-button' }, [
-                        h('p', {}, wallet.name),
-                        h(WalletIcon, { props: { wallet } }),
-                      ])
+      return h('div', {
+        'aria-labelledby': 'swv-modal-title',
+        'aria-modal': true,
+        class: ['swv-modal', this.dark ? 'swv-dark' : ''],
+        role: 'dialog',
+      }, [
+        slotWithDefault(this.$slots.overlay, this.scope, () => h('div', { class: 'swv-modal-overlay' })),
+        h('div', { class: 'swv-modal-container', ref: 'modalPanel' }, [
+          slotWithDefault(this.$slots.modal, this.scope, () => (
+            h('div', { class: ['swv-modal-wrapper', { 'swv-modal-wrapper-no-logo': ! this.hasLogo }] }, [
+              this.$slots.logo?.(this.scope) ?? renderLogo(),
+              h('h1', { class: 'swv-modal-title', id: 'swv-modal-title' }, 'Connect Wallet'),
+              renderCloseButton(),
+              h('ul', { class: 'swv-modal-list' }, [
+                this.walletsToDisplay.map(wallet => (
+                  h('li', { key: wallet.name, on: { click: () => { this.selectWallet(wallet.name); this.closeModal(); } } }, [
+                    h('button', { class: 'swv-button' }, [
+                      h('p', {}, wallet.name),
+                      h(WalletIcon, { props: { wallet } }),
                     ])
-                  ))
-                ]),
-                renderExpandButton(),
-              ])
-            )),
-          ])
+                  ])
+                ))
+              ]),
+              renderExpandButton(),
+            ])
+          )),
         ])
       ])
     }
