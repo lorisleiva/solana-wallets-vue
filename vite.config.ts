@@ -6,6 +6,7 @@ const path = require('path')
 export default defineConfig({
   plugins: [vue()],
   resolve: {
+    dedupe: ['vue'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
