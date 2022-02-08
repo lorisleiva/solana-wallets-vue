@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, toRefs } from "vue-demi";
+import { defineComponent, PropType, toRefs } from "vue";
 import { Wallet } from "@/createWalletStore";
 
 export default defineComponent({

@@ -1,4 +1,4 @@
-import { createApp } from 'vue-demi';
+import { createApp } from 'vue';
 import App from './App.vue';
 import SolanaWallets from '../src/index';
 import '../styles.css';

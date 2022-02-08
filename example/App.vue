@@ -1,5 +1,5 @@
 <script>
-import { ref, computed, watchEffect } from 'vue-demi'
+import { ref, computed, watchEffect } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { Connection, PublicKey, Keypair, clusterApiUrl, SystemProgram } from '@solana/web3.js'
 import { Program, Provider } from '@project-serum/anchor'

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue-demi";
+import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletIcon from './WalletIcon.vue';

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs } from "vue-demi";
+import { computed, defineComponent, ref, toRefs } from "vue";
 import { onClickOutside, useClipboard } from "@vueuse/core";
 import { useWallet } from "@/useWallet";
 import WalletConnectButton from "./WalletConnectButton.vue";

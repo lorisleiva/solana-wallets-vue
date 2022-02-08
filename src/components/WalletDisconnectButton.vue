@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, toRefs } from "vue-demi";
+import { computed, defineComponent, toRefs } from "vue";
 import { useWallet } from "@/useWallet";
 import WalletIcon from "./WalletIcon.vue";
 

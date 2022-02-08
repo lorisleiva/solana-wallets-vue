@@ -1,5 +1,5 @@
-import { PublicKey, Transaction } from "@solana/web3.js";
-import { computed, Ref } from "vue-demi";
+import { PublicKey, Transaction } from '@solana/web3.js';
+import { computed, Ref } from 'vue';
 import { useWallet } from "./useWallet";
 
 export interface AnchorWallet {
