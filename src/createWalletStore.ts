@@ -21,7 +21,7 @@ import {
   ref,
   watch,
   watchEffect,
-} from "vue-demi";
+} from "vue";
 import { WalletNotSelectedError } from "./errors";
 import { useLocalStorage } from "@vueuse/core";
 
