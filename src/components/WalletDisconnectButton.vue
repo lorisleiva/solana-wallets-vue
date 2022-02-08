@@ -1,14 +1,16 @@
+<script lang="ts">
 import { computed, defineComponent, toRefs } from "vue-demi";
 import { useWallet } from "@/useWallet";
-import WalletIcon from "./WalletIcon";
-import { h, slotWithDefault } from "@/utils/render";
+import WalletIcon from "./WalletIcon.vue";
 
 export default defineComponent({
-  name: 'wallet-disconnect-button',
+  components: {
+    WalletIcon,
+  },
   props: {
     disabled: Boolean,
   },
-  setup(props, { emit, slots }) {
+  setup(props, { emit }) {
     const { disabled } = toRefs(props);
     const { wallet, disconnect, disconnecting } = useWallet();
 
@@ -18,7 +20,7 @@ export default defineComponent({
       return "Disconnect Wallet";
     });
 
-    const onClick = (event: MouseEvent) => {
+    const handleClick = (event: MouseEvent) => {
       emit("click", event);
       if (event.defaultPrevented) return;
       disconnect().catch(() => {});
@@ -29,18 +31,26 @@ export default defineComponent({
       disconnecting,
       disabled,
       content,
-      onClick,
+      handleClick,
     };
 
-    return () => slotWithDefault(slots.default, scope, () => (
-      h('button', {
-        class: 'swv-button swv-button-trigger',
-        disabled: disabled.value || !wallet.value || disconnecting.value,
-        on: { click: onClick },
-      }, [
-        wallet.value ? h(WalletIcon, { props: { wallet: wallet.value }}, []) : null,
-        h('p', {}, content.value),
-      ])
-    ))
+    return {
+      scope,
+      ...scope,
+    }
   },
 });
+</script>
+
+<template>
+  <slot v-bind="scope">
+    <button
+      class="swv-button swv-button-trigger"
+      :disabled="disabled || disconnecting || !wallet"
+      @click="handleClick"
+    >
+      <wallet-icon v-if="wallet" :wallet="wallet"></wallet-icon>
+      <p v-text="content"></p>
+    </button>
+  </slot>
+</template>
