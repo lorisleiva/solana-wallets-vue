@@ -15,6 +15,7 @@ export default defineComponent({
   props: {
     featured: { type: Number, default: 3 },
     container: { type: String, default: 'body' },
+    disabled: { type: Boolean, default: false },
     logo: String,
     dark: Boolean,
   },
@@ -69,10 +70,10 @@ export default defineComponent({
   <wallet-modal-provider :featured="featured" :container="container" :logo="logo" :dark="dark">
     <template #default="modalScope">
       <slot v-bind="{ ...modalScope, ...scope }">
-        <button v-if="!wallet" class="swv-button swv-button-trigger" @click="modalScope.openModal">
+        <button v-if="!wallet" class="swv-button swv-button-trigger" @click="modalScope.openModal" :disabled="disabled">
           Select Wallet
         </button>
-        <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
+        <wallet-connect-button v-else-if="!publicKeyBase58" :disabled="disabled"></wallet-connect-button>
         <div v-else class="swv-dropdown">
           <slot name="dropdown-button" v-bind="{ ...modalScope, ...scope }">
             <button
@@ -81,6 +82,7 @@ export default defineComponent({
               :aria-expanded="dropdownOpened"
               :title="publicKeyBase58"
               @click="openDropdown"
+              :disabled="disabled"
             >
               <wallet-icon :wallet="wallet"></wallet-icon>
               <p v-text="publicKeyTrimmed"></p>
