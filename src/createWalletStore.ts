@@ -19,6 +19,7 @@ import {
   computed,
   Ref,
   ref,
+  shallowRef,
   watch,
   watchEffect,
 } from "vue";
@@ -72,10 +73,10 @@ export const createWalletStore = ({
 }: WalletStoreProps): WalletStore => {
 
   // Mutable values.
-  const wallets: Ref<Wallet[]> = ref(initialWallets);
+  const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
   const autoConnect = ref(initialAutoConnect);
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey, null);
-  const wallet = ref<Wallet | null>(null);
+  const wallet = shallowRef<Wallet | null>(null);
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
   const connected = ref<boolean>(false);
