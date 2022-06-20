@@ -9,20 +9,13 @@ import {
   MessageSignerWalletAdapter,
   SendTransactionOptions,
 } from "@solana/wallet-adapter-base";
-import {
+import type {
   Connection,
   PublicKey,
   Transaction,
   TransactionSignature,
 } from "@solana/web3.js";
-import {
-  computed,
-  Ref,
-  ref,
-  shallowRef,
-  watch,
-  watchEffect,
-} from "vue";
+import { computed, Ref, ref, shallowRef, watch, watchEffect } from "vue";
 import { WalletNotSelectedError } from "./errors";
 import { useLocalStorage } from "@vueuse/core";
 
@@ -54,7 +47,9 @@ export interface WalletStore {
 
   // Optional methods.
   signTransaction: Ref<SignerWalletAdapter["signTransaction"] | undefined>;
-  signAllTransactions: Ref<SignerWalletAdapter["signAllTransactions"] | undefined>;
+  signAllTransactions: Ref<
+    SignerWalletAdapter["signAllTransactions"] | undefined
+  >;
   signMessage: Ref<MessageSignerWalletAdapter["signMessage"] | undefined>;
 }
 
@@ -71,21 +66,24 @@ export const createWalletStore = ({
   onError = (error: WalletError) => console.error(error),
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
-
   // Mutable values.
   const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
   const autoConnect = ref(initialAutoConnect);
-  const name: Ref<WalletName | null> = useLocalStorage<WalletName>(localStorageKey, null);
+  const name: Ref<WalletName | null> = useLocalStorage<WalletName>(
+    localStorageKey,
+    null
+  );
   const wallet = shallowRef<Wallet | null>(null);
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
   const connected = ref<boolean>(false);
   const connecting = ref<boolean>(false);
   const disconnecting = ref<boolean>(false);
-  const ready = computed(() => 
-    readyState.value === WalletReadyState.Installed || 
-    readyState.value === WalletReadyState.Loadable
-  )
+  const ready = computed(
+    () =>
+      readyState.value === WalletReadyState.Installed ||
+      readyState.value === WalletReadyState.Loadable
+  );
 
   // Helper methods to set and reset the main state variables.
   const setWallet = (newWallet: Wallet | null) => {
@@ -103,16 +101,23 @@ export const createWalletStore = ({
 
   // Create a dictionary of wallet adapters keyed by their name.
   const walletsByName = computed(() => {
-    return wallets.value.reduce<Record<WalletName, Wallet>>((walletsByName, wallet) => {
-      walletsByName[wallet.name] = wallet;
-      return walletsByName;
-    }, {});
+    return wallets.value.reduce<Record<WalletName, Wallet>>(
+      (walletsByName, wallet) => {
+        walletsByName[wallet.name] = wallet;
+        return walletsByName;
+      },
+      {}
+    );
   });
 
   // Update the wallet adapter based on the wallet provider.
-  watch(name, (): void => {
-    setWallet(walletsByName.value?.[name.value as WalletName] ?? null);
-  }, { immediate: true });
+  watch(
+    name,
+    (): void => {
+      setWallet(walletsByName.value?.[name.value as WalletName] ?? null);
+    },
+    { immediate: true }
+  );
 
   // Select a wallet adapter by name.
   const select = async (walletName: WalletName): Promise<void> => {
@@ -198,11 +203,7 @@ export const createWalletStore = ({
   ) => {
     if (!wallet.value) throw newError(new WalletNotSelectedError());
     if (!connected.value) throw newError(new WalletNotConnectedError());
-    return await wallet.value.sendTransaction(
-      transaction,
-      connection,
-      options
-    );
+    return await wallet.value.sendTransaction(transaction, connection, options);
   };
 
   // Sign a transaction if the wallet supports it.
@@ -237,7 +238,14 @@ export const createWalletStore = ({
 
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
   watchEffect(async (): Promise<void> => {
-    if (!autoConnect.value || !wallet.value || !ready.value || connected.value || connecting.value) return;
+    if (
+      !autoConnect.value ||
+      !wallet.value ||
+      !ready.value ||
+      connected.value ||
+      connecting.value
+    )
+      return;
     try {
       connecting.value = true;
       await wallet.value.connect();
