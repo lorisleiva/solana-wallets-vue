@@ -44,6 +44,6 @@
     "vue-tsc": "^0.29.8"
   },
   "peerDependencies": {
-    "@solana/wallet-adapter-wallets": "^0.15"
+    "@solana/wallet-adapter-wallets": "^0.15 | ^0.16"
   }
 }
