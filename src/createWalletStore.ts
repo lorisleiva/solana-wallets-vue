@@ -149,7 +149,7 @@ export const createWalletStore = ({
   if (typeof window !== "undefined") {
     // Ensure the wallet listeners are invalidated before refreshing the page.
     // This is because Vue does not unmount components when the page is being refreshed.
-    window.addEventListener("beforeunload", invalidateListeners);
+    window.addEventListener("unload", invalidateListeners);
   }
 
   // Connect the wallet.
