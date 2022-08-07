@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@project-serum/anchor": "^0.20.1",
-    "@solana/wallet-adapter-wallets": "^0.16.1",
+    "@solana/wallet-adapter-wallets": "^0.17.0",
     "@solana/web3.js": "^1.44.1",
     "@types/node": "^17.0.14",
     "@types/node-fetch": "^2.6.2",
@@ -44,6 +44,6 @@
     "vue-tsc": "^0.29.8"
   },
   "peerDependencies": {
-    "@solana/wallet-adapter-wallets": "^0.15 | ^0.16"
+    "@solana/wallet-adapter-wallets": "^0.17.0"
   }
 }
