@@ -110,7 +110,7 @@ If you're using Anchor, then you might want to define your own store that encaps
 import { computed } from 'vue'
 import { useAnchorWallet } from 'solana-wallets-vue'
 import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
-import { Provider, Program } from '@project-serum/anchor'
+import { AnchorProvider, Program } from '@project-serum/anchor'
 import idl from '@/idl.json'
 
 const preflightCommitment = 'processed'
@@ -123,7 +123,7 @@ export const useWorkspace = () => workspace
 export const initWorkspace = () => {
   const wallet = useAnchorWallet()
   const connection = new Connection(clusterApiUrl('devnet'), commitment)
-  const provider = computed(() => new Provider(connection, wallet.value, { preflightCommitment, commitment }))
+  const provider = computed(() => new AnchorProvider(connection, wallet.value, { preflightCommitment, commitment }))
   const program = computed(() => new Program(idl, programID, provider.value))
 
   workspace = {
@@ -177,3 +177,70 @@ The table below shows all the properties and methods you can get from `useWallet
 | `signTransaction` | Function or undefined | Signs the given transaction. Undefined if not supported by the selected wallet. |
 | `signAllTransactions` | Function or undefined | Signs all given transactions. Undefined if not supported by the selected wallet. |
 | `signMessage` | Function or undefined | Signs the given message. Undefined if not supported by the selected wallet. |
+
+# Nuxt 3 Setup
+
+1. Create a new plugin, ex. `plugins/solana.ts`
+
+```ts
+import 'solana-wallets-vue/styles.css'
+import SolanaWallets from 'solana-wallets-vue'
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
+import {
+  PhantomWalletAdapter,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+} from '@solana/wallet-adapter-wallets'
+
+const walletOptions = {
+  wallets: [
+    new PhantomWalletAdapter(),
+    new SlopeWalletAdapter(),
+    new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
+  ],
+  autoConnect: true,
+}
+
+export default defineNuxtPlugin(nuxtApp => {
+  nuxtApp.vueApp.use(SolanaWallets, walletOptions)
+})
+```
+
+2. Update the `nuxt.config.ts`
+
+```ts
+export default defineNuxtConfig({
+    modules: ['@nuxtjs/tailwindcss'],
+    vite: {
+        esbuild: {
+            target: 'esnext',
+        },
+        build: {
+            target: 'esnext',
+        },
+        optimizeDeps: {
+            include: ['@project-serum/anchor', '@solana/web3.js', 'buffer'],
+            esbuildOptions: {
+                target: 'esnext'
+            }
+        },
+        define: {
+            'process.env.BROWSER': true
+        }
+    }
+})
+```
+
+3. On your `app.vue`
+
+```vue
+<script lang="ts" setup>
+import { WalletMultiButton } from 'solana-wallets-vue'
+</script>
+
+<template>
+  <ClientOnly>
+     <WalletMultiButton />
+  </ClientOnly>
+</template>
+```
