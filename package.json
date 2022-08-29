@@ -1,6 +1,6 @@
 {
   "name": "solana-wallets-vue",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Solana wallet integration for Vue 3",
   "author": "Loris Leiva",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@solana/wallet-adapter-base": "^0.9.5",
+    "@solana/wallet-adapter-base": "^0.9.16",
     "vue": "^3.2.25"
   },
   "devDependencies": {
