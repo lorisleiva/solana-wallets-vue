@@ -91,6 +91,10 @@ export const createWalletStore = ({
     readyState.value = newWallet?.readyState ?? WalletReadyState.NotDetected;
     publicKey.value = newWallet?.publicKey ?? null;
     connected.value = newWallet?.connected ?? false;
+
+    if (shouldAutoConnect()) {
+      doAutoConnect();
+    }
   };
 
   // Helper method to return an error whilst using the onError callback.
@@ -237,20 +241,20 @@ export const createWalletStore = ({
   });
 
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
-  watchEffect(async (): Promise<void> => {
-    if (
-      connecting.value ||
-      !autoConnect.value ||
-      !wallet.value ||
-      !ready.value ||
-      connected.value
-    ) {
-      return;
-    }
+  function shouldAutoConnect(): boolean {
+    return (
+      autoConnect.value &&
+      wallet.value !== null &&
+      ready.value &&
+      !connected.value
+    );
+  }
+
+  async function doAutoConnect() {
     try {
       connecting.value = true;
 
-      await wallet.value.connect();
+      await wallet.value?.connect();
     } catch (error: any) {
       // Clear the selected wallet
       name.value = null;
@@ -258,7 +262,7 @@ export const createWalletStore = ({
     } finally {
       connecting.value = false;
     }
-  });
+  }
 
   // Return the created store.
   return {

@@ -24,21 +24,27 @@ export default {
   },
   setup() {
     const dark = useStorage('darkmode', false);
-    const counterPublicKey = useStorage('counterPublicKey', null);
     const wallet = useAnchorWallet();
     const connection = new Connection(
       clusterApiUrl('devnet'),
       preflightCommitment
     );
-    const provider = computed(
-      () =>
+    const provider = computed(() => {
+      if (wallet.value) {
         new AnchorProvider(connection, wallet.value, {
           preflightCommitment,
-        })
-    );
-    const program = computed(() => new Program(idl, programID, provider.value));
+        });
+      }
+    });
+    const program = computed(() => {
+      if (wallet.value && provider.value) {
+        new Program(idl, programID, provider.value);
+      }
+    });
 
     const counter = ref(0);
+    const counterPublicKey = useStorage('counterPublicKey', null);
+
     watchEffect(async () => {
       if (!counterPublicKey.value) return;
       const account = await program.value.account.baseAccount.fetch(
@@ -224,7 +230,7 @@ export default {
     <!-- Centered. -->
     <div class="p-8 mt-8">
       <button
-        class="flex-1 py-4 px-6 rounded-xl bg-green-700 hover:bg-green-800"
+        class="flex-1 py-4 px-6 rounded-xl bg-green-600 hover:bg-green-700 font-bold text-white"
         @click="signTransaction"
       >
         Sign a Transaction
