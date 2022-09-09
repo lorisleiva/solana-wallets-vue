@@ -125,6 +125,7 @@ export const createWalletStore = ({
   const select = async (walletName: WalletName): Promise<void> => {
     if (name.value === walletName) return;
     name.value = walletName;
+    nameInStorage.value = walletName;
   };
 
   // Handle the wallet adapter events.
