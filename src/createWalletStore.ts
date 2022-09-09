@@ -250,6 +250,12 @@ export const createWalletStore = ({
 
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
   function shouldAutoConnect(): boolean {
+    console.log({
+      autoConnect: autoConnect.value,
+      wallet: wallet.value !== null,
+      ready: ready.value,
+      connected: !connected.value,
+    });
     return (
       autoConnect.value &&
       wallet.value !== null &&
