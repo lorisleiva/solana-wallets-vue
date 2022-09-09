@@ -1,4 +1,5 @@
 # Solana Wallets Vue
+
 Integrates Solana wallets in your Vue 3 applications.
 
 ⚡️ [View demo](https://solana-wallets-vue-demo.netlify.app/) / [Browse demo code](./example)
@@ -148,37 +149,37 @@ await program.value.rpc.myInstruction(/* ... */)
 
 The table below shows all options you can provide when initialising the wallet store. Note that some options accepts `Ref` types so you can update them at runtime and keep their reactivity.
 
-| Option | Type | Description |
-| - | - | - |
-| `wallets` | `Wallet[] \| Ref<Wallet[]>` | The wallets available the use. Defaults to `[]`. |
-| `autoConnect` | `Wallet[] \| Ref<Wallet[]>` | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`. |
-| `onError(error: WalletError)` | `void` | Will be called whenever an error occurs on the wallet selection/connection workflow. Defaults to `error => console.error(error)`. |
-| `localStorageKey` | `string` | The key to use when storing the selected wallet type (e.g. `Phantom`) in the local storage. Defaults to `walletName`. |
+| Option                        | Type                        | Description                                                                                                                       |
+| ----------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `wallets`                     | `Wallet[] \| Ref<Wallet[]>` | The wallets available the use. Defaults to `[]`.                                                                                  |
+| `autoConnect`                 | `Wallet[] \| Ref<Wallet[]>` | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`.                      |
+| `onError(error: WalletError)` | `void`                      | Will be called whenever an error occurs on the wallet selection/connection workflow. Defaults to `error => console.error(error)`. |
+| `localStorageKey`             | `string`                    | The key to use when storing the selected wallet type (e.g. `Phantom`) in the local storage. Defaults to `walletName`.             |
 
 ## `useWallet()` references
 
 The table below shows all the properties and methods you can get from `useWallet()`.
 
-| Property/Method | Type | Description |
-| - | - | - |
-| `wallets` | `Ref<Wallet[]>` | The wallets available the use. |
-| `autoConnect` | `Ref<boolean>` | Whether or not we should try to automatically connect the wallet when loading the page. |
-| `wallet` | `Ref<Wallet | null>` | The connected wallet. Null if not connected. |
-| `publicKey` | `Ref<PublicKey | null>` | The public key of the connected wallet. Null if not connected. |
-| `readyState` | `Ref<WalletReadyState>` | The ready state of the selected wallet. |
-| `ready` | `Ref<boolean>` | Whether the selected wallet is ready to connect. |
-| `connected` | `Ref<boolean>` | Whether a wallet has been selected and connected. |
-| `connecting` | `Ref<boolean>` | Whether we are connecting a wallet. |
-| `disconnecting` | `Ref<boolean>` | Whether we are disconnecting a wallet. |
-| `select(walletName)` | `void` | Select a given wallet. |
-| `connect()` | `Promise<void>` | Connects the selected wallet. |
-| `disconnect()` | `Promise<void>` | Disconnect the selected wallet. |
-| `sendTransaction(tx, connection, options)` | `Promise<TransactionSignature>` | Send a transation whilst adding the connected wallet as a signer. |
-| `signTransaction` | Function or undefined | Signs the given transaction. Undefined if not supported by the selected wallet. |
-| `signAllTransactions` | Function or undefined | Signs all given transactions. Undefined if not supported by the selected wallet. |
-| `signMessage` | Function or undefined | Signs the given message. Undefined if not supported by the selected wallet. |
+| Property/Method                            | Type                            | Description                                                                             |
+| ------------------------------------------ | ------------------------------- | --------------------------------------------------------------------------------------- |
+| `wallets`                                  | `Ref<Wallet[]>`                 | The wallets available the use.                                                          |
+| `autoConnect`                              | `Ref<boolean>`                  | Whether or not we should try to automatically connect the wallet when loading the page. |
+| `wallet`                                   | `Ref<Wallet \| null>`           | The connected wallet. Null if not connected.                                            |
+| `publicKey`                                | `Ref<PublicKey \| null>`        | The public key of the connected wallet. Null if not connected.                          |
+| `readyState`                               | `Ref<WalletReadyState>`         | The ready state of the selected wallet.                                                 |
+| `ready`                                    | `Ref<boolean>`                  | Whether the selected wallet is ready to connect.                                        |
+| `connected`                                | `Ref<boolean>`                  | Whether a wallet has been selected and connected.                                       |
+| `connecting`                               | `Ref<boolean>`                  | Whether we are connecting a wallet.                                                     |
+| `disconnecting`                            | `Ref<boolean>`                  | Whether we are disconnecting a wallet.                                                  |
+| `select(walletName)`                       | `void`                          | Select a given wallet.                                                                  |
+| `connect()`                                | `Promise<void>`                 | Connects the selected wallet.                                                           |
+| `disconnect()`                             | `Promise<void>`                 | Disconnect the selected wallet.                                                         |
+| `sendTransaction(tx, connection, options)` | `Promise<TransactionSignature>` | Send a transation whilst adding the connected wallet as a signer.                       |
+| `signTransaction`                          | Function or undefined           | Signs the given transaction. Undefined if not supported by the selected wallet.         |
+| `signAllTransactions`                      | Function or undefined           | Signs all given transactions. Undefined if not supported by the selected wallet.        |
+| `signMessage`                              | Function or undefined           | Signs the given message. Undefined if not supported by the selected wallet.             |
 
-# Nuxt 3 Setup
+## Nuxt 3 Setup
 
 1. Create a new plugin, ex. `plugins/solana.ts`
 
@@ -206,7 +207,7 @@ export default defineNuxtPlugin(nuxtApp => {
 })
 ```
 
-2. Update the `nuxt.config.ts`
+1. Update the `nuxt.config.ts`
 
 ```ts
 export default defineNuxtConfig({
@@ -231,7 +232,7 @@ export default defineNuxtConfig({
 })
 ```
 
-3. On your `app.vue`
+1. On your `app.vue`
 
 ```vue
 <script lang="ts" setup>
@@ -244,3 +245,7 @@ import { WalletMultiButton } from 'solana-wallets-vue'
   </ClientOnly>
 </template>
 ```
+
+## Contributing to this package
+
+To run the package locally, run `yarn demo`.
