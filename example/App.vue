@@ -31,14 +31,14 @@ export default {
     );
     const provider = computed(() => {
       if (wallet.value) {
-        new AnchorProvider(connection, wallet.value, {
+        return new AnchorProvider(connection, wallet.value, {
           preflightCommitment,
         });
       }
     });
     const program = computed(() => {
       if (wallet.value && provider.value) {
-        new Program(idl, programID, provider.value);
+        return new Program(idl, programID, provider.value);
       }
     });
 
