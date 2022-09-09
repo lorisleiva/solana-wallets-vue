@@ -69,7 +69,8 @@ export const createWalletStore = ({
   // Mutable values.
   const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
   const autoConnect = ref(initialAutoConnect);
-  const name = useStorage<WalletName>(localStorageKey, null);
+  const nameInStorage = useStorage<WalletName>(localStorageKey, null);
+  const name = ref<string | null>(nameInStorage.value);
   const wallet = shallowRef<Wallet | null>(null);
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
