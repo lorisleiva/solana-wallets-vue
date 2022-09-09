@@ -15,6 +15,7 @@ export default defineConfig({
     'process.env': {},
   },
   build: {
+    sourcemap: true,
     target: 'es2020',
   },
 });
