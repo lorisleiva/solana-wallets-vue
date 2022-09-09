@@ -69,10 +69,7 @@ export const createWalletStore = ({
   // Mutable values.
   const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
   const autoConnect = ref(initialAutoConnect);
-  const name: Ref<WalletName | null> = useStorage<WalletName>(
-    localStorageKey,
-    null
-  );
+  const name = useStorage<WalletName>(localStorageKey, null);
   const wallet = shallowRef<Wallet | null>(null);
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
@@ -92,17 +89,9 @@ export const createWalletStore = ({
     publicKey.value = newWallet?.publicKey ?? null;
     connected.value = newWallet?.connected ?? false;
 
-    console.log({ shouldAutoConnect: shouldAutoConnect() });
     if (shouldAutoConnect()) {
-      connecting.value = true;
+      doAutoConnect();
     }
-    setTimeout(async () => {
-      console.log({ shouldAutoConnectDelayed: shouldAutoConnect() });
-      if (shouldAutoConnect()) {
-        doAutoConnect();
-      }
-      connecting.value = false;
-    }, 1000);
   };
 
   // Helper method to return an error whilst using the onError callback.
@@ -250,7 +239,7 @@ export const createWalletStore = ({
 
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
   function shouldAutoConnect(): boolean {
-    console.log({
+    console.log('shouldAutoConnect', {
       autoConnect: autoConnect.value,
       wallet: wallet.value !== null,
       ready: ready.value,
