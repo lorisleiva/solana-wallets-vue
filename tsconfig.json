@@ -9,13 +9,18 @@
     "jsx": "preserve",
     "declaration": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
+    "disableSizeLimit": true,
+    "suppressExcessPropertyErrors": true,
+    "downlevelIteration": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
