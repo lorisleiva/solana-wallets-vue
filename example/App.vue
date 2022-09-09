@@ -1,6 +1,6 @@
 <script>
 import { ref, computed, watchEffect } from 'vue';
-import { useLocalStorage } from '@vueuse/core';
+import { useStorage } from '@vueuse/core';
 import {
   Connection,
   PublicKey,
@@ -37,7 +37,7 @@ export default {
     );
     const program = computed(() => new Program(idl, programID, provider.value));
 
-    const counterPublicKey = useLocalStorage('counterPublicKey', null);
+    const counterPublicKey = useStorage('counterPublicKey', null);
     const counter = ref(0);
     watchEffect(async () => {
       if (!counterPublicKey.value) return;
@@ -53,16 +53,14 @@ export default {
       }
 
       const newCounter = Keypair.generate();
-      await program.value.methods
-        .create({
-          accounts: {
-            baseAccount: newCounter.publicKey,
-            user: wallet.value.publicKey,
-            systemProgram: SystemProgram.programId,
-          },
-          signers: [newCounter],
-        })
-        .rpc();
+      await program.value.rpc.create({
+        accounts: {
+          baseAccount: newCounter.publicKey,
+          user: wallet.value.publicKey,
+          systemProgram: SystemProgram.programId,
+        },
+        signers: [newCounter],
+      });
       counterPublicKey.value = newCounter.publicKey;
     };
 
@@ -73,13 +71,11 @@ export default {
         return alert('Create a new counter first.');
       }
 
-      await program.value.methods
-        .increment({
-          accounts: {
-            baseAccount: counterPublicKey.value,
-          },
-        })
-        .rpc();
+      await program.value.rpc.increment({
+        accounts: {
+          baseAccount: counterPublicKey.value,
+        },
+      });
       counter.value += 1;
     };
 
@@ -217,7 +213,7 @@ export default {
 
       <div class="text-sm mt-8">
         <p class="text-xs font-semibold text-gray-400">Wallet address:</p>
-        <p>
+        <p v-if="$wallet">
           {{ $wallet.publicKey.value?.toBase58() ?? 'Not connected' }}
         </p>
         <p class="text-xs font-semibold text-gray-400 mt-4">Counter address:</p>
