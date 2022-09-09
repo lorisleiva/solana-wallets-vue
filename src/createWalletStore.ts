@@ -92,9 +92,17 @@ export const createWalletStore = ({
     publicKey.value = newWallet?.publicKey ?? null;
     connected.value = newWallet?.connected ?? false;
 
+    console.log({ shouldAutoConnect: shouldAutoConnect() });
     if (shouldAutoConnect()) {
-      doAutoConnect();
+      connecting.value = true;
     }
+    setTimeout(async () => {
+      console.log({ shouldAutoConnectDelayed: shouldAutoConnect() });
+      if (shouldAutoConnect()) {
+        doAutoConnect();
+      }
+      connecting.value = false;
+    }, 1000);
   };
 
   // Helper method to return an error whilst using the onError callback.
