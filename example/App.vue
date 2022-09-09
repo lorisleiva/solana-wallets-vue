@@ -7,10 +7,13 @@ import {
   Keypair,
   clusterApiUrl,
   SystemProgram,
+  Transaction,
 } from '@solana/web3.js';
 import { Program, AnchorProvider } from '@project-serum/anchor';
-import { WalletMultiButton, useAnchorWallet } from '../src';
+import { WalletMultiButton, useAnchorWallet, useWallet } from '../src';
 import idl from './idl.json';
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
 
 const programID = new PublicKey(idl.metadata.address);
 const preflightCommitment = 'processed';
@@ -50,14 +53,16 @@ export default {
       }
 
       const newCounter = Keypair.generate();
-      await program.value.rpc.create({
-        accounts: {
-          baseAccount: newCounter.publicKey,
-          user: wallet.value.publicKey,
-          systemProgram: SystemProgram.programId,
-        },
-        signers: [newCounter],
-      });
+      await program.value.methods
+        .create({
+          accounts: {
+            baseAccount: newCounter.publicKey,
+            user: wallet.value.publicKey,
+            systemProgram: SystemProgram.programId,
+          },
+          signers: [newCounter],
+        })
+        .rpc();
       counterPublicKey.value = newCounter.publicKey;
     };
 
@@ -68,16 +73,21 @@ export default {
         return alert('Create a new counter first.');
       }
 
-      await program.value.rpc.increment({
-        accounts: {
-          baseAccount: counterPublicKey.value,
-        },
-      });
+      await program.value.methods
+        .increment({
+          accounts: {
+            baseAccount: counterPublicKey.value,
+          },
+        })
+        .rpc();
       counter.value += 1;
     };
 
     const signTransaction = async () => {
-      const connection = new Connection(clusterApiUrl('devnet'));
+      const connection = new Connection(
+        clusterApiUrl('devnet'),
+        preflightCommitment
+      );
       const { publicKey, sendTransaction } = useWallet();
       const randomAddr = Keypair.generate().publicKey;
       if (!publicKey.value) return;
@@ -218,8 +228,8 @@ export default {
     <!-- Centered. -->
     <div class="m-auto w-full max-w-md p-8">
       <button
-        class="flex-1 py-4 px-2 rounded-bl-xl"
-        :class="dark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'"
+        class="flex-1 py-4 px-2 rounded-xl bg-green-400"
+        :class="dark ? 'hover:bg-gray-800' : 'hover:bg-green-500'"
         @click="signTransaction"
       >
         Sign a Transaction
