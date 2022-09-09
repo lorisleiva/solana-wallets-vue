@@ -23,7 +23,8 @@ export default {
     WalletMultiButton,
   },
   setup() {
-    const dark = ref(false);
+    const dark = useStorage('darkmode', false);
+    const counterPublicKey = useStorage('counterPublicKey', null);
     const wallet = useAnchorWallet();
     const connection = new Connection(
       clusterApiUrl('devnet'),
@@ -37,7 +38,6 @@ export default {
     );
     const program = computed(() => new Program(idl, programID, provider.value));
 
-    const counterPublicKey = useStorage('counterPublicKey', null);
     const counter = ref(0);
     watchEffect(async () => {
       if (!counterPublicKey.value) return;
