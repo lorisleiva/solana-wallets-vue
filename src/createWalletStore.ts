@@ -8,16 +8,16 @@ import {
   SignerWalletAdapter,
   MessageSignerWalletAdapter,
   SendTransactionOptions,
-} from "@solana/wallet-adapter-base";
+} from '@solana/wallet-adapter-base';
 import type {
   Connection,
   PublicKey,
   Transaction,
   TransactionSignature,
-} from "@solana/web3.js";
-import { computed, Ref, ref, shallowRef, watch, watchEffect } from "vue";
-import { WalletNotSelectedError } from "./errors";
-import { useLocalStorage } from "@vueuse/core";
+} from '@solana/web3.js';
+import { computed, Ref, ref, shallowRef, watch, watchEffect } from 'vue';
+import { WalletNotSelectedError } from './errors';
+import { useLocalStorage } from '@vueuse/core';
 
 export type Wallet = Adapter;
 
@@ -46,11 +46,11 @@ export interface WalletStore {
   ): Promise<TransactionSignature>;
 
   // Optional methods.
-  signTransaction: Ref<SignerWalletAdapter["signTransaction"] | undefined>;
+  signTransaction: Ref<SignerWalletAdapter['signTransaction'] | undefined>;
   signAllTransactions: Ref<
-    SignerWalletAdapter["signAllTransactions"] | undefined
+    SignerWalletAdapter['signAllTransactions'] | undefined
   >;
-  signMessage: Ref<MessageSignerWalletAdapter["signMessage"] | undefined>;
+  signMessage: Ref<MessageSignerWalletAdapter['signMessage'] | undefined>;
 }
 
 export interface WalletStoreProps {
@@ -64,7 +64,7 @@ export const createWalletStore = ({
   wallets: initialWallets = [],
   autoConnect: initialAutoConnect = false,
   onError = (error: WalletError) => console.error(error),
-  localStorageKey = "walletName",
+  localStorageKey = 'walletName',
 }: WalletStoreProps): WalletStore => {
   // Mutable values.
   const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
@@ -133,23 +133,23 @@ export const createWalletStore = ({
     const _wallet = wallet.value;
     if (!_wallet) return;
 
-    _wallet.on("readyStateChange", onReadyStateChange);
-    _wallet.on("connect", onConnect);
-    _wallet.on("disconnect", onDisconnect);
-    _wallet.on("error", onError);
+    _wallet.on('readyStateChange', onReadyStateChange);
+    _wallet.on('connect', onConnect);
+    _wallet.on('disconnect', onDisconnect);
+    _wallet.on('error', onError);
 
     onInvalidate(() => {
-      _wallet.off("readyStateChange", onReadyStateChange);
-      _wallet.off("connect", onConnect);
-      _wallet.off("disconnect", onDisconnect);
-      _wallet.off("error", onError);
+      _wallet.off('readyStateChange', onReadyStateChange);
+      _wallet.off('connect', onConnect);
+      _wallet.off('disconnect', onDisconnect);
+      _wallet.off('error', onError);
     });
   });
 
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     // Ensure the wallet listeners are invalidated before refreshing the page.
     // This is because Vue does not unmount components when the page is being refreshed.
-    window.addEventListener("unload", invalidateListeners);
+    window.addEventListener('unload', invalidateListeners);
   }
 
   // Connect the wallet.
@@ -160,8 +160,8 @@ export const createWalletStore = ({
     if (!ready.value) {
       name.value = null;
 
-      if (typeof window !== "undefined") {
-        window.open(wallet.value.url, "_blank");
+      if (typeof window !== 'undefined') {
+        window.open(wallet.value.url, '_blank');
       }
 
       throw newError(new WalletNotReadyError());
@@ -209,7 +209,7 @@ export const createWalletStore = ({
   // Sign a transaction if the wallet supports it.
   const signTransaction = computed(() => {
     const _wallet = wallet.value;
-    if (!(_wallet && "signTransaction" in _wallet)) return;
+    if (!(_wallet && 'signTransaction' in _wallet)) return;
     return async (transaction: Transaction) => {
       if (!connected.value) throw newError(new WalletNotConnectedError());
       return await _wallet.signTransaction(transaction);
@@ -219,7 +219,7 @@ export const createWalletStore = ({
   // Sign multiple transactions if the wallet adapter supports it
   const signAllTransactions = computed(() => {
     const _wallet = wallet.value;
-    if (!(_wallet && "signAllTransactions" in _wallet)) return;
+    if (!(_wallet && 'signAllTransactions' in _wallet)) return;
     return async (transactions: Transaction[]) => {
       if (!connected.value) throw newError(new WalletNotConnectedError());
       return await _wallet.signAllTransactions(transactions);
@@ -229,7 +229,7 @@ export const createWalletStore = ({
   // Sign an arbitrary message if the wallet adapter supports it.
   const signMessage = computed(() => {
     const _wallet = wallet.value;
-    if (!(_wallet && "signMessage" in _wallet)) return;
+    if (!(_wallet && 'signMessage' in _wallet)) return;
     return async (message: Uint8Array) => {
       if (!connected.value) throw newError(new WalletNotConnectedError());
       return await _wallet.signMessage(message);
@@ -244,8 +244,9 @@ export const createWalletStore = ({
       !ready.value ||
       connected.value ||
       connecting.value
-    )
+    ) {
       return;
+    }
     try {
       connecting.value = true;
       await wallet.value.connect();
