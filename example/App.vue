@@ -123,7 +123,7 @@ export default {
 
 <template>
   <div
-    class="h-screen w-screen flex"
+    class="h-screen w-screen flex flex-col items-center"
     :class="dark ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-700'"
   >
     <!-- Top-Right Corner. -->
@@ -175,7 +175,7 @@ export default {
     </div>
 
     <!-- Centered. -->
-    <div class="m-auto w-full max-w-md p-8">
+    <div class="w-full max-w-md p-8 mt-24">
       <div
         class="shadow-xl rounded-xl"
         :class="dark ? 'bg-gray-700' : 'bg-white'"
@@ -222,10 +222,9 @@ export default {
     </div>
 
     <!-- Centered. -->
-    <div class="m-auto w-full max-w-md p-8">
+    <div class="p-8 mt-8">
       <button
-        class="flex-1 py-4 px-2 rounded-xl bg-green-400"
-        :class="dark ? 'hover:bg-gray-800' : 'hover:bg-green-500'"
+        class="flex-1 py-4 px-6 rounded-xl bg-green-700 hover:bg-green-800"
         @click="signTransaction"
       >
         Sign a Transaction

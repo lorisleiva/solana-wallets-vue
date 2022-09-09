@@ -17,7 +17,7 @@ import type {
 } from '@solana/web3.js';
 import { computed, Ref, ref, shallowRef, watch, watchEffect } from 'vue';
 import { WalletNotSelectedError } from './errors';
-import { useLocalStorage } from '@vueuse/core';
+import { useStorage } from '@vueuse/core';
 
 export type Wallet = Adapter;
 
@@ -69,7 +69,7 @@ export const createWalletStore = ({
   // Mutable values.
   const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
   const autoConnect = ref(initialAutoConnect);
-  const name: Ref<WalletName | null> = useLocalStorage<WalletName>(
+  const name: Ref<WalletName | null> = useStorage<WalletName>(
     localStorageKey,
     null
   );
@@ -77,8 +77,6 @@ export const createWalletStore = ({
   const publicKey = ref<PublicKey | null>(null);
   const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
   const connected = ref<boolean>(false);
-  const isConnecting = ref<boolean>(false);
-  const isDisconnecting = ref<boolean>(false);
   const connecting = ref<boolean>(false);
   const disconnecting = ref<boolean>(false);
   const ready = computed(
@@ -156,7 +154,7 @@ export const createWalletStore = ({
 
   // Connect the wallet.
   const connect = async (): Promise<void> => {
-    if (connected.value || isConnecting.value || isDisconnecting.value) return;
+    if (connected.value || connecting.value || disconnecting.value) return;
     if (!wallet.value) throw newError(new WalletNotSelectedError());
 
     if (!ready.value) {
@@ -182,20 +180,18 @@ export const createWalletStore = ({
 
   // Disconnect the wallet adapter.
   const disconnect = async (): Promise<void> => {
-    if (isDisconnecting.value) return;
+    if (disconnecting.value) return;
     if (!wallet.value) {
       name.value = null;
       return;
     }
 
     try {
-      isDisconnecting.value = true;
       disconnecting.value = true;
       await wallet.value.disconnect();
     } finally {
       name.value = null;
       disconnecting.value = false;
-      isDisconnecting.value = false;
     }
   };
 
@@ -243,7 +239,7 @@ export const createWalletStore = ({
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
   watchEffect(async (): Promise<void> => {
     if (
-      isConnecting.value ||
+      connecting.value ||
       !autoConnect.value ||
       !wallet.value ||
       !ready.value ||
@@ -253,7 +249,6 @@ export const createWalletStore = ({
     }
     try {
       connecting.value = true;
-      isConnecting.value = true;
 
       await wallet.value.connect();
     } catch (error: any) {
@@ -261,7 +256,6 @@ export const createWalletStore = ({
       name.value = null;
       // Don't throw error, but onError will still be called
     } finally {
-      isConnecting.value = false;
       connecting.value = false;
     }
   });
