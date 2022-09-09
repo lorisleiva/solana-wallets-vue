@@ -38,7 +38,7 @@ export interface WalletStore {
   // Methods.
   select(walletName: WalletName): void;
   connect(): Promise<void>;
-  disconnect(): Promise<void>;
+  disconnect(clearStorage?: boolean): Promise<void>;
   sendTransaction(
     transaction: Transaction,
     connection: Connection,
@@ -182,7 +182,8 @@ export const createWalletStore = ({
   };
 
   // Disconnect the wallet adapter.
-  const disconnect = async (): Promise<void> => {
+  const disconnect = async (clearStorage = false): Promise<void> => {
+    if (clearStorage) nameInStorage.value = null;
     if (disconnecting.value) return;
     if (!wallet.value) {
       name.value = null;

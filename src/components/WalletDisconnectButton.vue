@@ -1,7 +1,7 @@
 <script lang="ts">
-import { computed, defineComponent, toRefs } from "vue";
-import { useWallet } from "@/useWallet";
-import WalletIcon from "./WalletIcon.vue";
+import { computed, defineComponent, toRefs } from 'vue';
+import { useWallet } from '@/useWallet';
+import WalletIcon from './WalletIcon.vue';
 
 export default defineComponent({
   components: {
@@ -15,15 +15,15 @@ export default defineComponent({
     const { wallet, disconnect, disconnecting } = useWallet();
 
     const content = computed(() => {
-      if (disconnecting.value) return "Disconnecting ...";
-      if (wallet.value) return "Disconnect";
-      return "Disconnect Wallet";
+      if (disconnecting.value) return 'Disconnecting ...';
+      if (wallet.value) return 'Disconnect';
+      return 'Disconnect Wallet';
     });
 
     const handleClick = (event: MouseEvent) => {
-      emit("click", event);
+      emit('click', event);
       if (event.defaultPrevented) return;
-      disconnect().catch(() => {});
+      disconnect(true).catch(() => {});
     };
 
     const scope = {
@@ -37,7 +37,7 @@ export default defineComponent({
     return {
       scope,
       ...scope,
-    }
+    };
   },
 });
 </script>
