@@ -248,4 +248,4 @@ import { WalletMultiButton } from 'solana-wallets-vue'
 
 ## Contributing to this package
 
-To run the package locally, run `yarn demo`.
+To run the package locally, run `yarn demo:local`.
