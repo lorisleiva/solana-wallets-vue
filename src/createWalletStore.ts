@@ -240,14 +240,11 @@ export const createWalletStore = ({
     };
   });
 
-  // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
+  /**
+   * shouldAutoConnect checks whether the environment is valid to connect automatically.
+   * @returns a boolean indicating whether to connect (true) or not (false)
+   */
   function shouldAutoConnect(): boolean {
-    console.log('shouldAutoConnect', {
-      autoConnect: autoConnect.value,
-      wallet: wallet.value !== null,
-      ready: ready.value,
-      connected: !connected.value,
-    });
     return (
       autoConnect.value &&
       wallet.value !== null &&
@@ -256,6 +253,9 @@ export const createWalletStore = ({
     );
   }
 
+  /**
+   * doAutoConnect is similar to `connect`, but doesn't alert the user and connects 'in the background'.
+   */
   async function doAutoConnect() {
     try {
       connecting.value = true;

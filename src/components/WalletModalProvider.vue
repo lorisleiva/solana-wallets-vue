@@ -33,7 +33,7 @@ export default defineComponent({
     );
 
     // Close the modal when clicking outside of it or when pressing Escape.
-    onClickOutside(modalPanel as any, closeModal);
+    onClickOutside(modalPanel, closeModal);
     onKeyStroke('Escape', closeModal);
 
     // Ensures pressing Tab backwards and forwards stays within the modal.
