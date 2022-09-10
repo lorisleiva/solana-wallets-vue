@@ -11,11 +11,11 @@
     "postcss.config.js"
   ],
   "main": "./dist/solana-wallets-vue.umd.js",
-  "module": "./dist/solana-wallets-vue.es.js",
+  "module": "./dist/solana-wallets-vue.mjs",
   "typings": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/solana-wallets-vue.es.js",
+      "import": "./dist/solana-wallets-vue.mjs",
       "require": "./dist/solana-wallets-vue.umd.js"
     },
     "./styles.css": "./styles.css",
