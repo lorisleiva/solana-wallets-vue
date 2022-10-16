@@ -253,15 +253,16 @@ export const createWalletStore = ({
       !ready.value ||
       connected.value ||
       connecting.value
-    )
+    ) {
       return;
+    }
+
     try {
       connecting.value = true;
       await wallet.value.adapter.connect();
     } catch (error: any) {
-      // Clear the selected wallet
       name.value = null;
-      // Don't throw error, but onError will still be called
+      // Don't throw error, but handleError will still be called.
     } finally {
       connecting.value = false;
     }
