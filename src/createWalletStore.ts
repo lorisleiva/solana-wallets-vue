@@ -1,28 +1,26 @@
 import {
   WalletReadyState,
   WalletNotReadyError,
-  WalletNotConnectedError
+  WalletNotConnectedError,
 } from "@solana/wallet-adapter-base";
 import type {
   Adapter,
-  MessageSignerWalletAdapter,
-  SendTransactionOptions,
-  SignerWalletAdapter,
+  MessageSignerWalletAdapterProps,
+  SignerWalletAdapterProps,
+  WalletAdapterProps,
   WalletError,
-  WalletName
+  WalletName,
 } from "@solana/wallet-adapter-base";
-import type {
-  Connection,
-  PublicKey,
-  Transaction,
-  TransactionSignature
-} from "@solana/web3.js";
+import type { PublicKey, Transaction } from "@solana/web3.js";
 import { useLocalStorage } from "@vueuse/core";
 import type { Ref } from "vue";
 import { computed, ref, shallowRef, watch, watchEffect } from "vue";
 import { WalletNotSelectedError } from "./errors";
 
-export type Wallet = Adapter;
+export type Wallet = {
+  adapter: Adapter;
+  readyState: WalletReadyState;
+};
 
 export interface WalletStore {
   // Props.
@@ -42,35 +40,31 @@ export interface WalletStore {
   select(walletName: WalletName): void;
   connect(): Promise<void>;
   disconnect(): Promise<void>;
-  sendTransaction(
-    transaction: Transaction,
-    connection: Connection,
-    options?: SendTransactionOptions
-  ): Promise<TransactionSignature>;
+  sendTransaction: WalletAdapterProps["sendTransaction"];
 
   // Optional methods.
-  signTransaction: Ref<SignerWalletAdapter["signTransaction"] | undefined>;
+  signTransaction: Ref<SignerWalletAdapterProps["signTransaction"] | undefined>;
   signAllTransactions: Ref<
-    SignerWalletAdapter["signAllTransactions"] | undefined
+    SignerWalletAdapterProps["signAllTransactions"] | undefined
   >;
-  signMessage: Ref<MessageSignerWalletAdapter["signMessage"] | undefined>;
+  signMessage: Ref<MessageSignerWalletAdapterProps["signMessage"] | undefined>;
 }
 
 export interface WalletStoreProps {
-  wallets?: Wallet[] | Ref<Wallet[]>;
+  wallets?: Adapter[] | Ref<Adapter[]>;
   autoConnect?: boolean | Ref<boolean>;
   onError?: (error: WalletError) => void;
   localStorageKey?: string;
 }
 
 export const createWalletStore = ({
-  wallets: initialWallets = [],
+  wallets: initialAdapters = [],
   autoConnect: initialAutoConnect = false,
   onError = (error: WalletError) => console.error(error),
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
   // Mutable values.
-  const wallets: Ref<Wallet[]> = shallowRef(initialWallets);
+  const adapters: Ref<Adapter[]> = shallowRef(initialAdapters);
   const autoConnect = ref(initialAutoConnect);
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(
     localStorageKey,
@@ -78,7 +72,7 @@ export const createWalletStore = ({
   );
   const wallet = shallowRef<Wallet | null>(null);
   const publicKey = ref<PublicKey | null>(null);
-  const readyState = ref<WalletReadyState>(WalletReadyState.NotDetected);
+  const readyState = ref<WalletReadyState>(WalletReadyState.Unsupported);
   const connected = ref<boolean>(false);
   const connecting = ref<boolean>(false);
   const disconnecting = ref<boolean>(false);
@@ -88,12 +82,21 @@ export const createWalletStore = ({
       readyState.value === WalletReadyState.Loadable
   );
 
+  // Map adapters to wallets.
+  const wallets = shallowRef<Wallet[]>([]);
+  watch(adapters, (newAdapters) => {
+    wallets.value = newAdapters.map((newAdapter) => ({
+      adapter: newAdapter,
+      readyState: newAdapter.readyState,
+    }));
+  });
+
   // Helper methods to set and reset the main state variables.
   const setWallet = (newWallet: Wallet | null) => {
     wallet.value = newWallet;
     readyState.value = newWallet?.readyState ?? WalletReadyState.NotDetected;
-    publicKey.value = newWallet?.publicKey ?? null;
-    connected.value = newWallet?.connected ?? false;
+    publicKey.value = newWallet?.adapter.publicKey ?? null;
+    connected.value = newWallet?.adapter.connected ?? false;
   };
 
   // Helper method to return an error whilst using the onError callback.
@@ -106,7 +109,7 @@ export const createWalletStore = ({
   const walletsByName = computed(() => {
     return wallets.value.reduce<Record<WalletName, Wallet>>(
       (walletsByName, wallet) => {
-        walletsByName[wallet.name] = wallet;
+        walletsByName[wallet.adapter.name] = wallet;
         return walletsByName;
       },
       {}
@@ -133,19 +136,19 @@ export const createWalletStore = ({
   const onConnect = () => setWallet(wallet.value);
   const onDisconnect = () => (name.value = null);
   const invalidateListeners = watchEffect((onInvalidate) => {
-    const _wallet = wallet.value;
-    if (!_wallet) return;
+    const adapter = wallet.value?.adapter;
+    if (!adapter) return;
 
-    _wallet.on("readyStateChange", onReadyStateChange);
-    _wallet.on("connect", onConnect);
-    _wallet.on("disconnect", onDisconnect);
-    _wallet.on("error", onError);
+    adapter.on("readyStateChange", onReadyStateChange);
+    adapter.on("connect", onConnect);
+    adapter.on("disconnect", onDisconnect);
+    adapter.on("error", onError);
 
     onInvalidate(() => {
-      _wallet.off("readyStateChange", onReadyStateChange);
-      _wallet.off("connect", onConnect);
-      _wallet.off("disconnect", onDisconnect);
-      _wallet.off("error", onError);
+      adapter.off("readyStateChange", onReadyStateChange);
+      adapter.off("connect", onConnect);
+      adapter.off("disconnect", onDisconnect);
+      adapter.off("error", onError);
     });
   });
 
@@ -164,7 +167,7 @@ export const createWalletStore = ({
       name.value = null;
 
       if (typeof window !== "undefined") {
-        window.open(wallet.value.url, "_blank");
+        window.open(wallet.value.adapter.url, "_blank");
       }
 
       throw newError(new WalletNotReadyError());
@@ -172,7 +175,7 @@ export const createWalletStore = ({
 
     try {
       connecting.value = true;
-      await wallet.value.connect();
+      await wallet.value.adapter.connect();
     } catch (error: any) {
       name.value = null;
       throw error;
@@ -191,7 +194,7 @@ export const createWalletStore = ({
 
     try {
       disconnecting.value = true;
-      await wallet.value.disconnect();
+      await wallet.value.adapter.disconnect();
     } finally {
       name.value = null;
       disconnecting.value = false;
@@ -199,43 +202,53 @@ export const createWalletStore = ({
   };
 
   // Send a transaction using the provided connection.
-  const sendTransaction = async (
-    transaction: Transaction,
-    connection: Connection,
-    options?: SendTransactionOptions
+  const sendTransaction: WalletAdapterProps["sendTransaction"] = async (
+    transaction,
+    connection,
+    options?
   ) => {
     if (!wallet.value) throw newError(new WalletNotSelectedError());
     if (!connected.value) throw newError(new WalletNotConnectedError());
-    return await wallet.value.sendTransaction(transaction, connection, options);
+    return await wallet.value.adapter.sendTransaction(
+      transaction,
+      connection,
+      options
+    );
   };
 
   // Sign a transaction if the wallet supports it.
-  const signTransaction = computed(() => {
-    const _wallet = wallet.value;
-    if (!(_wallet && "signTransaction" in _wallet)) return;
-    return async (transaction: Transaction) => {
+  const signTransaction = computed<
+    SignerWalletAdapterProps["signTransaction"] | undefined
+  >(() => {
+    const adapter = wallet.value?.adapter;
+    if (!(adapter && "signTransaction" in adapter)) return;
+    return async (transaction) => {
       if (!connected.value) throw newError(new WalletNotConnectedError());
-      return await _wallet.signTransaction(transaction);
+      return await adapter.signTransaction(transaction);
     };
   });
 
   // Sign multiple transactions if the wallet adapter supports it
-  const signAllTransactions = computed(() => {
-    const _wallet = wallet.value;
-    if (!(_wallet && "signAllTransactions" in _wallet)) return;
-    return async (transactions: Transaction[]) => {
+  const signAllTransactions = computed<
+    SignerWalletAdapterProps["signAllTransactions"] | undefined
+  >(() => {
+    const adapter = wallet.value?.adapter;
+    if (!(adapter && "signAllTransactions" in adapter)) return;
+    return async (transactions) => {
       if (!connected.value) throw newError(new WalletNotConnectedError());
-      return await _wallet.signAllTransactions(transactions);
+      return await adapter.signAllTransactions(transactions);
     };
   });
 
   // Sign an arbitrary message if the wallet adapter supports it.
-  const signMessage = computed(() => {
-    const _wallet = wallet.value;
-    if (!(_wallet && "signMessage" in _wallet)) return;
+  const signMessage = computed<
+    MessageSignerWalletAdapterProps["signMessage"] | undefined
+  >(() => {
+    const adapter = wallet.value?.adapter;
+    if (!(adapter && "signMessage" in adapter)) return;
     return async (message: Uint8Array) => {
       if (!connected.value) throw newError(new WalletNotConnectedError());
-      return await _wallet.signMessage(message);
+      return await adapter.signMessage(message);
     };
   });
 
@@ -251,7 +264,7 @@ export const createWalletStore = ({
       return;
     try {
       connecting.value = true;
-      await wallet.value.connect();
+      await wallet.value.adapter.connect();
     } catch (error: any) {
       // Clear the selected wallet
       name.value = null;
