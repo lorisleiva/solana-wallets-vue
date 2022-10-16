@@ -44,7 +44,7 @@
     "vue-tsc": "^0.29.8"
   },
   "peerDependencies": {
-    "@solana/wallet-adapter-wallets": "^0.19.0",
+    "@solana/web3.js": "^1.61.0",
     "vue": "^3.2.25"
   }
 }
