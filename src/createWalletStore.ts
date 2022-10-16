@@ -1,23 +1,26 @@
 import {
-  Adapter,
-  WalletError,
-  WalletName,
-  WalletNotConnectedError,
-  WalletNotReadyError,
   WalletReadyState,
-  SignerWalletAdapter,
+  WalletNotReadyError,
+  WalletNotConnectedError
+} from "@solana/wallet-adapter-base";
+import type {
+  Adapter,
   MessageSignerWalletAdapter,
   SendTransactionOptions,
+  SignerWalletAdapter,
+  WalletError,
+  WalletName
 } from "@solana/wallet-adapter-base";
 import type {
   Connection,
   PublicKey,
   Transaction,
-  TransactionSignature,
+  TransactionSignature
 } from "@solana/web3.js";
-import { computed, Ref, ref, shallowRef, watch, watchEffect } from "vue";
-import { WalletNotSelectedError } from "./errors";
 import { useLocalStorage } from "@vueuse/core";
+import type { Ref } from "vue";
+import { computed, ref, shallowRef, watch, watchEffect } from "vue";
+import { WalletNotSelectedError } from "./errors";
 
 export type Wallet = Adapter;
 
