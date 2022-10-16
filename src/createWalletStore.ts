@@ -115,6 +115,34 @@ export const createWalletStore = ({
     onInvalidate(() => window.removeEventListener("beforeunload", handler));
   });
 
+  // Listen for `readyState` changes in all provided adapters.
+  watchEffect((onInvalidate) => {
+    function handleReadyStateChange(
+      this: Adapter,
+      readyState: WalletReadyState
+    ) {
+      const prevWallets = wallets.value;
+      const index = prevWallets.findIndex(({ adapter }) => adapter === this);
+      if (index === -1) return;
+
+      wallets.value = [
+        ...prevWallets.slice(0, index),
+        { adapter: this, readyState },
+        ...prevWallets.slice(index + 1),
+      ];
+    }
+
+    wallets.value.forEach(({ adapter }) =>
+      adapter.on("readyStateChange", handleReadyStateChange, adapter)
+    );
+
+    onInvalidate(() =>
+      wallets.value.forEach(({ adapter }) =>
+        adapter.off("readyStateChange", handleReadyStateChange, adapter)
+      )
+    );
+  });
+
   // Select a wallet adapter by name.
   const select = async (walletName: WalletName): Promise<void> => {
     if (name.value === walletName) return;
@@ -122,7 +150,6 @@ export const createWalletStore = ({
   };
 
   // Handle the wallet adapter events.
-  const onReadyStateChange = () => setWallet(wallet.value);
   const handleConnect = () => setWallet(wallet.value);
   const handleDisconnect = () => {
     if (unloadingWindow.value) return;
@@ -136,13 +163,11 @@ export const createWalletStore = ({
     const adapter = wallet.value?.adapter;
     if (!adapter) return;
 
-    adapter.on("readyStateChange", onReadyStateChange);
     adapter.on("connect", handleConnect);
     adapter.on("disconnect", handleDisconnect);
     adapter.on("error", handleError);
 
     onInvalidate(() => {
-      adapter.off("readyStateChange", onReadyStateChange);
       adapter.off("connect", handleConnect);
       adapter.off("disconnect", handleDisconnect);
       adapter.off("error", handleError);
