@@ -1,5 +1,5 @@
-import { PublicKey, Transaction } from '@solana/web3.js';
-import { computed, Ref } from 'vue';
+import type { PublicKey, Transaction } from "@solana/web3.js";
+import { computed, Ref } from "vue";
 import { useWallet } from "./useWallet";
 
 export interface AnchorWallet {
@@ -17,7 +17,12 @@ export function useAnchorWallet(): Ref<AnchorWallet | undefined> {
 
     // Ensure the wallet is connected and supports the right methods.
     const { signTransaction, signAllTransactions, publicKey } = walletStore;
-    if (!publicKey.value || !signTransaction.value || !signAllTransactions.value) return;
+    if (
+      !publicKey.value ||
+      !signTransaction.value ||
+      !signAllTransactions.value
+    )
+      return;
 
     return {
       publicKey: publicKey.value,
