@@ -14,20 +14,13 @@ import {
 } from "vue";
 import WalletIcon from "./WalletIcon.vue";
 
-type WalletModelProviderProps = {
-  featured: number;
-  container: string;
-  logo: string;
-  dark: boolean;
-};
-
 type WalletModalProviderRawBindings = WalletModelProviderScope & {
   scope: WalletModelProviderScope;
 };
 
 type WalletModelProviderScope = {
   dark: Ref<boolean>;
-  logo: Ref<string>;
+  logo: Ref<string | undefined>;
   hasLogo: Ref<boolean>;
   featured: Ref<number>;
   container: Ref<string>;
@@ -52,10 +45,7 @@ export default defineComponent({
     logo: String,
     dark: Boolean,
   },
-  setup(
-    props: WalletModelProviderProps,
-    { slots }
-  ): WalletModalProviderRawBindings {
+  setup(this: void, props, { slots }): WalletModalProviderRawBindings {
     const { featured, container, logo, dark } = toRefs(props);
     const modalPanel = ref(null) as Ref<HTMLElement | null>;
     const modalOpened = ref(false);
