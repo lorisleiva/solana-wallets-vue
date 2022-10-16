@@ -1,8 +1,46 @@
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, toRefs, watch } from "vue";
-import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
+import type { Wallet } from "@/createWalletStore";
 import { useWallet } from "@/useWallet";
+import type { WalletName } from "@solana/wallet-adapter-base";
+import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  Ref,
+  ref,
+  toRefs,
+  watch,
+} from "vue";
 import WalletIcon from "./WalletIcon.vue";
+
+type WalletModelProviderProps = {
+  featured: number;
+  container: string;
+  logo: string;
+  dark: boolean;
+};
+
+type WalletModalProviderRawBindings = WalletModelProviderScope & {
+  scope: WalletModelProviderScope;
+};
+
+type WalletModelProviderScope = {
+  dark: Ref<boolean>;
+  logo: Ref<string>;
+  hasLogo: Ref<boolean>;
+  featured: Ref<number>;
+  container: Ref<string>;
+  modalPanel: Ref<HTMLElement | null>;
+  modalOpened: Ref<boolean>;
+  openModal: () => void;
+  closeModal: () => void;
+  expandedWallets: Ref<boolean>;
+  walletsToDisplay: Ref<Wallet[]>;
+  featuredWallets: Ref<Wallet[]>;
+  hiddenWallets: Ref<Wallet[]>;
+  selectWallet: (name: WalletName) => void;
+};
 
 export default defineComponent({
   components: {
@@ -14,9 +52,12 @@ export default defineComponent({
     logo: String,
     dark: Boolean,
   },
-  setup(props, { slots }) {
+  setup(
+    props: WalletModelProviderProps,
+    { slots }
+  ): WalletModalProviderRawBindings {
     const { featured, container, logo, dark } = toRefs(props);
-    const modalPanel = ref<HTMLElement | null>(null);
+    const modalPanel = ref(null) as Ref<HTMLElement | null>;
     const modalOpened = ref(false);
     const openModal = () => (modalOpened.value = true);
     const closeModal = () => (modalOpened.value = false);
