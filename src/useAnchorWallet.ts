@@ -1,11 +1,12 @@
-import type { PublicKey, Transaction } from "@solana/web3.js";
+import type { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
+import type { PublicKey } from "@solana/web3.js";
 import { computed, Ref } from "vue";
 import { useWallet } from "./useWallet";
 
 export interface AnchorWallet {
   publicKey: PublicKey;
-  signTransaction(transaction: Transaction): Promise<Transaction>;
-  signAllTransactions(transactions: Transaction[]): Promise<Transaction[]>;
+  signTransaction: SignerWalletAdapterProps["signTransaction"];
+  signAllTransactions: SignerWalletAdapterProps["signAllTransactions"];
 }
 
 export function useAnchorWallet(): Ref<AnchorWallet | undefined> {
