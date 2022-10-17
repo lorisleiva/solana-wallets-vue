@@ -26,16 +26,21 @@ export default {
       clusterApiUrl("devnet"),
       preflightCommitment
     );
-    const provider = computed(
-      () =>
-        new AnchorProvider(connection, wallet.value, { preflightCommitment })
-    );
-    const program = computed(() => new Program(idl, programID, provider.value));
+    const provider = computed(() => {
+      if (!wallet.value) return;
+      return new AnchorProvider(connection, wallet.value, {
+        preflightCommitment,
+      });
+    });
+    const program = computed(() => {
+      if (!provider.value) return;
+      return new Program(idl, programID, provider.value);
+    });
 
     const counterPublicKey = useLocalStorage("counterPublicKey", null);
     const counter = ref(0);
     watchEffect(async () => {
-      if (!counterPublicKey.value) return;
+      if (!counterPublicKey.value || !program.value) return;
       const account = await program.value.account.baseAccount.fetch(
         counterPublicKey.value
       );
