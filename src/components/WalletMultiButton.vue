@@ -24,8 +24,12 @@ export default defineComponent({
 
     const dropdownPanel = ref<HTMLElement>();
     const dropdownOpened = ref(false);
-    const openDropdown = () => (dropdownOpened.value = true);
-    const closeDropdown = () => (dropdownOpened.value = false);
+    const openDropdown = () => {
+      dropdownOpened.value = true;
+    };
+    const closeDropdown = () => {
+      dropdownOpened.value = false;
+    };
     onClickOutside(dropdownPanel, closeDropdown);
 
     const publicKeyBase58 = computed(() => publicKey.value?.toBase58());
@@ -134,7 +138,10 @@ export default defineComponent({
                   Change wallet
                 </li>
                 <li
-                  @click="disconnect"
+                  @click="
+                    disconnect();
+                    closeDropdown();
+                  "
                   class="swv-dropdown-list-item"
                   role="menuitem"
                 >
