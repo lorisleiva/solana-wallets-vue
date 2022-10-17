@@ -85,8 +85,8 @@ export const createWalletStore = ({
 
   // Map adapters to wallets.
   const wallets = shallowRef<Wallet[]>([]);
-  watch(adapters, (newAdapters) => {
-    wallets.value = newAdapters.map((newAdapter) => ({
+  watchEffect(() => {
+    wallets.value = adapters.value.map((newAdapter) => ({
       adapter: newAdapter,
       readyState: newAdapter.readyState,
     }));
