@@ -1,9 +1,9 @@
-import { WalletError } from '@solana/wallet-adapter-base';
+import { WalletError } from "@solana/wallet-adapter-base";
 
 export class WalletNotSelectedError extends WalletError {
-  name = 'WalletNotSelectedError';
+  name = "WalletNotSelectedError";
 }
 
 export class WalletNotInitializedError extends WalletError {
-  name = 'WalletNotSelectedError';
+  name = "WalletNotSelectedError";
 }

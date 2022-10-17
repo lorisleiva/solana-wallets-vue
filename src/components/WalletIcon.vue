@@ -14,6 +14,10 @@ export default defineComponent({
 
 <template>
   <i class="swv-button-icon">
-    <img v-if="wallet" :src="wallet.icon" :alt="`${wallet.name} icon`" />
+    <img
+      v-if="wallet"
+      :src="wallet.adapter.icon"
+      :alt="`${wallet.adapter.name} icon`"
+    />
   </i>
 </template>

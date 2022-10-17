@@ -1,36 +1,35 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-const path = require('path')
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import * as path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
   resolve: {
-    dedupe: ['vue'],
+    dedupe: ["vue"],
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      "@": path.resolve(__dirname, "src"),
     },
   },
   define: {
-    'process.env': {}
+    "process.env": {},
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'solana-wallets-vue',
+      entry: path.resolve(__dirname, "src/index.ts"),
+      name: "solana-wallets-vue",
     },
     rollupOptions: {
-      external: ['vue', '@solana/web3.js', '@solana/wallet-adapter-base'],
+      external: ["@solana/wallet-adapter-base", "@vueuse/core"],
       output: {
-        exports: 'named',
+        exports: "named",
         globals: {
-          vue: 'Vue',
-          '@solana/web3.js': 'SolanaWeb3',
-          '@solana/wallet-adapter-base': 'SolanaWalletAdapterBase',
+          "@solana/wallet-adapter-base": "SolanaWalletAdapterBase",
+          "@vueuse/core": "VueUseCore",
         },
       },
     },
     sourcemap: true,
     minify: false,
   },
-})
+});

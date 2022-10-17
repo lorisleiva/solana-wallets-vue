@@ -14,7 +14,7 @@ export default defineComponent({
   },
   props: {
     featured: { type: Number, default: 3 },
-    container: { type: String, default: 'body' },
+    container: { type: String, default: "body" },
     logo: String,
     dark: Boolean,
   },
@@ -24,18 +24,31 @@ export default defineComponent({
 
     const dropdownPanel = ref<HTMLElement>();
     const dropdownOpened = ref(false);
-    const openDropdown = () => (dropdownOpened.value = true);
-    const closeDropdown = () => (dropdownOpened.value = false);
+    const openDropdown = () => {
+      dropdownOpened.value = true;
+    };
+    const closeDropdown = () => {
+      dropdownOpened.value = false;
+    };
     onClickOutside(dropdownPanel, closeDropdown);
 
     const publicKeyBase58 = computed(() => publicKey.value?.toBase58());
     const publicKeyTrimmed = computed(() => {
       if (!wallet.value || !publicKeyBase58.value) return null;
-      return publicKeyBase58.value.slice(0, 4) + ".." + publicKeyBase58.value.slice(-4);
+      return (
+        publicKeyBase58.value.slice(0, 4) +
+        ".." +
+        publicKeyBase58.value.slice(-4)
+      );
     });
 
-    const { copy, copied: addressCopied, isSupported: canCopy } = useClipboard()
-    const copyAddress = () => publicKeyBase58.value && copy(publicKeyBase58.value);
+    const {
+      copy,
+      copied: addressCopied,
+      isSupported: canCopy,
+    } = useClipboard();
+    const copyAddress = () =>
+      publicKeyBase58.value && copy(publicKeyBase58.value);
 
     // Define the bindings given to scoped slots.
     const scope = {
@@ -55,7 +68,7 @@ export default defineComponent({
       closeDropdown,
       copyAddress,
       disconnect,
-    }
+    };
 
     return {
       scope,
@@ -66,13 +79,24 @@ export default defineComponent({
 </script>
 
 <template>
-  <wallet-modal-provider :featured="featured" :container="container" :logo="logo" :dark="dark">
+  <wallet-modal-provider
+    :featured="featured"
+    :container="container"
+    :logo="logo"
+    :dark="dark"
+  >
     <template #default="modalScope">
       <slot v-bind="{ ...modalScope, ...scope }">
-        <button v-if="!wallet" class="swv-button swv-button-trigger" @click="modalScope.openModal">
+        <button
+          v-if="!wallet"
+          class="swv-button swv-button-trigger"
+          @click="modalScope.openModal"
+        >
           Select Wallet
         </button>
-        <wallet-connect-button v-else-if="!publicKeyBase58"></wallet-connect-button>
+        <wallet-connect-button
+          v-else-if="!publicKeyBase58"
+        ></wallet-connect-button>
         <div v-else class="swv-dropdown">
           <slot name="dropdown-button" v-bind="{ ...modalScope, ...scope }">
             <button
@@ -95,13 +119,32 @@ export default defineComponent({
               role="menu"
             >
               <slot name="dropdown-list" v-bind="{ ...modalScope, ...scope }">
-                <li v-if="canCopy" @click="copyAddress" class="swv-dropdown-list-item" role="menuitem">
+                <li
+                  v-if="canCopy"
+                  @click="copyAddress"
+                  class="swv-dropdown-list-item"
+                  role="menuitem"
+                >
                   {{ addressCopied ? "Copied" : "Copy address" }}
                 </li>
-                <li @click="modalScope.openModal(); closeDropdown();" class="swv-dropdown-list-item" role="menuitem">
+                <li
+                  @click="
+                    modalScope.openModal();
+                    closeDropdown();
+                  "
+                  class="swv-dropdown-list-item"
+                  role="menuitem"
+                >
                   Change wallet
                 </li>
-                <li @click="disconnect" class="swv-dropdown-list-item" role="menuitem">
+                <li
+                  @click="
+                    disconnect();
+                    closeDropdown();
+                  "
+                  class="swv-dropdown-list-item"
+                  role="menuitem"
+                >
                   Disconnect
                 </li>
               </slot>

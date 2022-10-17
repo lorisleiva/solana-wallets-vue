@@ -17,6 +17,7 @@
     --swv-modal-close-button-text-color: #9ca3af;
     --swv-modal-close-button-hover-text-color: #374151;
     --swv-modal-button-text-color: #1f2937;
+    --swv-modal-wallet-status-text-color: #64748b;
     --swv-modal-button-hover-background-color: #f3f4f6;
     --swv-modal-button-outline-color: var(--swv-button-outline-color);
 
@@ -45,6 +46,7 @@
     --swv-modal-close-button-text-color: #64748b;
     --swv-modal-close-button-hover-text-color: white;
     --swv-modal-button-text-color: white;
+    --swv-modal-wallet-status-text-color: #64748b;
     --swv-modal-button-hover-background-color: #0f172a;
     --swv-modal-button-outline-color: white;
 
@@ -302,7 +304,13 @@
     font-weight: 400;
     border-radius: 0;
     font-size: 18px;
-    justify-content: space-between;
+    justify-content: flex-start;
+}
+
+.swv-modal-list .swv-button .swv-wallet-status {
+    color: var(--swv-modal-wallet-status-text-color);
+    font-size: 16px;
+    margin-left: auto;
 }
 
 .swv-modal-list .swv-button-icon,

@@ -37,7 +37,7 @@ export default defineComponent({
     return {
       scope,
       ...scope,
-    }
+    };
   },
 });
 </script>
