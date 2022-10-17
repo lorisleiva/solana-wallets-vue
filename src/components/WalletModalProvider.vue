@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Wallet } from "@/createWalletStore";
 import { useWallet } from "@/useWallet";
-import type { WalletName } from "@solana/wallet-adapter-base";
+import { WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
 import {
   computed,
@@ -54,11 +54,31 @@ export default defineComponent({
     const hasLogo = computed(() => !!slots.logo || !!logo.value);
 
     const { wallets, select: selectWallet } = useWallet();
+    const orderedWallets = computed(() => {
+      const installed: Wallet[] = [];
+      const notDetected: Wallet[] = [];
+      const loadable: Wallet[] = [];
+
+      wallets.value.forEach((wallet) => {
+        if (wallet.readyState === WalletReadyState.NotDetected) {
+          notDetected.push(wallet);
+        } else if (wallet.readyState === WalletReadyState.Loadable) {
+          loadable.push(wallet);
+        } else if (wallet.readyState === WalletReadyState.Installed) {
+          installed.push(wallet);
+        }
+      });
+
+      return [...installed, ...loadable, ...notDetected];
+    });
+
     const expandedWallets = ref(false);
     const featuredWallets = computed(() =>
-      wallets.value.slice(0, featured.value)
+      orderedWallets.value.slice(0, featured.value)
     );
-    const hiddenWallets = computed(() => wallets.value.slice(featured.value));
+    const hiddenWallets = computed(() =>
+      orderedWallets.value.slice(featured.value)
+    );
     const walletsToDisplay = computed(() =>
       expandedWallets.value ? wallets.value : featuredWallets.value
     );
@@ -173,8 +193,14 @@ export default defineComponent({
                 "
               >
                 <button class="swv-button">
-                  <p v-text="wallet.adapter.name"></p>
                   <wallet-icon :wallet="wallet"></wallet-icon>
+                  <p v-text="wallet.adapter.name"></p>
+                  <div
+                    v-if="wallet.readyState === 'Installed'"
+                    class="swv-wallet-status"
+                  >
+                    Detected
+                  </div>
                 </button>
               </li>
             </ul>
