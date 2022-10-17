@@ -54,14 +54,13 @@ export default {
 
       const newCounter = Keypair.generate();
       await program.value.methods
-        .create({
-          accounts: {
-            baseAccount: newCounter.publicKey,
-            user: wallet.value.publicKey,
-            systemProgram: SystemProgram.programId,
-          },
-          signers: [newCounter],
+        .create()
+        .accounts({
+          baseAccount: newCounter.publicKey,
+          user: wallet.value.publicKey,
+          systemProgram: SystemProgram.programId,
         })
+        .signers([newCounter])
         .rpc();
       counterPublicKey.value = newCounter.publicKey;
     };
@@ -73,11 +72,10 @@ export default {
         return alert("Create a new counter first.");
       }
 
-      await program.value.rpc.increment({
-        accounts: {
-          baseAccount: counterPublicKey.value,
-        },
-      });
+      await program.value.methods
+        .increment()
+        .accounts({ baseAccount: counterPublicKey.value })
+        .rpc();
       counter.value += 1;
     };
 
