@@ -1,5 +1,5 @@
 import { App } from "vue";
-import { WalletStoreProps } from "./createWalletStore";
+import type { WalletStoreProps } from "./types";
 import { initWallet, useWallet } from "./useWallet";
 
 export * from "./components";

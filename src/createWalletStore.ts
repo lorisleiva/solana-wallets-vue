@@ -16,46 +16,7 @@ import { useLocalStorage } from "@vueuse/core";
 import type { Ref } from "vue";
 import { computed, ref, shallowRef, watch, watchEffect } from "vue";
 import { WalletNotSelectedError } from "./errors";
-
-export type Wallet = {
-  adapter: Adapter;
-  readyState: WalletReadyState;
-};
-
-export interface WalletStore {
-  // Props.
-  wallets: Ref<Wallet[]>;
-  autoConnect: Ref<boolean>;
-
-  // Data.
-  wallet: Ref<Wallet | null>;
-  publicKey: Ref<PublicKey | null>;
-  readyState: Ref<WalletReadyState>;
-  ready: Ref<boolean>;
-  connected: Ref<boolean>;
-  connecting: Ref<boolean>;
-  disconnecting: Ref<boolean>;
-
-  // Methods.
-  select(walletName: WalletName): void;
-  connect(): Promise<void>;
-  disconnect(): Promise<void>;
-  sendTransaction: WalletAdapterProps["sendTransaction"];
-
-  // Optional methods.
-  signTransaction: Ref<SignerWalletAdapterProps["signTransaction"] | undefined>;
-  signAllTransactions: Ref<
-    SignerWalletAdapterProps["signAllTransactions"] | undefined
-  >;
-  signMessage: Ref<MessageSignerWalletAdapterProps["signMessage"] | undefined>;
-}
-
-export interface WalletStoreProps {
-  wallets?: Adapter[] | Ref<Adapter[]>;
-  autoConnect?: boolean | Ref<boolean>;
-  onError?: (error: WalletError) => void;
-  localStorageKey?: string;
-}
+import type { Wallet, WalletStore, WalletStoreProps } from "./types";
 
 export const createWalletStore = ({
   wallets: initialAdapters = [],

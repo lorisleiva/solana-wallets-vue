@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Wallet } from "@/createWalletStore";
+import type { Wallet } from "@/types";
 import { useWallet } from "@/useWallet";
 import { WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
 import { onClickOutside, onKeyStroke, useScrollLock } from "@vueuse/core";
