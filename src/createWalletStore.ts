@@ -17,6 +17,7 @@ import type { Ref } from "vue";
 import { computed, ref, shallowRef, watch, watchEffect } from "vue";
 import { WalletNotSelectedError } from "./errors";
 import type { Wallet, WalletStore, WalletStoreProps } from "./types";
+import { useReadyStateListeners } from "./composables";
 
 export const createWalletStore = ({
   wallets: initialAdapters = [],
@@ -76,33 +77,7 @@ export const createWalletStore = ({
     onInvalidate(() => window.removeEventListener("beforeunload", handler));
   });
 
-  // Listen for `readyState` changes in all provided adapters.
-  watchEffect((onInvalidate) => {
-    function handleReadyStateChange(
-      this: Adapter,
-      readyState: WalletReadyState
-    ) {
-      const prevWallets = wallets.value;
-      const index = prevWallets.findIndex(({ adapter }) => adapter === this);
-      if (index === -1) return;
-
-      wallets.value = [
-        ...prevWallets.slice(0, index),
-        { adapter: this, readyState },
-        ...prevWallets.slice(index + 1),
-      ];
-    }
-
-    wallets.value.forEach(({ adapter }) =>
-      adapter.on("readyStateChange", handleReadyStateChange, adapter)
-    );
-
-    onInvalidate(() =>
-      wallets.value.forEach(({ adapter }) =>
-        adapter.off("readyStateChange", handleReadyStateChange, adapter)
-      )
-    );
-  });
+  useReadyStateListeners(wallets);
 
   // Select a wallet adapter by name.
   const select = async (walletName: WalletName): Promise<void> => {
