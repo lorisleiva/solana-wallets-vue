@@ -6,8 +6,10 @@ import {
   useAdapterListeners,
   useAutoConnect,
   useErrorHandler,
+  useMobileWalletAdapters,
   useReadyStateListeners,
   useSelectWalletName,
+  useStandardWalletAdapters,
   useTransactionMethods,
   useUnloadingWindow,
   useWalletState,
@@ -29,8 +31,9 @@ export const createWalletStore = ({
   const handleError = useErrorHandler(unloadingWindow, onError);
 
   // From raw adapters to computed list of wallets.
-  const adapters: Ref<Adapter[]> = shallowRef(initialAdapters);
-  // TODO: add SWA and MWA to adapters.
+  const rawAdapters: Ref<Adapter[]> = shallowRef(initialAdapters);
+  const rawAdaptersWithSwa = useStandardWalletAdapters(rawAdapters);
+  const adapters = useMobileWalletAdapters(rawAdaptersWithSwa);
   const wallets = useWrapAdaptersInWallets(adapters);
 
   // Wallet selection and state.

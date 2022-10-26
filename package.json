@@ -28,6 +28,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@solana-mobile/wallet-adapter-mobile": "^0.9.7",
+    "@wallet-standard/app": "^1.0.0-rc.5",
+    "@wallet-standard/base": "^1.0.0-rc.5",
     "@solana/wallet-adapter-base": "^0.9.18",
     "@vueuse/core": "^9.3.0"
   },
