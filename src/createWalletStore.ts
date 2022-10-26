@@ -1,24 +1,10 @@
-import {
-  WalletReadyState,
-  WalletNotReadyError,
-  WalletNotConnectedError,
-} from "@solana/wallet-adapter-base";
-import type {
-  Adapter,
-  MessageSignerWalletAdapterProps,
-  SignerWalletAdapterProps,
-  WalletAdapterProps,
-  WalletError,
-  WalletName,
-} from "@solana/wallet-adapter-base";
-import type { PublicKey } from "@solana/web3.js";
-import { useLocalStorage } from "@vueuse/core";
+import type { Adapter } from "@solana/wallet-adapter-base";
+import { WalletNotReadyError } from "@solana/wallet-adapter-base";
 import type { Ref } from "vue";
-import { computed, ref, shallowRef, watch, watchEffect } from "vue";
-import { WalletNotSelectedError } from "./errors";
-import type { Wallet, WalletStore, WalletStoreProps } from "./types";
+import { ref, shallowRef } from "vue";
 import {
   useAdapterListeners,
+  useAutoConnect,
   useErrorHandler,
   useReadyStateListeners,
   useSelectWalletName,
@@ -27,6 +13,8 @@ import {
   useWalletState,
   useWrapAdaptersInWallets,
 } from "./composables";
+import { WalletNotSelectedError } from "./errors";
+import type { WalletStore, WalletStoreProps } from "./types";
 
 export const createWalletStore = ({
   wallets: initialAdapters = [],
@@ -34,17 +22,19 @@ export const createWalletStore = ({
   onError,
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
+  // Loading states and error handling.
+  const connecting = ref<boolean>(false);
+  const disconnecting = ref<boolean>(false);
   const unloadingWindow = useUnloadingWindow();
   const handleError = useErrorHandler(unloadingWindow, onError);
 
-  // Mutable values.
+  // From raw adapters to computed list of wallets.
   const adapters: Ref<Adapter[]> = shallowRef(initialAdapters);
-  const autoConnect = ref(initialAutoConnect);
-  const connecting = ref<boolean>(false);
-  const disconnecting = ref<boolean>(false);
-
+  // TODO: add SWA and MWA to adapters.
   const wallets = useWrapAdaptersInWallets(adapters);
-  const { name, select } = useSelectWalletName(localStorageKey);
+
+  // Wallet selection and state.
+  const { name, select, deselect } = useSelectWalletName(localStorageKey);
   const {
     wallet,
     publicKey,
@@ -54,14 +44,29 @@ export const createWalletStore = ({
     refreshWalletState,
   } = useWalletState(wallets, name);
 
+  // Wallet listeners.
   useReadyStateListeners(wallets);
   useAdapterListeners(
     wallet,
-    name,
     unloadingWindow,
+    deselect,
     refreshWalletState,
     handleError
   );
+
+  // Auto-connect feature.
+  const autoConnect = useAutoConnect(
+    initialAutoConnect,
+    wallet,
+    connecting,
+    connected,
+    ready,
+    deselect
+  );
+
+  // Transaction methods.
+  const { sendTransaction, signTransaction, signAllTransactions, signMessage } =
+    useTransactionMethods(wallet, handleError);
 
   // Connect the wallet.
   const connect = async (): Promise<void> => {
@@ -94,32 +99,6 @@ export const createWalletStore = ({
       disconnecting.value = false;
     }
   };
-
-  const { sendTransaction, signTransaction, signAllTransactions, signMessage } =
-    useTransactionMethods(wallet, handleError);
-
-  // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
-  watchEffect(async (): Promise<void> => {
-    if (
-      !autoConnect.value ||
-      !wallet.value ||
-      !ready.value ||
-      connected.value ||
-      connecting.value
-    ) {
-      return;
-    }
-
-    try {
-      connecting.value = true;
-      await wallet.value.adapter.connect();
-    } catch (error: any) {
-      name.value = null;
-      // Don't throw error, but handleError will still be called.
-    } finally {
-      connecting.value = false;
-    }
-  });
 
   // Return the created store.
   return {

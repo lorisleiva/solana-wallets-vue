@@ -8,6 +8,7 @@ import { Ref } from "vue";
 export function useSelectWalletName(localStorageKey: string): {
   name: Ref<string | null>;
   select: (name: WalletName) => void;
+  deselect: () => void;
 } {
   const name: Ref<WalletName | null> = useLocalStorage<WalletName>(
     localStorageKey,
@@ -20,5 +21,9 @@ export function useSelectWalletName(localStorageKey: string): {
     }
   };
 
-  return { name, select };
+  const deselect = (): void => {
+    name.value = null;
+  };
+
+  return { name, select, deselect };
 }
