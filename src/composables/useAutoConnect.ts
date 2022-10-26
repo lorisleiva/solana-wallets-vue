@@ -1,5 +1,5 @@
 import type { Wallet } from "@/types";
-import { ref, Ref, watchEffect } from "vue";
+import { ref, Ref, watch, watchEffect } from "vue";
 
 /**
  * Handles the auto-connect logic of the wallet.
@@ -14,6 +14,11 @@ export function useAutoConnect(
 ) {
   const autoConnect = ref(initialAutoConnect);
   const hasAttemptedToAutoConnect = ref(false);
+
+  // When the adapter changes, clear the `autoConnect` tracking flag.
+  watch(wallet, () => {
+    hasAttemptedToAutoConnect.value = false;
+  });
 
   // If autoConnect is enabled, try to connect when the wallet adapter changes and is ready.
   watchEffect(() => {
