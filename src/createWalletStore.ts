@@ -58,8 +58,6 @@ export const createWalletStore = ({
   useAdapterListeners(
     wallet,
     name,
-    connecting,
-    disconnecting,
     unloadingWindow,
     refreshWalletState,
     handleError
@@ -70,22 +68,15 @@ export const createWalletStore = ({
     if (connected.value || connecting.value || disconnecting.value) return;
     if (!wallet.value) throw handleError(new WalletNotSelectedError());
     const adapter = wallet.value.adapter;
-
-    if (!ready.value) {
-      name.value = null;
-
-      if (typeof window !== "undefined") {
-        window.open(adapter.url, "_blank");
-      }
-
-      throw handleError(new WalletNotReadyError());
-    }
+    if (!ready.value) throw handleError(new WalletNotReadyError(), adapter);
 
     try {
       connecting.value = true;
       await adapter.connect();
     } catch (error: any) {
+      // TODO: Don't disconnect if SolanaMobileWalletAdapterWalletName
       name.value = null;
+
       // handleError will also be called.
       throw error;
     } finally {
@@ -95,19 +86,10 @@ export const createWalletStore = ({
 
   // Disconnect the wallet adapter.
   const disconnect = async (): Promise<void> => {
-    if (disconnecting.value) return;
-    if (!wallet.value) {
-      name.value = null;
-      return;
-    }
-
+    if (disconnecting.value || !wallet.value) return;
     try {
       disconnecting.value = true;
       await wallet.value.adapter.disconnect();
-    } catch (error: any) {
-      name.value = null;
-      // handleError will also be called.
-      throw error;
     } finally {
       disconnecting.value = false;
     }

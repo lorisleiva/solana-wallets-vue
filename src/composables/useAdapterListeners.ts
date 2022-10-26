@@ -8,8 +8,6 @@ import { Ref, watchEffect } from "vue";
 export function useAdapterListeners(
   wallet: Ref<Wallet | null>,
   name: Ref<string | null>,
-  connecting: Ref<boolean>,
-  disconnecting: Ref<boolean>,
   unloadingWindow: Ref<boolean>,
   refreshWalletState: () => void,
   handleError: (error: WalletError, adapter?: Adapter) => WalletError
@@ -19,17 +17,13 @@ export function useAdapterListeners(
     if (!adapter) return;
 
     const handleAdapterConnect = () => {
-      connecting.value = false;
-      disconnecting.value = false;
       refreshWalletState();
     };
 
     const handleAdapterDisconnect = () => {
       if (unloadingWindow.value) return;
-      name.value = null; // TODO: Remove?
-      connecting.value = false;
-      disconnecting.value = false;
-      refreshWalletState();
+      // TODO: Return early if SolanaMobileWalletAdapterWalletName
+      name.value = null;
     };
 
     const handleAdapterError = (error: WalletError): WalletError => {
