@@ -29,10 +29,11 @@
   },
   "dependencies": {
     "@solana-mobile/wallet-adapter-mobile": "^0.9.7",
-    "@wallet-standard/app": "^1.0.0-rc.5",
-    "@wallet-standard/base": "^1.0.0-rc.5",
     "@solana/wallet-adapter-base": "^0.9.18",
-    "@vueuse/core": "^9.3.0"
+    "@solana/wallet-standard-wallet-adapter-base": "^1.0.0-rc.1",
+    "@vueuse/core": "^9.3.0",
+    "@wallet-standard/app": "^1.0.0-rc.5",
+    "@wallet-standard/base": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "@project-serum/anchor": "^0.25.0",

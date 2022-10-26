@@ -741,6 +741,43 @@
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.18"
 
+"@solana/wallet-standard-chains@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@solana/wallet-standard-chains/-/wallet-standard-chains-1.0.0-rc.0.tgz#d6c59c47a3b3bd5c62196da6809949aae21ea041"
+  integrity sha512-KBYLaTF/wjW36VTUb4JTrr30S6DP7x2TzyNkzLl3DNASSENhxWtug6xWy90fuC5EJj+TtRuzJYx90/csJTx1yw==
+  dependencies:
+    "@wallet-standard/base" "^1.0.0-rc.0"
+
+"@solana/wallet-standard-features@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@solana/wallet-standard-features/-/wallet-standard-features-1.0.0-rc.0.tgz#5927d3826e8497615aec7030a249742bebf9050d"
+  integrity sha512-BPxu50kzCDSxogQFp8wUQAhPDHNyyzetf4iBiae23iT1TnVQNSoS0e+f+AAqK/GMwfCoEcubhzNNuLpRIHI1qA==
+  dependencies:
+    "@wallet-standard/base" "^1.0.0-rc.0"
+    "@wallet-standard/features" "^1.0.0-rc.0"
+
+"@solana/wallet-standard-util@^1.0.0-rc.1":
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@solana/wallet-standard-util/-/wallet-standard-util-1.0.0-rc.1.tgz#3ab760439dcdc01a75fa87d8e4b36482a0a67a53"
+  integrity sha512-rcPQ0dg84AHmzE0E0N0VVEWoi9T2ZlEF7pU14bTnvjUgDfjPum+hNic2EMo7J7eQQXtUGctzMLWGlLdMfgC/Xg==
+  dependencies:
+    "@solana/wallet-standard-chains" "^1.0.0-rc.0"
+    "@solana/wallet-standard-features" "^1.0.0-rc.0"
+
+"@solana/wallet-standard-wallet-adapter-base@^1.0.0-rc.1":
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@solana/wallet-standard-wallet-adapter-base/-/wallet-standard-wallet-adapter-base-1.0.0-rc.1.tgz#4e1cc231e343cbda225c2e170a7b9f635de8c844"
+  integrity sha512-sJwg3UcWx497ZFPqH0nXiJvhJEVrkXszCDfdr0lv5GrfV7iQtIfZi2UD2lOnr1CF8H0jBw/EgfyunDX2t+l7iw==
+  dependencies:
+    "@solana/wallet-adapter-base" "^0.9.17"
+    "@solana/wallet-standard-chains" "^1.0.0-rc.0"
+    "@solana/wallet-standard-features" "^1.0.0-rc.0"
+    "@solana/wallet-standard-util" "^1.0.0-rc.1"
+    "@wallet-standard/app" "^1.0.0-rc.0"
+    "@wallet-standard/base" "^1.0.0-rc.0"
+    "@wallet-standard/features" "^1.0.0-rc.0"
+    "@wallet-standard/util" "^1.0.0-rc.0"
+
 "@solana/web3.js@^1.30.2":
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.33.0.tgz#3b8c0b4cd259ffe8764937f1001f79958c5d9533"
@@ -1412,6 +1449,13 @@
   dependencies:
     vue-demi "*"
 
+"@wallet-standard/app@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@wallet-standard/app/-/app-1.0.0-rc.0.tgz#e38bb5d3ac7798a3efa1cbdf8fa3b34a05e34e47"
+  integrity sha512-dSn8qF9xj8oRz/8Q3+OmiVZx3Y/wtl8taaqn3dkiRY1Q6ueQaia0+cvnvl4cdE23vSgvNtc6IMbvFkRw4vJYbA==
+  dependencies:
+    "@wallet-standard/base" "^1.0.0-rc.0"
+
 "@wallet-standard/app@^1.0.0-rc.5":
   version "1.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@wallet-standard/app/-/app-1.0.0-rc.5.tgz#fe738d37c2fb54ef6c83fb320b9a9d14d9047922"
@@ -1419,10 +1463,29 @@
   dependencies:
     "@wallet-standard/base" "^1.0.0-rc.5"
 
+"@wallet-standard/base@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@wallet-standard/base/-/base-1.0.0-rc.0.tgz#f12e7f0903a6340b1e7c38d42a8e1ee98f116294"
+  integrity sha512-yfQ5Ho61eKXRT6b81ezwGQ6DflKjI7hmkVRGVPAHno5gPK8TvFuiDmQJid1Y+c0v8huGGc/XFvw3451JJgb1fg==
+
 "@wallet-standard/base@^1.0.0-rc.5":
   version "1.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@wallet-standard/base/-/base-1.0.0-rc.5.tgz#a215089a9bbbe0b494dce202dd1cee6b8430cee1"
   integrity sha512-28FCazScjZtztvH+b4Tu30yDwe6D0oze0uKKrHXAOdzQ50O3ydqWICYuaz7jiq38Mt9TGNRiSOpePdsMC+qP8Q==
+
+"@wallet-standard/features@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@wallet-standard/features/-/features-1.0.0-rc.0.tgz#08dfc7e5f559709b982e3318a81299f47989e523"
+  integrity sha512-4Jo/IPvsLFGnRqTF1P1Tukbae/xiiiV5Gqpf3hxjXhX7wK1hflU2aLMoU2le4P3FRY7Tphj4pkoVcrl/jBm7Xg==
+  dependencies:
+    "@wallet-standard/base" "^1.0.0-rc.0"
+
+"@wallet-standard/util@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@wallet-standard/util/-/util-1.0.0-rc.0.tgz#0caf9351680f0a9c724e28a1e6ee9b2da4256734"
+  integrity sha512-P5OJ0sf/dSgoC0aClmCHObzNdlFgtQSdJZWXH5GUEfkhVrUACkqdYOgHom7hnBzh+R0TMZjKWXnHPt2exe5wpw==
+  dependencies:
+    "@wallet-standard/base" "^1.0.0-rc.0"
 
 "@walletconnect/browser-utils@^1.8.0":
   version "1.8.0"
