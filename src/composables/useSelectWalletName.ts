@@ -14,7 +14,7 @@ export function useSelectWalletName(
   isUsingMwaAdapter: Ref<boolean>;
   isUsingMwaAdapterOnMobile: Ref<boolean>;
   select: (name: WalletName) => void;
-  deselect: () => void;
+  deselect: (force?: boolean) => void;
 } {
   const name: Ref<WalletName | null> = useLocalStorage<WalletName | null>(
     localStorageKey,
@@ -35,8 +35,10 @@ export function useSelectWalletName(
     }
   };
 
-  const deselect = (): void => {
-    name.value = null;
+  const deselect = (force = true): void => {
+    if (force || isUsingMwaAdapter.value) {
+      name.value = null;
+    }
   };
 
   return {

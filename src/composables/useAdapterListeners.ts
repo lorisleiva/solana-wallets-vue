@@ -1,5 +1,5 @@
-import { SolanaMobileWalletAdapterWalletName } from "@solana-mobile/wallet-adapter-mobile";
 import type { Wallet } from "@/types";
+import { SolanaMobileWalletAdapterWalletName } from "@solana-mobile/wallet-adapter-mobile";
 import type { Adapter, WalletError } from "@solana/wallet-adapter-base";
 import { Ref, watch, watchEffect } from "vue";
 
@@ -10,7 +10,7 @@ export function useAdapterListeners(
   wallet: Ref<Wallet | null>,
   unloadingWindow: Ref<boolean>,
   isUsingMwaAdapterOnMobile: Ref<boolean>,
-  deselect: () => void,
+  deselect: (force?: boolean) => void,
   refreshWalletState: () => void,
   handleError: (error: WalletError, adapter?: Adapter) => WalletError
 ) {
@@ -35,7 +35,7 @@ export function useAdapterListeners(
 
     const handleAdapterDisconnect = () => {
       if (unloadingWindow.value || isUsingMwaAdapterOnMobile.value) return;
-      deselect();
+      deselect(true);
     };
 
     const handleAdapterError = (error: WalletError): WalletError => {

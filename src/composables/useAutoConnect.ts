@@ -1,5 +1,5 @@
-import type { SolanaMobileWalletAdapter } from "@solana-mobile/wallet-adapter-mobile";
 import type { Wallet } from "@/types";
+import type { SolanaMobileWalletAdapter } from "@solana-mobile/wallet-adapter-mobile";
 import { ref, Ref, watch, watchEffect } from "vue";
 
 /**
@@ -48,7 +48,6 @@ export function useAutoConnect(
           await wallet.value.adapter.connect();
         }
       } catch (error: any) {
-        // TODO: Don't deselect if SolanaMobileWalletAdapterWalletName?
         deselect();
         // Don't throw error, but handleError will still be called.
       } finally {
