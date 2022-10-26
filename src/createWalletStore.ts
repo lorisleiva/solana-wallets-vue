@@ -66,6 +66,7 @@ export const createWalletStore = ({
   useAdapterListeners(
     wallet,
     unloadingWindow,
+    isUsingMwaAdapterOnMobile,
     deselect,
     refreshWalletState,
     handleError

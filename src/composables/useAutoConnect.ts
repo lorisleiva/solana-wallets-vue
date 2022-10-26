@@ -1,3 +1,4 @@
+import type { SolanaMobileWalletAdapter } from "@solana-mobile/wallet-adapter-mobile";
 import type { Wallet } from "@/types";
 import { ref, Ref, watch, watchEffect } from "vue";
 
@@ -7,6 +8,7 @@ import { ref, Ref, watch, watchEffect } from "vue";
 export function useAutoConnect(
   initialAutoConnect: boolean | Ref<boolean>,
   wallet: Ref<Wallet | null>,
+  isUsingMwaAdapterOnMobile: Ref<boolean>,
   connecting: Ref<boolean>,
   connected: Ref<boolean>,
   ready: Ref<boolean>,
@@ -38,7 +40,13 @@ export function useAutoConnect(
       connecting.value = true;
       hasAttemptedToAutoConnect.value = true;
       try {
-        await wallet.value.adapter.connect();
+        if (isUsingMwaAdapterOnMobile.value) {
+          await (
+            wallet.value.adapter as SolanaMobileWalletAdapter
+          ).autoConnect_DO_NOT_USE_OR_YOU_WILL_BE_FIRED();
+        } else {
+          await wallet.value.adapter.connect();
+        }
       } catch (error: any) {
         // TODO: Don't deselect if SolanaMobileWalletAdapterWalletName?
         deselect();

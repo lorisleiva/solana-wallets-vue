@@ -8,6 +8,7 @@ import { Ref, watchEffect } from "vue";
 export function useAdapterListeners(
   wallet: Ref<Wallet | null>,
   unloadingWindow: Ref<boolean>,
+  isUsingMwaAdapterOnMobile: Ref<boolean>,
   deselect: () => void,
   refreshWalletState: () => void,
   handleError: (error: WalletError, adapter?: Adapter) => WalletError
@@ -21,8 +22,7 @@ export function useAdapterListeners(
     };
 
     const handleAdapterDisconnect = () => {
-      if (unloadingWindow.value) return;
-      // TODO: Return early if SolanaMobileWalletAdapterWalletName
+      if (unloadingWindow.value || isUsingMwaAdapterOnMobile.value) return;
       deselect();
     };
 
