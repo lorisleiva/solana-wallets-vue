@@ -1,5 +1,5 @@
 import type { Adapter, WalletName } from "@solana/wallet-adapter-base";
-import { computed, ref, Ref, watchEffect } from "vue";
+import { computed, Ref, shallowRef, watchEffect } from "vue";
 import {
   isWalletAdapterCompatibleWallet,
   StandardWalletAdapter,
@@ -16,7 +16,7 @@ export function useStandardWalletAdapters(
 ): Ref<Adapter[]> {
   const warnings = new Set<WalletName>();
   const { get, on } = DEPRECATED_getWallets();
-  const swaAdapters = ref<Readonly<StandardWalletAdapter[]>>(
+  const swaAdapters = shallowRef<Readonly<StandardWalletAdapter[]>>(
     wrapWalletsWithAdapters(get())
   );
 
@@ -38,7 +38,7 @@ export function useStandardWalletAdapters(
     onInvalidate(() => listeners.forEach((destroy) => destroy()));
   });
 
-  return computed(() => [
+  return computed<Adapter[]>(() => [
     ...swaAdapters.value,
     ...adapters.value.filter(({ name }: Adapter) => {
       if (swaAdapters.value.some((swaAdapter) => swaAdapter.name === name)) {
