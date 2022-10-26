@@ -41,13 +41,8 @@ export const createWalletStore = ({
   const wallets = useWrapAdaptersInWallets(adapters);
 
   // Wallet selection and state.
-  const {
-    name,
-    isUsingMwaAdapter,
-    isUsingMwaAdapterOnMobile,
-    select,
-    deselect,
-  } = useSelectWalletName(localStorageKey, isMobile);
+  const { name, isUsingMwaAdapterOnMobile, select, deselect } =
+    useSelectWalletName(localStorageKey, isMobile);
   const {
     wallet,
     publicKey,
