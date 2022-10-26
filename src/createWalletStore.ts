@@ -80,7 +80,7 @@ export const createWalletStore = ({
       await adapter.connect();
     } catch (error: any) {
       // TODO: Don't disconnect if SolanaMobileWalletAdapterWalletName
-      name.value = null;
+      deselect();
 
       // handleError will also be called.
       throw error;
