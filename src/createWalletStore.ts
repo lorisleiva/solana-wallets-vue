@@ -76,6 +76,7 @@ export const createWalletStore = ({
   const autoConnect = useAutoConnect(
     initialAutoConnect,
     wallet,
+    isUsingMwaAdapterOnMobile,
     connecting,
     connected,
     ready,
