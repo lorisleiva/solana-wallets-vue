@@ -5,7 +5,7 @@ import type {
   WalletName,
   WalletReadyState,
 } from "@solana/wallet-adapter-base";
-import type { PublicKey } from "@solana/web3.js";
+import type { Cluster, PublicKey } from "@solana/web3.js";
 import type { Ref } from "vue";
 import type { Wallet } from "./Wallet";
 
@@ -13,6 +13,7 @@ export type WalletStore = {
   // Props.
   wallets: Ref<Wallet[]>;
   autoConnect: Ref<boolean>;
+  cluster: Ref<Cluster>;
 
   // Data.
   wallet: Ref<Wallet | null>;

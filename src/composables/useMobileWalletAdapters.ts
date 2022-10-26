@@ -6,6 +6,7 @@ import {
   SolanaMobileWalletAdapterWalletName,
 } from "@solana-mobile/wallet-adapter-mobile";
 import type { Adapter } from "@solana/wallet-adapter-base";
+import type { Cluster } from "@solana/web3.js";
 import { computed, Ref } from "vue";
 
 /**
@@ -15,7 +16,8 @@ import { computed, Ref } from "vue";
 export function useMobileWalletAdapters(
   adapters: Ref<Adapter[]>,
   isMobile: Ref<boolean>,
-  uriForAppIdentity: string | null
+  uriForAppIdentity: string | null,
+  cluster: Ref<Cluster>
 ): Ref<Adapter[]> {
   const mwaAdapter = computed(() => {
     if (!isMobile.value) return null;
@@ -30,7 +32,7 @@ export function useMobileWalletAdapters(
       addressSelector: createDefaultAddressSelector(),
       appIdentity: { uri: uriForAppIdentity || undefined },
       authorizationResultCache: createDefaultAuthorizationResultCache(),
-      cluster: "mainnet-beta",
+      cluster: cluster.value,
       onWalletNotFound: createDefaultWalletNotFoundHandler(),
     });
   });

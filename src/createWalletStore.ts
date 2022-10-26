@@ -1,5 +1,6 @@
 import type { Adapter } from "@solana/wallet-adapter-base";
 import { WalletNotReadyError } from "@solana/wallet-adapter-base";
+import type { Cluster } from "@solana/web3.js";
 import type { Ref } from "vue";
 import { ref, shallowRef } from "vue";
 import {
@@ -22,10 +23,12 @@ import type { WalletStore, WalletStoreProps } from "./types";
 export const createWalletStore = ({
   wallets: initialAdapters = [],
   autoConnect: initialAutoConnect = false,
+  cluster: initialCluster = "mainnet-beta",
   onError,
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
-  // Loading states.
+  // Initial variables and loading states.
+  const cluster: Ref<Cluster> = ref(initialCluster);
   const connecting = ref<boolean>(false);
   const disconnecting = ref<boolean>(false);
 
@@ -36,7 +39,8 @@ export const createWalletStore = ({
   const adapters = useMobileWalletAdapters(
     rawAdaptersWithSwa,
     isMobile,
-    uriForAppIdentity
+    uriForAppIdentity,
+    cluster
   );
   const wallets = useWrapAdaptersInWallets(adapters);
 
@@ -117,6 +121,7 @@ export const createWalletStore = ({
     // Props.
     wallets,
     autoConnect,
+    cluster,
 
     // Data.
     wallet,
