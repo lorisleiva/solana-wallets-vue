@@ -11,6 +11,7 @@ export function useAdapterListeners(
   connecting: Ref<boolean>,
   disconnecting: Ref<boolean>,
   unloadingWindow: Ref<boolean>,
+  refreshWalletState: () => void,
   handleError: (error: WalletError, adapter?: Adapter) => WalletError
 ) {
   watchEffect((onInvalidate) => {
@@ -20,6 +21,7 @@ export function useAdapterListeners(
     const handleAdapterConnect = () => {
       connecting.value = false;
       disconnecting.value = false;
+      refreshWalletState();
     };
 
     const handleAdapterDisconnect = () => {
@@ -27,6 +29,7 @@ export function useAdapterListeners(
       name.value = null; // TODO: Remove?
       connecting.value = false;
       disconnecting.value = false;
+      refreshWalletState();
     };
 
     const handleAdapterError = (error: WalletError): WalletError => {

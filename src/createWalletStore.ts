@@ -21,9 +21,10 @@ import {
   useAdapterListeners,
   useErrorHandler,
   useReadyStateListeners,
-  useSelectWallet,
+  useSelectWalletName,
   useTransactionMethods,
   useUnloadingWindow,
+  useWalletState,
   useWrapAdaptersInWallets,
 } from "./composables";
 
@@ -43,24 +44,15 @@ export const createWalletStore = ({
   const disconnecting = ref<boolean>(false);
 
   const wallets = useWrapAdaptersInWallets(adapters);
-  const { name, wallet, select } = useSelectWallet(wallets, localStorageKey);
-
-  // Computed values.
-  const publicKey = computed<PublicKey | null>(() => {
-    return wallet.value?.adapter.publicKey ?? null;
-  });
-  const connected = computed<boolean>(() => {
-    return wallet.value?.adapter.connected ?? false;
-  });
-  const readyState = computed<WalletReadyState>(() => {
-    return wallet.value?.readyState ?? WalletReadyState.NotDetected;
-  });
-  const ready = computed<boolean>(() => {
-    return (
-      readyState.value === WalletReadyState.Installed ||
-      readyState.value === WalletReadyState.Loadable
-    );
-  });
+  const { name, select } = useSelectWalletName(localStorageKey);
+  const {
+    wallet,
+    publicKey,
+    connected,
+    readyState,
+    ready,
+    refreshWalletState,
+  } = useWalletState(wallets, name);
 
   useReadyStateListeners(wallets);
   useAdapterListeners(
@@ -69,6 +61,7 @@ export const createWalletStore = ({
     connecting,
     disconnecting,
     unloadingWindow,
+    refreshWalletState,
     handleError
   );
 
