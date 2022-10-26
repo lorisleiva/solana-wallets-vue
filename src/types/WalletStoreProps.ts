@@ -4,6 +4,6 @@ import type { Ref } from "vue";
 export type WalletStoreProps = {
   wallets?: Adapter[] | Ref<Adapter[]>;
   autoConnect?: boolean | Ref<boolean>;
-  onError?: (error: WalletError) => void;
+  onError?: (error: WalletError, adapter?: Adapter) => void;
   localStorageKey?: string;
 };
