@@ -25,11 +25,9 @@ export const createWalletStore = ({
   onError,
   localStorageKey = "walletName",
 }: WalletStoreProps): WalletStore => {
-  // Loading states and error handling.
+  // Loading states.
   const connecting = ref<boolean>(false);
   const disconnecting = ref<boolean>(false);
-  const unloadingWindow = useUnloadingWindow();
-  const handleError = useErrorHandler(unloadingWindow, onError);
 
   // From raw adapters to computed list of wallets.
   const rawAdapters: Ref<Adapter[]> = shallowRef(initialAdapters);
@@ -43,7 +41,13 @@ export const createWalletStore = ({
   const wallets = useWrapAdaptersInWallets(adapters);
 
   // Wallet selection and state.
-  const { name, select, deselect } = useSelectWalletName(localStorageKey);
+  const {
+    name,
+    isUsingMwaAdapter,
+    isUsingMwaAdapterOnMobile,
+    select,
+    deselect,
+  } = useSelectWalletName(localStorageKey, isMobile);
   const {
     wallet,
     publicKey,
@@ -52,6 +56,10 @@ export const createWalletStore = ({
     ready,
     refreshWalletState,
   } = useWalletState(wallets, name);
+
+  // Window listeners and error handling.
+  const unloadingWindow = useUnloadingWindow(isUsingMwaAdapterOnMobile);
+  const handleError = useErrorHandler(unloadingWindow, onError);
 
   // Wallet listeners.
   useReadyStateListeners(wallets);
