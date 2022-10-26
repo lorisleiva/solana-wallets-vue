@@ -17,7 +17,7 @@ export function useStandardWalletAdapters(
   const warnings = new Set<WalletName>();
   const { get, on } = DEPRECATED_getWallets();
   const swaAdapters = shallowRef<Readonly<StandardWalletAdapter[]>>(
-    wrapWalletsWithAdapters(get())
+    wrapWalletsInAdapters(get())
   );
 
   watchEffect((onInvalidate) => {
@@ -25,7 +25,7 @@ export function useStandardWalletAdapters(
       on("register", (...wallets) => {
         return (swaAdapters.value = [
           ...swaAdapters.value,
-          ...wrapWalletsWithAdapters(wallets),
+          ...wrapWalletsInAdapters(wallets),
         ]);
       }),
       on("unregister", (...wallets) => {
@@ -55,7 +55,7 @@ export function useStandardWalletAdapters(
   ]);
 }
 
-function wrapWalletsWithAdapters(
+function wrapWalletsInAdapters(
   wallets: ReadonlyArray<Wallet>
 ): ReadonlyArray<StandardWalletAdapter> {
   return wallets

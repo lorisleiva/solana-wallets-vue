@@ -1,5 +1,6 @@
 export * from "./useAdapterListeners";
 export * from "./useAutoConnect";
+export * from "./useEnvironment";
 export * from "./useErrorHandler";
 export * from "./useMobileWalletAdapters";
 export * from "./useReadyStateListeners";

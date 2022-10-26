@@ -5,6 +5,7 @@ import { ref, shallowRef } from "vue";
 import {
   useAdapterListeners,
   useAutoConnect,
+  useEnvironment,
   useErrorHandler,
   useMobileWalletAdapters,
   useReadyStateListeners,
@@ -33,7 +34,12 @@ export const createWalletStore = ({
   // From raw adapters to computed list of wallets.
   const rawAdapters: Ref<Adapter[]> = shallowRef(initialAdapters);
   const rawAdaptersWithSwa = useStandardWalletAdapters(rawAdapters);
-  const adapters = useMobileWalletAdapters(rawAdaptersWithSwa);
+  const { isMobile, uriForAppIdentity } = useEnvironment(rawAdaptersWithSwa);
+  const adapters = useMobileWalletAdapters(
+    rawAdaptersWithSwa,
+    isMobile,
+    uriForAppIdentity
+  );
   const wallets = useWrapAdaptersInWallets(adapters);
 
   // Wallet selection and state.
