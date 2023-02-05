@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType, toRefs } from "vue";
-import { Wallet } from "@/createWalletStore";
+import type { Wallet } from "@/types";
 
 export default defineComponent({
   props: {

@@ -153,12 +153,13 @@ await program.value.rpc.myInstruction(/* ... */);
 
 The table below shows all options you can provide when initialising the wallet store. Note that some options accepts `Ref` types so you can update them at runtime and keep their reactivity.
 
-| Option                        | Type                        | Description                                                                                                                       |
-| ----------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `wallets`                     | `Wallet[] \| Ref<Wallet[]>` | The wallets available the use. Defaults to `[]`.                                                                                  |
-| `autoConnect`                 | `Wallet[] \| Ref<Wallet[]>` | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`.                      |
-| `onError(error: WalletError)` | `void`                      | Will be called whenever an error occurs on the wallet selection/connection workflow. Defaults to `error => console.error(error)`. |
-| `localStorageKey`             | `string`                    | The key to use when storing the selected wallet type (e.g. `Phantom`) in the local storage. Defaults to `walletName`.             |
+| Option                        | Type                          | Description                                                                                                                       |
+| ----------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `wallets`                     | `Adapter[] \| Ref<Adapter[]>` | The wallet adapters available the use. Defaults to `[]`.                                                                          |
+| `autoConnect`                 | `boolean \| Ref<boolean>`     | Whether or not we should try to automatically connect the wallet when loading the page. Defaults to `false`.                      |
+| `cluster`                     | `Cluster \| Ref<Cluster>`     | The Solana cluster used by the wallets. Defaults to `mainnet-beta`.                                                               |
+| `onError(error: WalletError)` | `void`                        | Will be called whenever an error occurs on the wallet selection/connection workflow. Defaults to `error => console.error(error)`. |
+| `localStorageKey`             | `string`                      | The key to use when storing the selected wallet type (e.g. `Phantom`) in the local storage. Defaults to `walletName`.             |
 
 ## `useWallet()` references
 
@@ -168,6 +169,7 @@ The table below shows all the properties and methods you can get from `useWallet
 | --------------------- | ------------------------ | --------------------------------------------------------------------------------------- |
 | `wallets`             | `Ref<Wallet[]>`          | The wallets available the use.                                                          |
 | `autoConnect`         | `Ref<boolean>`           | Whether or not we should try to automatically connect the wallet when loading the page. |
+| `cluster`             | `Ref<Cluster>`           | The Solana cluster used by the wallets — e.g. `mainnet-beta`.                           |
 | `wallet`              | `Ref<Wallet \| null>`    | The connected wallet. Null if not connected.                                            |
 | `publicKey`           | `Ref<PublicKey \| null>` | The public key of the connected wallet. Null if not connected.                          |
 | `readyState`          | `Ref<WalletReadyState>`  | The ready state of the selected wallet.                                                 |

@@ -1,9 +1,6 @@
 import { WalletNotInitializedError } from "./errors";
-import {
-  createWalletStore,
-  WalletStore,
-  WalletStoreProps,
-} from "./createWalletStore";
+import { createWalletStore } from "./createWalletStore";
+import type { WalletStore, WalletStoreProps } from "./types";
 
 let walletStore: WalletStore | null = null;
 
