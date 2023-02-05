@@ -39,7 +39,7 @@ export function useStandardWalletAdapters(
   });
 
   return computed<Adapter[]>(() => [
-    ...swaAdapters.value,
+    ...(swaAdapters.value as any),
     ...adapters.value.filter(({ name }: Adapter) => {
       if (swaAdapters.value.some((swaAdapter) => swaAdapter.name === name)) {
         if (!warnings.has(name)) {
