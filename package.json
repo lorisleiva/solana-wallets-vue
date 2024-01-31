@@ -16,7 +16,8 @@
   "exports": {
     ".": {
       "import": "./dist/solana-wallets-vue.mjs",
-      "require": "./dist/solana-wallets-vue.umd.js"
+      "require": "./dist/solana-wallets-vue.umd.js",
+      "types": "./dist/index.d.ts"
     },
     "./styles.css": "./styles.css",
     "./postcss.config.js": "./postcss.config.js"
