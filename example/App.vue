@@ -8,7 +8,7 @@ import {
   clusterApiUrl,
   SystemProgram,
 } from "@solana/web3.js";
-import { AnchorProvider, Program } from "@project-serum/anchor";
+import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { WalletMultiButton, useAnchorWallet } from "../src";
 import idl from "./idl.json";
 
@@ -24,7 +24,7 @@ export default {
     const wallet = useAnchorWallet();
     const connection = new Connection(
       clusterApiUrl("devnet"),
-      preflightCommitment
+      preflightCommitment,
     );
     const provider = computed(() => {
       if (!wallet.value) return;
@@ -42,7 +42,7 @@ export default {
     watchEffect(async () => {
       if (!counterPublicKey.value || !program.value) return;
       const account = await program.value.account.baseAccount.fetch(
-        counterPublicKey.value
+        counterPublicKey.value,
       );
       counter.value = account.count.toNumber();
     });

@@ -109,7 +109,7 @@ If you're using Anchor, then you might want to define your own store that encaps
 import { computed } from "vue";
 import { useAnchorWallet } from "solana-wallets-vue";
 import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
-import { AnchorProvider, Program } from "@project-serum/anchor";
+import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import idl from "@/idl.json";
 
 const preflightCommitment = "processed";
@@ -226,7 +226,7 @@ export default defineNuxtConfig({
       target: "esnext",
     },
     optimizeDeps: {
-      include: ["@project-serum/anchor", "@solana/web3.js", "buffer"],
+      include: ["@coral-xyz/anchor", "@solana/web3.js", "buffer"],
       esbuildOptions: {
         target: "esnext",
       },
