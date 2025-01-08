@@ -37,7 +37,7 @@
     "@wallet-standard/base": "^1.0.1"
   },
   "devDependencies": {
-    "@project-serum/anchor": "^0.25.0",
+    "@coral-xyz/anchor": "^0.25.0",
     "@solana/wallet-adapter-wallets": "^0.19.0",
     "@solana/web3.js": "^1.66.0",
     "@types/node": "18.8.0",
@@ -51,5 +51,6 @@
   "peerDependencies": {
     "@solana/web3.js": "^1.61.0",
     "vue": "^3.2.25"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
