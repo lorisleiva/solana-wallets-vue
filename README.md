@@ -19,20 +19,20 @@ npm install solana-wallets-vue @solana/wallet-adapter-wallets
 Next, you can install Solana Wallets Vue as a plugin like so.
 
 ```js
-import { createApp } from "vue";
-import App from "./App.vue";
-import SolanaWallets from "solana-wallets-vue";
+import { createApp } from 'vue';
+import App from './App.vue';
+import SolanaWallets from 'solana-wallets-vue';
 
 // You can either import the default styles or create your own.
-import "solana-wallets-vue/styles.css";
+import 'solana-wallets-vue/styles.css';
 
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
 import {
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+} from '@solana/wallet-adapter-wallets';
 
 const walletOptions = {
   wallets: [
@@ -43,7 +43,7 @@ const walletOptions = {
   autoConnect: true,
 };
 
-createApp(App).use(SolanaWallets, walletOptions).mount("#app");
+createApp(App).use(SolanaWallets, walletOptions).mount('#app');
 ```
 
 This will initialise the wallet store and create a new `$wallet` global property that you can access inside any component.
@@ -51,7 +51,7 @@ This will initialise the wallet store and create a new `$wallet` global property
 Note that you can also initialise the wallet store manually using the `initWallet` method like so.
 
 ```js
-import { initWallet } from "solana-wallets-vue";
+import { initWallet } from 'solana-wallets-vue';
 initWallet(walletOptions);
 ```
 
@@ -59,7 +59,7 @@ Finally, import and render the `WalletMultiButton` component to allow users to s
 
 ```vue
 <script setup>
-import { WalletMultiButton } from "solana-wallets-vue";
+import { WalletMultiButton } from 'solana-wallets-vue';
 </script>
 
 <template>
@@ -106,14 +106,14 @@ export const sendOneLamportToRandomAddress = () => {
 If you're using Anchor, then you might want to define your own store that encapsulates `useWallet` into something that will also provide information on the current connection, provider and program.
 
 ```js
-import { computed } from "vue";
-import { useAnchorWallet } from "solana-wallets-vue";
-import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
-import { AnchorProvider, Program } from "@project-serum/anchor";
-import idl from "@/idl.json";
+import { computed } from 'vue';
+import { useAnchorWallet } from 'solana-wallets-vue';
+import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js';
+import { AnchorProvider, Program } from '@coral-xyz/anchor';
+import idl from '@/idl.json';
 
-const preflightCommitment = "processed";
-const commitment = "confirmed";
+const preflightCommitment = 'processed';
+const commitment = 'confirmed';
 const programID = new PublicKey(idl.metadata.address);
 
 const workspace = null;
@@ -121,7 +121,7 @@ export const useWorkspace = () => workspace;
 
 export const initWorkspace = () => {
   const wallet = useAnchorWallet();
-  const connection = new Connection(clusterApiUrl("devnet"), commitment);
+  const connection = new Connection(clusterApiUrl('devnet'), commitment);
   const provider = computed(
     () =>
       new AnchorProvider(connection, wallet.value, {
@@ -143,7 +143,7 @@ export const initWorkspace = () => {
 This allows you to access the Anchor program anywhere within your application in just a few lines of code.
 
 ```js
-import { useWorkspace } from "./useWorkspace";
+import { useWorkspace } from './useWorkspace';
 
 const { program } = useWorkspace();
 await program.value.rpc.myInstruction(/* ... */);
@@ -190,14 +190,14 @@ The table below shows all the properties and methods you can get from `useWallet
 1. Create a new plugin, ex. `plugins/solana.ts`
 
 ```ts
-import "solana-wallets-vue/styles.css";
-import SolanaWallets from "solana-wallets-vue";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import 'solana-wallets-vue/styles.css';
+import SolanaWallets from 'solana-wallets-vue';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+} from '@solana/wallet-adapter-wallets';
 
 const walletOptions = {
   wallets: [
@@ -217,22 +217,22 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: ['@nuxtjs/tailwindcss'],
   vite: {
     esbuild: {
-      target: "esnext",
+      target: 'esnext',
     },
     build: {
-      target: "esnext",
+      target: 'esnext',
     },
     optimizeDeps: {
-      include: ["@project-serum/anchor", "@solana/web3.js", "buffer"],
+      include: ['@coral-xyz/anchor', '@solana/web3.js', 'buffer'],
       esbuildOptions: {
-        target: "esnext",
+        target: 'esnext',
       },
     },
     define: {
-      "process.env.BROWSER": true,
+      'process.env.BROWSER': true,
     },
   },
 });
@@ -242,7 +242,7 @@ export default defineNuxtConfig({
 
 ```vue
 <script lang="ts" setup>
-import { WalletMultiButton } from "solana-wallets-vue";
+import { WalletMultiButton } from 'solana-wallets-vue';
 </script>
 
 <template>
