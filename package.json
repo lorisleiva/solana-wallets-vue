@@ -23,7 +23,7 @@
     "./postcss.config.js": "./postcss.config.js"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite -c vite.demo.config.ts",
     "build": "vite build && vue-tsc --emitDeclarationOnly",
     "demo": "vite build -c vite.demo.config.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

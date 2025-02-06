@@ -134,7 +134,14 @@ export default {
       </button>
 
       <!-- Solana Wallets Vue. -->
-      <wallet-multi-button :dark="dark"></wallet-multi-button>
+      <wallet-multi-button :dark="dark">
+        <template #select-wallet-icon>
+          <img
+            src="https://api.iconify.design/hugeicons:wallet-02.svg?color=%23fdfcfc"
+            alt="Icon" />
+        </template>
+        <template #select-wallet-text>Connect Your Wallet</template>
+      </wallet-multi-button>
     </div>
 
     <!-- Centered. -->
