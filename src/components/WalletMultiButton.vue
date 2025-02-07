@@ -90,7 +90,7 @@ export default defineComponent({
           v-if="!wallet"
           class="swv-button swv-button-trigger"
           @click="modalScope.openModal">
-          <slot name="select-wallet-text">Select Wallet</slot>
+          <slot name="select-wallet-content">Select Wallet</slot>
         </button>
         <wallet-connect-button
           v-else-if="!publicKeyBase58"></wallet-connect-button>
