@@ -83,20 +83,17 @@ export default defineComponent({
     :featured="featured"
     :container="container"
     :logo="logo"
-    :dark="dark"
-  >
+    :dark="dark">
     <template #default="modalScope">
       <slot v-bind="{ ...modalScope, ...scope }">
         <button
           v-if="!wallet"
           class="swv-button swv-button-trigger"
-          @click="modalScope.openModal"
-        >
-          Select Wallet
+          @click="modalScope.openModal">
+          <slot name="select-wallet-content">Select Wallet</slot>
         </button>
         <wallet-connect-button
-          v-else-if="!publicKeyBase58"
-        ></wallet-connect-button>
+          v-else-if="!publicKeyBase58"></wallet-connect-button>
         <div v-else class="swv-dropdown">
           <slot name="dropdown-button" v-bind="{ ...modalScope, ...scope }">
             <button
@@ -104,8 +101,7 @@ export default defineComponent({
               :style="{ pointerEvents: dropdownOpened ? 'none' : 'auto' }"
               :aria-expanded="dropdownOpened"
               :title="publicKeyBase58"
-              @click="openDropdown"
-            >
+              @click="openDropdown">
               <wallet-icon :wallet="wallet"></wallet-icon>
               <p v-text="publicKeyTrimmed"></p>
             </button>
@@ -116,15 +112,13 @@ export default defineComponent({
               class="swv-dropdown-list"
               :class="{ 'swv-dropdown-list-active': dropdownOpened }"
               ref="dropdownPanel"
-              role="menu"
-            >
+              role="menu">
               <slot name="dropdown-list" v-bind="{ ...modalScope, ...scope }">
                 <li
                   v-if="canCopy"
                   @click="copyAddress"
                   class="swv-dropdown-list-item"
-                  role="menuitem"
-                >
+                  role="menuitem">
                   {{ addressCopied ? "Copied" : "Copy address" }}
                 </li>
                 <li
@@ -133,8 +127,7 @@ export default defineComponent({
                     closeDropdown();
                   "
                   class="swv-dropdown-list-item"
-                  role="menuitem"
-                >
+                  role="menuitem">
                   Change wallet
                 </li>
                 <li
@@ -143,8 +136,7 @@ export default defineComponent({
                     closeDropdown();
                   "
                   class="swv-dropdown-list-item"
-                  role="menuitem"
-                >
+                  role="menuitem">
                   Disconnect
                 </li>
               </slot>
